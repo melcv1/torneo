@@ -961,12 +961,12 @@
   </global>
   <project>
     <phrase id="bodytitle" value="Torneo" />
-    <phrase id="footertext" value="&amp;copy;2021 e.World Technology Limited. All rights reserved." />
+    <phrase id="footertext" value="&amp;copy;2022 Primicias. All rights reserved." />
     <menu id="10">
-      <phrase id="menutext" value="jugador" />
+      <phrase id="menutext" value="Jugador" />
     </menu>
     <menu id="11">
-      <phrase id="menutext" value="jugadorequipo" />
+      <phrase id="menutext" value="Jugador Equipo" />
     </menu>
     <menu id="7">
       <phrase id="menutext" value="Torneo" />
@@ -1400,7 +1400,7 @@
       </field>
     </table>
     <table id="jugador">
-      <phrase id="tblcaption" value="jugador" />
+      <phrase id="tblcaption" value="Jugador" />
       <field id="id_jugador">
         <phrase id="fldcaption" value="id jugador" />
       </field>
@@ -1427,7 +1427,7 @@
       </field>
     </table>
     <table id="jugadorequipo">
-      <phrase id="tblcaption" value="jugadorequipo" />
+      <phrase id="tblcaption" value="Jugador Equipo" />
       <field id="id_jugadorequipo">
         <phrase id="fldcaption" value="id jugadorequipo" />
       </field>

@@ -18,6 +18,29 @@ loadjs.ready(["wrapper", "head"], function () {
     currentPageID = ew.PAGE_ID = "list";
     currentForm = fjugadorequipolist;
     fjugadorequipolist.formKeyCountName = "<?= $Page->FormKeyCountName ?>";
+
+    // Add fields
+    var fields = currentTable.fields;
+    fjugadorequipolist.addFields([
+        ["id_jugadorequipo", [fields.id_jugadorequipo.visible && fields.id_jugadorequipo.required ? ew.Validators.required(fields.id_jugadorequipo.caption) : null], fields.id_jugadorequipo.isInvalid],
+        ["id_equipo", [fields.id_equipo.visible && fields.id_equipo.required ? ew.Validators.required(fields.id_equipo.caption) : null], fields.id_equipo.isInvalid],
+        ["id_jugador", [fields.id_jugador.visible && fields.id_jugador.required ? ew.Validators.required(fields.id_jugador.caption) : null], fields.id_jugador.isInvalid],
+        ["crea_dato", [fields.crea_dato.visible && fields.crea_dato.required ? ew.Validators.required(fields.crea_dato.caption) : null, ew.Validators.datetime(fields.crea_dato.clientFormatPattern)], fields.crea_dato.isInvalid],
+        ["modifica_dato", [fields.modifica_dato.visible && fields.modifica_dato.required ? ew.Validators.required(fields.modifica_dato.caption) : null, ew.Validators.datetime(fields.modifica_dato.clientFormatPattern)], fields.modifica_dato.isInvalid]
+    ]);
+
+    // Form_CustomValidate
+    fjugadorequipolist.customValidate = function(fobj) { // DO NOT CHANGE THIS LINE!
+        // Your custom validation code here, return false if invalid.
+        return true;
+    }
+
+    // Use JavaScript validation or not
+    fjugadorequipolist.validateRequired = ew.CLIENT_VALIDATE;
+
+    // Dynamic selection lists
+    fjugadorequipolist.lists.id_equipo = <?= $Page->id_equipo->toClientList($Page) ?>;
+    fjugadorequipolist.lists.id_jugador = <?= $Page->id_jugador->toClientList($Page) ?>;
     loadjs.done("fjugadorequipolist");
 });
 </script>
@@ -100,6 +123,15 @@ if ($Page->ExportAll && $Page->isExport()) {
         $Page->StopRecord = $Page->TotalRecords;
     }
 }
+
+// Restore number of post back records
+if ($CurrentForm && ($Page->isConfirm() || $Page->EventCancelled)) {
+    $CurrentForm->Index = -1;
+    if ($CurrentForm->hasValue($Page->FormKeyCountName) && ($Page->isGridAdd() || $Page->isGridEdit() || $Page->isConfirm())) {
+        $Page->KeyCount = $CurrentForm->getValue($Page->FormKeyCountName);
+        $Page->StopRecord = $Page->StartRecord + $Page->KeyCount - 1;
+    }
+}
 $Page->RecordCount = $Page->StartRecord - 1;
 if ($Page->Recordset && !$Page->Recordset->EOF) {
     // Nothing to do
@@ -111,6 +143,10 @@ if ($Page->Recordset && !$Page->Recordset->EOF) {
 $Page->RowType = ROWTYPE_AGGREGATEINIT;
 $Page->resetAttributes();
 $Page->renderRow();
+$Page->EditRowCount = 0;
+if ($Page->isEdit()) {
+    $Page->RowIndex = 1;
+}
 while ($Page->RecordCount < $Page->StopRecord) {
     $Page->RecordCount++;
     if ($Page->RecordCount >= $Page->StartRecord) {
@@ -134,6 +170,18 @@ while ($Page->RecordCount < $Page->StopRecord) {
             }
         }
         $Page->RowType = ROWTYPE_VIEW; // Render view
+        if ($Page->isEdit()) {
+            if ($Page->checkInlineEditKey() && $Page->EditRowCount == 0) { // Inline edit
+                $Page->RowType = ROWTYPE_EDIT; // Render edit
+            }
+        }
+        if ($Page->isEdit() && $Page->RowType == ROWTYPE_EDIT && $Page->EventCancelled) { // Update failed
+            $CurrentForm->Index = 1;
+            $Page->restoreFormValues(); // Restore form values
+        }
+        if ($Page->RowType == ROWTYPE_EDIT) { // Edit row
+            $Page->EditRowCount++;
+        }
 
         // Set up row attributes
         $Page->RowAttrs->merge([
@@ -159,42 +207,195 @@ $Page->ListOptions->render("body", "left", $Page->RowCount);
 ?>
     <?php if ($Page->id_jugadorequipo->Visible) { // id_jugadorequipo ?>
         <td data-name="id_jugadorequipo"<?= $Page->id_jugadorequipo->cellAttributes() ?>>
+<?php if ($Page->RowType == ROWTYPE_EDIT) { // Edit record ?>
+<span id="el<?= $Page->RowCount ?>_jugadorequipo_id_jugadorequipo" class="el_jugadorequipo_id_jugadorequipo">
+<span<?= $Page->id_jugadorequipo->viewAttributes() ?>>
+<input type="text" readonly class="form-control-plaintext" value="<?= HtmlEncode(RemoveHtml($Page->id_jugadorequipo->getDisplayValue($Page->id_jugadorequipo->EditValue))) ?>"></span>
+</span>
+<input type="hidden" data-table="jugadorequipo" data-field="x_id_jugadorequipo" data-hidden="1" name="x<?= $Page->RowIndex ?>_id_jugadorequipo" id="x<?= $Page->RowIndex ?>_id_jugadorequipo" value="<?= HtmlEncode($Page->id_jugadorequipo->CurrentValue) ?>">
+<?php } ?>
+<?php if ($Page->RowType == ROWTYPE_VIEW) { // View record ?>
 <span id="el<?= $Page->RowCount ?>_jugadorequipo_id_jugadorequipo" class="el_jugadorequipo_id_jugadorequipo">
 <span<?= $Page->id_jugadorequipo->viewAttributes() ?>>
 <?= $Page->id_jugadorequipo->getViewValue() ?></span>
 </span>
+<?php } ?>
 </td>
+    <?php } else { ?>
+            <input type="hidden" data-table="jugadorequipo" data-field="x_id_jugadorequipo" data-hidden="1" name="x<?= $Page->RowIndex ?>_id_jugadorequipo" id="x<?= $Page->RowIndex ?>_id_jugadorequipo" value="<?= HtmlEncode($Page->id_jugadorequipo->CurrentValue) ?>">
     <?php } ?>
     <?php if ($Page->id_equipo->Visible) { // id_equipo ?>
         <td data-name="id_equipo"<?= $Page->id_equipo->cellAttributes() ?>>
+<?php if ($Page->RowType == ROWTYPE_EDIT) { // Edit record ?>
+<span id="el<?= $Page->RowCount ?>_jugadorequipo_id_equipo" class="el_jugadorequipo_id_equipo">
+    <select
+        id="x<?= $Page->RowIndex ?>_id_equipo"
+        name="x<?= $Page->RowIndex ?>_id_equipo"
+        class="form-select ew-select<?= $Page->id_equipo->isInvalidClass() ?>"
+        data-select2-id="fjugadorequipolist_x<?= $Page->RowIndex ?>_id_equipo"
+        data-table="jugadorequipo"
+        data-field="x_id_equipo"
+        data-value-separator="<?= $Page->id_equipo->displayValueSeparatorAttribute() ?>"
+        data-placeholder="<?= HtmlEncode($Page->id_equipo->getPlaceHolder()) ?>"
+        <?= $Page->id_equipo->editAttributes() ?>>
+        <?= $Page->id_equipo->selectOptionListHtml("x{$Page->RowIndex}_id_equipo") ?>
+    </select>
+    <div class="invalid-feedback"><?= $Page->id_equipo->getErrorMessage() ?></div>
+<?= $Page->id_equipo->Lookup->getParamTag($Page, "p_x" . $Page->RowIndex . "_id_equipo") ?>
+<script>
+loadjs.ready("fjugadorequipolist", function() {
+    var options = { name: "x<?= $Page->RowIndex ?>_id_equipo", selectId: "fjugadorequipolist_x<?= $Page->RowIndex ?>_id_equipo" },
+        el = document.querySelector("select[data-select2-id='" + options.selectId + "']");
+    options.dropdownParent = el.closest("#ew-modal-dialog, #ew-add-opt-dialog");
+    if (fjugadorequipolist.lists.id_equipo.lookupOptions.length) {
+        options.data = { id: "x<?= $Page->RowIndex ?>_id_equipo", form: "fjugadorequipolist" };
+    } else {
+        options.ajax = { id: "x<?= $Page->RowIndex ?>_id_equipo", form: "fjugadorequipolist", limit: ew.LOOKUP_PAGE_SIZE };
+    }
+    options.minimumResultsForSearch = Infinity;
+    options = Object.assign({}, ew.selectOptions, options, ew.vars.tables.jugadorequipo.fields.id_equipo.selectOptions);
+    ew.createSelect(options);
+});
+</script>
+</span>
+<?php } ?>
+<?php if ($Page->RowType == ROWTYPE_VIEW) { // View record ?>
 <span id="el<?= $Page->RowCount ?>_jugadorequipo_id_equipo" class="el_jugadorequipo_id_equipo">
 <span<?= $Page->id_equipo->viewAttributes() ?>>
 <?= $Page->id_equipo->getViewValue() ?></span>
 </span>
+<?php } ?>
 </td>
     <?php } ?>
     <?php if ($Page->id_jugador->Visible) { // id_jugador ?>
         <td data-name="id_jugador"<?= $Page->id_jugador->cellAttributes() ?>>
+<?php if ($Page->RowType == ROWTYPE_EDIT) { // Edit record ?>
+<span id="el<?= $Page->RowCount ?>_jugadorequipo_id_jugador" class="el_jugadorequipo_id_jugador">
+    <select
+        id="x<?= $Page->RowIndex ?>_id_jugador"
+        name="x<?= $Page->RowIndex ?>_id_jugador"
+        class="form-select ew-select<?= $Page->id_jugador->isInvalidClass() ?>"
+        data-select2-id="fjugadorequipolist_x<?= $Page->RowIndex ?>_id_jugador"
+        data-table="jugadorequipo"
+        data-field="x_id_jugador"
+        data-value-separator="<?= $Page->id_jugador->displayValueSeparatorAttribute() ?>"
+        data-placeholder="<?= HtmlEncode($Page->id_jugador->getPlaceHolder()) ?>"
+        <?= $Page->id_jugador->editAttributes() ?>>
+        <?= $Page->id_jugador->selectOptionListHtml("x{$Page->RowIndex}_id_jugador") ?>
+    </select>
+    <div class="invalid-feedback"><?= $Page->id_jugador->getErrorMessage() ?></div>
+<?= $Page->id_jugador->Lookup->getParamTag($Page, "p_x" . $Page->RowIndex . "_id_jugador") ?>
+<script>
+loadjs.ready("fjugadorequipolist", function() {
+    var options = { name: "x<?= $Page->RowIndex ?>_id_jugador", selectId: "fjugadorequipolist_x<?= $Page->RowIndex ?>_id_jugador" },
+        el = document.querySelector("select[data-select2-id='" + options.selectId + "']");
+    options.dropdownParent = el.closest("#ew-modal-dialog, #ew-add-opt-dialog");
+    if (fjugadorequipolist.lists.id_jugador.lookupOptions.length) {
+        options.data = { id: "x<?= $Page->RowIndex ?>_id_jugador", form: "fjugadorequipolist" };
+    } else {
+        options.ajax = { id: "x<?= $Page->RowIndex ?>_id_jugador", form: "fjugadorequipolist", limit: ew.LOOKUP_PAGE_SIZE };
+    }
+    options.minimumResultsForSearch = Infinity;
+    options = Object.assign({}, ew.selectOptions, options, ew.vars.tables.jugadorequipo.fields.id_jugador.selectOptions);
+    ew.createSelect(options);
+});
+</script>
+</span>
+<?php } ?>
+<?php if ($Page->RowType == ROWTYPE_VIEW) { // View record ?>
 <span id="el<?= $Page->RowCount ?>_jugadorequipo_id_jugador" class="el_jugadorequipo_id_jugador">
 <span<?= $Page->id_jugador->viewAttributes() ?>>
 <?= $Page->id_jugador->getViewValue() ?></span>
 </span>
+<?php } ?>
 </td>
     <?php } ?>
     <?php if ($Page->crea_dato->Visible) { // crea_dato ?>
         <td data-name="crea_dato"<?= $Page->crea_dato->cellAttributes() ?>>
+<?php if ($Page->RowType == ROWTYPE_EDIT) { // Edit record ?>
+<span id="el<?= $Page->RowCount ?>_jugadorequipo_crea_dato" class="el_jugadorequipo_crea_dato">
+<input type="<?= $Page->crea_dato->getInputTextType() ?>" name="x<?= $Page->RowIndex ?>_crea_dato" id="x<?= $Page->RowIndex ?>_crea_dato" data-table="jugadorequipo" data-field="x_crea_dato" value="<?= $Page->crea_dato->EditValue ?>" placeholder="<?= HtmlEncode($Page->crea_dato->getPlaceHolder()) ?>"<?= $Page->crea_dato->editAttributes() ?>>
+<div class="invalid-feedback"><?= $Page->crea_dato->getErrorMessage() ?></div>
+<?php if (!$Page->crea_dato->ReadOnly && !$Page->crea_dato->Disabled && !isset($Page->crea_dato->EditAttrs["readonly"]) && !isset($Page->crea_dato->EditAttrs["disabled"])) { ?>
+<script>
+loadjs.ready(["fjugadorequipolist", "datetimepicker"], function () {
+    let format = "<?= DateFormat(0) ?>",
+        options = {
+            localization: {
+                locale: ew.LANGUAGE_ID + "-u-nu-" + ew.getNumberingSystem()
+            },
+            display: {
+                icons: {
+                    previous: ew.IS_RTL ? "fas fa-chevron-right" : "fas fa-chevron-left",
+                    next: ew.IS_RTL ? "fas fa-chevron-left" : "fas fa-chevron-right"
+                },
+                components: {
+                    hours: !!format.match(/h/i),
+                    minutes: !!format.match(/m/),
+                    seconds: !!format.match(/s/i),
+                    useTwentyfourHour: !!format.match(/H/)
+                }
+            },
+            meta: {
+                format
+            }
+        };
+    ew.createDateTimePicker("fjugadorequipolist", "x<?= $Page->RowIndex ?>_crea_dato", ew.deepAssign({"useCurrent":false}, options));
+});
+</script>
+<?php } ?>
+</span>
+<?php } ?>
+<?php if ($Page->RowType == ROWTYPE_VIEW) { // View record ?>
 <span id="el<?= $Page->RowCount ?>_jugadorequipo_crea_dato" class="el_jugadorequipo_crea_dato">
 <span<?= $Page->crea_dato->viewAttributes() ?>>
 <?= $Page->crea_dato->getViewValue() ?></span>
 </span>
+<?php } ?>
 </td>
     <?php } ?>
     <?php if ($Page->modifica_dato->Visible) { // modifica_dato ?>
         <td data-name="modifica_dato"<?= $Page->modifica_dato->cellAttributes() ?>>
+<?php if ($Page->RowType == ROWTYPE_EDIT) { // Edit record ?>
+<span id="el<?= $Page->RowCount ?>_jugadorequipo_modifica_dato" class="el_jugadorequipo_modifica_dato">
+<input type="<?= $Page->modifica_dato->getInputTextType() ?>" name="x<?= $Page->RowIndex ?>_modifica_dato" id="x<?= $Page->RowIndex ?>_modifica_dato" data-table="jugadorequipo" data-field="x_modifica_dato" value="<?= $Page->modifica_dato->EditValue ?>" placeholder="<?= HtmlEncode($Page->modifica_dato->getPlaceHolder()) ?>"<?= $Page->modifica_dato->editAttributes() ?>>
+<div class="invalid-feedback"><?= $Page->modifica_dato->getErrorMessage() ?></div>
+<?php if (!$Page->modifica_dato->ReadOnly && !$Page->modifica_dato->Disabled && !isset($Page->modifica_dato->EditAttrs["readonly"]) && !isset($Page->modifica_dato->EditAttrs["disabled"])) { ?>
+<script>
+loadjs.ready(["fjugadorequipolist", "datetimepicker"], function () {
+    let format = "<?= DateFormat(0) ?>",
+        options = {
+            localization: {
+                locale: ew.LANGUAGE_ID + "-u-nu-" + ew.getNumberingSystem()
+            },
+            display: {
+                icons: {
+                    previous: ew.IS_RTL ? "fas fa-chevron-right" : "fas fa-chevron-left",
+                    next: ew.IS_RTL ? "fas fa-chevron-left" : "fas fa-chevron-right"
+                },
+                components: {
+                    hours: !!format.match(/h/i),
+                    minutes: !!format.match(/m/),
+                    seconds: !!format.match(/s/i),
+                    useTwentyfourHour: !!format.match(/H/)
+                }
+            },
+            meta: {
+                format
+            }
+        };
+    ew.createDateTimePicker("fjugadorequipolist", "x<?= $Page->RowIndex ?>_modifica_dato", ew.deepAssign({"useCurrent":false}, options));
+});
+</script>
+<?php } ?>
+</span>
+<?php } ?>
+<?php if ($Page->RowType == ROWTYPE_VIEW) { // View record ?>
 <span id="el<?= $Page->RowCount ?>_jugadorequipo_modifica_dato" class="el_jugadorequipo_modifica_dato">
 <span<?= $Page->modifica_dato->viewAttributes() ?>>
 <?= $Page->modifica_dato->getViewValue() ?></span>
 </span>
+<?php } ?>
 </td>
     <?php } ?>
 <?php
@@ -202,6 +403,11 @@ $Page->ListOptions->render("body", "left", $Page->RowCount);
 $Page->ListOptions->render("body", "right", $Page->RowCount);
 ?>
     </tr>
+<?php if ($Page->RowType == ROWTYPE_ADD || $Page->RowType == ROWTYPE_EDIT) { ?>
+<script>
+loadjs.ready(["fjugadorequipolist","load"], () => fjugadorequipolist.updateLists(<?= $Page->RowIndex ?>));
+</script>
+<?php } ?>
 <?php
     }
     if (!$Page->isGridAdd()) {
@@ -213,6 +419,10 @@ $Page->ListOptions->render("body", "right", $Page->RowCount);
 </table><!-- /.ew-table -->
 <?php } ?>
 </div><!-- /.ew-grid-middle-panel -->
+<?php if ($Page->isEdit()) { ?>
+<input type="hidden" name="<?= $Page->FormKeyCountName ?>" id="<?= $Page->FormKeyCountName ?>" value="<?= $Page->KeyCount ?>">
+<input type="hidden" name="<?= $Page->OldKeyName ?>" value="<?= $Page->OldKey ?>">
+<?php } ?>
 <?php if (!$Page->CurrentAction) { ?>
 <input type="hidden" name="action" id="action" value="">
 <?php } ?>

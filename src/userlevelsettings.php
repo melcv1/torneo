@@ -28,5 +28,5 @@ $USER_LEVEL_TABLES = [["audittrail","audittrail","audittrail",true,"{1FEE5CED-11
     ["torneo","torneo","Torneo",true,"{1FEE5CED-11BB-4991-94A0-946354AE0202}","torneolist"],
     ["usuario","usuario","usuario",true,"{1FEE5CED-11BB-4991-94A0-946354AE0202}",""],
     ["estadio","estadio","Estadio",true,"{1FEE5CED-11BB-4991-94A0-946354AE0202}","estadiolist"],
-    ["jugador","jugador","jugador",true,"{1FEE5CED-11BB-4991-94A0-946354AE0202}","jugadorlist"],
-    ["jugadorequipo","jugadorequipo","jugadorequipo",true,"{1FEE5CED-11BB-4991-94A0-946354AE0202}","jugadorequipolist"]];
+    ["jugador","jugador","Jugador",true,"{1FEE5CED-11BB-4991-94A0-946354AE0202}","jugadorlist"],
+    ["jugadorequipo","jugadorequipo","Jugador Equipo",true,"{1FEE5CED-11BB-4991-94A0-946354AE0202}","jugadorequipolist"]];

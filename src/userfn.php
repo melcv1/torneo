@@ -186,6 +186,20 @@ function Api_Action($app) {
         }    
         return $response;
     });
+    $app->post('/v1/agregar/voto', function ($request, $response, $args) {
+        $p2 = json_encode($request->getParsedBody());
+      $p= json_decode($p2);
+      $conn = Conn();
+        $conn = getConnection();
+         $consulta = $conn->prepare("insert into jugador(votos_jugador) values (:votos_jugador) WHERE id_jugador= :id_jugador");
+         $estado = $consulta->execute(array(':votos_jugador' => $p->votos_jugador, ':id_jugador' => $p->id_jugador));
+         if ($estado) {
+          $response = $response->withJson( json_encode(array('mensaje' => 'Datos insertados correctamente. ')));
+        } else {
+          $response = $response->withJson( json_encode(array('mensaje' => 'Fallo ')));
+           }    
+         return $response;
+  });
 }
 
 // Container Build event

@@ -821,6 +821,8 @@ class JugadorView extends Jugador
 
             // imagen_jugador
             if (!EmptyValue($this->imagen_jugador->Upload->DbValue)) {
+                $this->imagen_jugador->ImageWidth = 50;
+                $this->imagen_jugador->ImageHeight = 0;
                 $this->imagen_jugador->ImageAlt = $this->imagen_jugador->alt();
                 $this->imagen_jugador->ImageCssClass = "ew-image";
                 $this->imagen_jugador->ViewValue = $this->imagen_jugador->Upload->DbValue;

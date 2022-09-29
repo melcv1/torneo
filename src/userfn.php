@@ -174,6 +174,18 @@ function Api_Action($app) {
         }    
         return $response;
     });
+      $app->get('/v1/jugadores', function ($request, $response, $args) {
+        $myArray="todo ok";
+         $response = $response->withJson(ExecuteRows("SELECT * from jugadorequipo;"));
+        return $response;
+    });
+    $app->get('/v1/votos/{ID_JUGADOR}', function ($request, $response, $args) {
+        $ID_EQUIPO = $args["ID_JUGADOR"] ?? null; // Get the input value
+        if ($ID_EQUIPO !== null) {
+            $response = $response->withJson(ExecuteRows("SELECT votos_jugador from jugador = '" . AdjustSql($ID_EQUIPO) . "'"));
+        }    
+        return $response;
+    });
 }
 
 // Container Build event

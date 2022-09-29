@@ -1070,6 +1070,8 @@ class Jugador extends DbTable
 
         // imagen_jugador
         if (!EmptyValue($this->imagen_jugador->Upload->DbValue)) {
+            $this->imagen_jugador->ImageWidth = 50;
+            $this->imagen_jugador->ImageHeight = 0;
             $this->imagen_jugador->ImageAlt = $this->imagen_jugador->alt();
             $this->imagen_jugador->ImageCssClass = "ew-image";
             $this->imagen_jugador->ViewValue = $this->imagen_jugador->Upload->DbValue;
@@ -1189,14 +1191,16 @@ class Jugador extends DbTable
         $this->imagen_jugador->setupEditAttributes();
         $this->imagen_jugador->EditCustomAttributes = "";
         if (!EmptyValue($this->imagen_jugador->Upload->DbValue)) {
+            $this->imagen_jugador->ImageWidth = 50;
+            $this->imagen_jugador->ImageHeight = 0;
             $this->imagen_jugador->ImageAlt = $this->imagen_jugador->alt();
             $this->imagen_jugador->ImageCssClass = "ew-image";
             $this->imagen_jugador->EditValue = $this->imagen_jugador->Upload->DbValue;
         } else {
             $this->imagen_jugador->EditValue = "";
         }
-        if (!EmptyValue($this->usuario_dato->CurrentValue)) {
-            $this->imagen_jugador->Upload->FileName = $this->usuario_dato->CurrentValue;
+        if (!EmptyValue($this->imagen_jugador->CurrentValue)) {
+            $this->imagen_jugador->Upload->FileName = $this->imagen_jugador->CurrentValue;
         }
 
         // crea_dato
@@ -1341,7 +1345,7 @@ class Jugador extends DbTable
         $fileTypeFld = "";
         if ($fldparm == 'imagen_jugador') {
             $fldName = "imagen_jugador";
-            $fileNameFld = "usuario_dato";
+            $fileNameFld = "imagen_jugador";
         } else {
             return false; // Incorrect field
         }

@@ -14,6 +14,8 @@ if ($Language && function_exists(PROJECT_NAMESPACE . "Config") && $Language->Lan
 
 // Navbar menu
 $topMenu = new Menu("navbar", true, true);
+$topMenu->addMenuItem(10, "mi_jugador", $MenuLanguage->MenuPhrase("10", "MenuText"), $MenuRelativePath . "jugadorlist", -1, "", IsLoggedIn() || AllowListMenu('{1FEE5CED-11BB-4991-94A0-946354AE0202}jugador'), false, false, "", "", true, false);
+$topMenu->addMenuItem(11, "mi_jugadorequipo", $MenuLanguage->MenuPhrase("11", "MenuText"), $MenuRelativePath . "jugadorequipolist", -1, "", IsLoggedIn() || AllowListMenu('{1FEE5CED-11BB-4991-94A0-946354AE0202}jugadorequipo'), false, false, "", "", true, false);
 $topMenu->addMenuItem(7, "mi_torneo", $MenuLanguage->MenuPhrase("7", "MenuText"), $MenuRelativePath . "torneolist", -1, "", IsLoggedIn() || AllowListMenu('{1FEE5CED-11BB-4991-94A0-946354AE0202}torneo'), false, false, "", "", true, false);
 $topMenu->addMenuItem(3, "mi_equipo", $MenuLanguage->MenuPhrase("3", "MenuText"), $MenuRelativePath . "equipolist", -1, "", IsLoggedIn() || AllowListMenu('{1FEE5CED-11BB-4991-94A0-946354AE0202}equipo'), false, false, "", "", true, false);
 $topMenu->addMenuItem(4, "mi_equipotorneo", $MenuLanguage->MenuPhrase("4", "MenuText"), $MenuRelativePath . "equipotorneolist", -1, "", IsLoggedIn() || AllowListMenu('{1FEE5CED-11BB-4991-94A0-946354AE0202}equipotorneo'), false, false, "", "", true, false);
@@ -25,6 +27,8 @@ echo $topMenu->toScript();
 
 // Sidebar menu
 $sideMenu = new Menu("menu", true, false);
+$sideMenu->addMenuItem(10, "mi_jugador", $MenuLanguage->MenuPhrase("10", "MenuText"), $MenuRelativePath . "jugadorlist", -1, "", IsLoggedIn() || AllowListMenu('{1FEE5CED-11BB-4991-94A0-946354AE0202}jugador'), false, false, "", "", true, true);
+$sideMenu->addMenuItem(11, "mi_jugadorequipo", $MenuLanguage->MenuPhrase("11", "MenuText"), $MenuRelativePath . "jugadorequipolist", -1, "", IsLoggedIn() || AllowListMenu('{1FEE5CED-11BB-4991-94A0-946354AE0202}jugadorequipo'), false, false, "", "", true, true);
 $sideMenu->addMenuItem(7, "mi_torneo", $MenuLanguage->MenuPhrase("7", "MenuText"), $MenuRelativePath . "torneolist", -1, "", IsLoggedIn() || AllowListMenu('{1FEE5CED-11BB-4991-94A0-946354AE0202}torneo'), false, false, "", "", true, true);
 $sideMenu->addMenuItem(3, "mi_equipo", $MenuLanguage->MenuPhrase("3", "MenuText"), $MenuRelativePath . "equipolist", -1, "", IsLoggedIn() || AllowListMenu('{1FEE5CED-11BB-4991-94A0-946354AE0202}equipo'), false, false, "", "", true, true);
 $sideMenu->addMenuItem(4, "mi_equipotorneo", $MenuLanguage->MenuPhrase("4", "MenuText"), $MenuRelativePath . "equipotorneolist", -1, "", IsLoggedIn() || AllowListMenu('{1FEE5CED-11BB-4991-94A0-946354AE0202}equipotorneo'), false, false, "", "", true, true);

@@ -962,6 +962,12 @@
   <project>
     <phrase id="bodytitle" value="Torneo" />
     <phrase id="footertext" value="&amp;copy;2021 e.World Technology Limited. All rights reserved." />
+    <menu id="10">
+      <phrase id="menutext" value="jugador" />
+    </menu>
+    <menu id="11">
+      <phrase id="menutext" value="jugadorequipo" />
+    </menu>
     <menu id="7">
       <phrase id="menutext" value="Torneo" />
     </menu>
@@ -1391,6 +1397,51 @@
         <phrase id="fldtagcaption4" value="Final" />
         <phrase id="fldtagvalue5" value="Campeón" />
         <phrase id="fldtagcaption5" value="Campeón" />
+      </field>
+    </table>
+    <table id="jugador">
+      <phrase id="tblcaption" value="jugador" />
+      <field id="id_jugador">
+        <phrase id="fldcaption" value="id jugador" />
+      </field>
+      <field id="nombre_jugador">
+        <phrase id="fldcaption" value="nombre jugador" />
+      </field>
+      <field id="votos_jugador">
+        <phrase id="fldcaption" value="votos jugador" />
+      </field>
+      <field id="imagen_jugador">
+        <phrase id="fldcaption" value="imagen jugador" />
+      </field>
+      <field id="crea_dato">
+        <phrase id="fldcaption" value="crea dato" />
+      </field>
+      <field id="modifica_dato">
+        <phrase id="fldcaption" value="modifica dato" />
+      </field>
+      <field id="usuario_dato">
+        <phrase id="fldcaption" value="usuario dato" />
+      </field>
+      <field id="posicion">
+        <phrase id="fldcaption" value="posicion" />
+      </field>
+    </table>
+    <table id="jugadorequipo">
+      <phrase id="tblcaption" value="jugadorequipo" />
+      <field id="id_jugadorequipo">
+        <phrase id="fldcaption" value="id jugadorequipo" />
+      </field>
+      <field id="id_equipo">
+        <phrase id="fldcaption" value="id equipo" />
+      </field>
+      <field id="id_jugador">
+        <phrase id="fldcaption" value="id jugador" />
+      </field>
+      <field id="crea_dato">
+        <phrase id="fldcaption" value="crea dato" />
+      </field>
+      <field id="modifica_dato">
+        <phrase id="fldcaption" value="modifica dato" />
       </field>
     </table>
   </project>

@@ -47,6 +47,15 @@ $Page->showMessage();
 <?php if ($Page->id_jugador->Visible) { // id_jugador ?>
         <th class="<?= $Page->id_jugador->headerCellClass() ?>"><span id="elh_jugador_id_jugador" class="jugador_id_jugador"><?= $Page->id_jugador->caption() ?></span></th>
 <?php } ?>
+<?php if ($Page->nombre_jugador->Visible) { // nombre_jugador ?>
+        <th class="<?= $Page->nombre_jugador->headerCellClass() ?>"><span id="elh_jugador_nombre_jugador" class="jugador_nombre_jugador"><?= $Page->nombre_jugador->caption() ?></span></th>
+<?php } ?>
+<?php if ($Page->votos_jugador->Visible) { // votos_jugador ?>
+        <th class="<?= $Page->votos_jugador->headerCellClass() ?>"><span id="elh_jugador_votos_jugador" class="jugador_votos_jugador"><?= $Page->votos_jugador->caption() ?></span></th>
+<?php } ?>
+<?php if ($Page->imagen_jugador->Visible) { // imagen_jugador ?>
+        <th class="<?= $Page->imagen_jugador->headerCellClass() ?>"><span id="elh_jugador_imagen_jugador" class="jugador_imagen_jugador"><?= $Page->imagen_jugador->caption() ?></span></th>
+<?php } ?>
 <?php if ($Page->crea_dato->Visible) { // crea_dato ?>
         <th class="<?= $Page->crea_dato->headerCellClass() ?>"><span id="elh_jugador_crea_dato" class="jugador_crea_dato"><?= $Page->crea_dato->caption() ?></span></th>
 <?php } ?>
@@ -85,6 +94,31 @@ while (!$Page->Recordset->EOF) {
 <span id="el<?= $Page->RowCount ?>_jugador_id_jugador" class="el_jugador_id_jugador">
 <span<?= $Page->id_jugador->viewAttributes() ?>>
 <?= $Page->id_jugador->getViewValue() ?></span>
+</span>
+</td>
+<?php } ?>
+<?php if ($Page->nombre_jugador->Visible) { // nombre_jugador ?>
+        <td<?= $Page->nombre_jugador->cellAttributes() ?>>
+<span id="el<?= $Page->RowCount ?>_jugador_nombre_jugador" class="el_jugador_nombre_jugador">
+<span<?= $Page->nombre_jugador->viewAttributes() ?>>
+<?= $Page->nombre_jugador->getViewValue() ?></span>
+</span>
+</td>
+<?php } ?>
+<?php if ($Page->votos_jugador->Visible) { // votos_jugador ?>
+        <td<?= $Page->votos_jugador->cellAttributes() ?>>
+<span id="el<?= $Page->RowCount ?>_jugador_votos_jugador" class="el_jugador_votos_jugador">
+<span<?= $Page->votos_jugador->viewAttributes() ?>>
+<?= $Page->votos_jugador->getViewValue() ?></span>
+</span>
+</td>
+<?php } ?>
+<?php if ($Page->imagen_jugador->Visible) { // imagen_jugador ?>
+        <td<?= $Page->imagen_jugador->cellAttributes() ?>>
+<span id="el<?= $Page->RowCount ?>_jugador_imagen_jugador" class="el_jugador_imagen_jugador">
+<span>
+<?= GetFileViewTag($Page->imagen_jugador, $Page->imagen_jugador->getViewValue(), false) ?>
+</span>
 </span>
 </td>
 <?php } ?>

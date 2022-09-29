@@ -396,9 +396,9 @@ class JugadorDelete extends Jugador
         $this->UseLayout = $this->UseLayout && ConvertToBool(Param("layout", true));
         $this->CurrentAction = Param("action"); // Set up current action
         $this->id_jugador->setVisibility();
-        $this->nombre_jugador->Visible = false;
-        $this->votos_jugador->Visible = false;
-        $this->imagen_jugador->Visible = false;
+        $this->nombre_jugador->setVisibility();
+        $this->votos_jugador->setVisibility();
+        $this->imagen_jugador->setVisibility();
         $this->crea_dato->setVisibility();
         $this->modifica_dato->setVisibility();
         $this->usuario_dato->setVisibility();
@@ -646,6 +646,26 @@ class JugadorDelete extends Jugador
             $this->id_jugador->ViewValue = $this->id_jugador->CurrentValue;
             $this->id_jugador->ViewCustomAttributes = "";
 
+            // nombre_jugador
+            $this->nombre_jugador->ViewValue = $this->nombre_jugador->CurrentValue;
+            $this->nombre_jugador->ViewCustomAttributes = "";
+
+            // votos_jugador
+            $this->votos_jugador->ViewValue = $this->votos_jugador->CurrentValue;
+            $this->votos_jugador->ViewCustomAttributes = "";
+
+            // imagen_jugador
+            if (!EmptyValue($this->imagen_jugador->Upload->DbValue)) {
+                $this->imagen_jugador->ImageWidth = 50;
+                $this->imagen_jugador->ImageHeight = 0;
+                $this->imagen_jugador->ImageAlt = $this->imagen_jugador->alt();
+                $this->imagen_jugador->ImageCssClass = "ew-image";
+                $this->imagen_jugador->ViewValue = $this->imagen_jugador->Upload->DbValue;
+            } else {
+                $this->imagen_jugador->ViewValue = "";
+            }
+            $this->imagen_jugador->ViewCustomAttributes = "";
+
             // crea_dato
             $this->crea_dato->ViewValue = $this->crea_dato->CurrentValue;
             $this->crea_dato->ViewValue = FormatDateTime($this->crea_dato->ViewValue, $this->crea_dato->formatPattern());
@@ -668,6 +688,37 @@ class JugadorDelete extends Jugador
             $this->id_jugador->LinkCustomAttributes = "";
             $this->id_jugador->HrefValue = "";
             $this->id_jugador->TooltipValue = "";
+
+            // nombre_jugador
+            $this->nombre_jugador->LinkCustomAttributes = "";
+            $this->nombre_jugador->HrefValue = "";
+            $this->nombre_jugador->TooltipValue = "";
+
+            // votos_jugador
+            $this->votos_jugador->LinkCustomAttributes = "";
+            $this->votos_jugador->HrefValue = "";
+            $this->votos_jugador->TooltipValue = "";
+
+            // imagen_jugador
+            $this->imagen_jugador->LinkCustomAttributes = "";
+            if (!EmptyValue($this->imagen_jugador->Upload->DbValue)) {
+                $this->imagen_jugador->HrefValue = GetFileUploadUrl($this->imagen_jugador, $this->imagen_jugador->htmlDecode($this->imagen_jugador->Upload->DbValue)); // Add prefix/suffix
+                $this->imagen_jugador->LinkAttrs["target"] = ""; // Add target
+                if ($this->isExport()) {
+                    $this->imagen_jugador->HrefValue = FullUrl($this->imagen_jugador->HrefValue, "href");
+                }
+            } else {
+                $this->imagen_jugador->HrefValue = "";
+            }
+            $this->imagen_jugador->ExportHrefValue = $this->imagen_jugador->UploadPath . $this->imagen_jugador->Upload->DbValue;
+            $this->imagen_jugador->TooltipValue = "";
+            if ($this->imagen_jugador->UseColorbox) {
+                if (EmptyValue($this->imagen_jugador->TooltipValue)) {
+                    $this->imagen_jugador->LinkAttrs["title"] = $Language->phrase("ViewImageGallery");
+                }
+                $this->imagen_jugador->LinkAttrs["data-rel"] = "jugador_x_imagen_jugador";
+                $this->imagen_jugador->LinkAttrs->appendClass("ew-lightbox");
+            }
 
             // crea_dato
             $this->crea_dato->LinkCustomAttributes = "";

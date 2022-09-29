@@ -592,9 +592,9 @@ class JugadorList extends Jugador
         // Set up list options
         $this->setupListOptions();
         $this->id_jugador->setVisibility();
-        $this->nombre_jugador->Visible = false;
-        $this->votos_jugador->Visible = false;
-        $this->imagen_jugador->Visible = false;
+        $this->nombre_jugador->setVisibility();
+        $this->votos_jugador->setVisibility();
+        $this->imagen_jugador->setVisibility();
         $this->crea_dato->setVisibility();
         $this->modifica_dato->setVisibility();
         $this->usuario_dato->setVisibility();
@@ -1206,6 +1206,9 @@ class JugadorList extends Jugador
             $this->CurrentOrder = Get("order");
             $this->CurrentOrderType = Get("ordertype", "");
             $this->updateSort($this->id_jugador); // id_jugador
+            $this->updateSort($this->nombre_jugador); // nombre_jugador
+            $this->updateSort($this->votos_jugador); // votos_jugador
+            $this->updateSort($this->imagen_jugador); // imagen_jugador
             $this->updateSort($this->crea_dato); // crea_dato
             $this->updateSort($this->modifica_dato); // modifica_dato
             $this->updateSort($this->usuario_dato); // usuario_dato
@@ -1467,6 +1470,9 @@ class JugadorList extends Jugador
             $item->Body = "";
             $item->Visible = $this->UseColumnVisibility;
             $option->add("id_jugador", $this->createColumnOption("id_jugador"));
+            $option->add("nombre_jugador", $this->createColumnOption("nombre_jugador"));
+            $option->add("votos_jugador", $this->createColumnOption("votos_jugador"));
+            $option->add("imagen_jugador", $this->createColumnOption("imagen_jugador"));
             $option->add("crea_dato", $this->createColumnOption("crea_dato"));
             $option->add("modifica_dato", $this->createColumnOption("modifica_dato"));
             $option->add("usuario_dato", $this->createColumnOption("usuario_dato"));
@@ -1637,6 +1643,15 @@ class JugadorList extends Jugador
         return false; // Not ajax request
     }
 
+    // Get upload files
+    protected function getUploadFiles()
+    {
+        global $CurrentForm, $Language;
+        $this->imagen_jugador->Upload->Index = $CurrentForm->Index;
+        $this->imagen_jugador->Upload->uploadFile();
+        $this->imagen_jugador->CurrentValue = $this->imagen_jugador->Upload->FileName;
+    }
+
     // Load default values
     protected function loadDefaultValues()
     {
@@ -1665,6 +1680,26 @@ class JugadorList extends Jugador
         $val = $CurrentForm->hasValue("id_jugador") ? $CurrentForm->getValue("id_jugador") : $CurrentForm->getValue("x_id_jugador");
         if (!$this->id_jugador->IsDetailKey && !$this->isGridAdd() && !$this->isAdd()) {
             $this->id_jugador->setFormValue($val);
+        }
+
+        // Check field name 'nombre_jugador' first before field var 'x_nombre_jugador'
+        $val = $CurrentForm->hasValue("nombre_jugador") ? $CurrentForm->getValue("nombre_jugador") : $CurrentForm->getValue("x_nombre_jugador");
+        if (!$this->nombre_jugador->IsDetailKey) {
+            if (IsApi() && $val === null) {
+                $this->nombre_jugador->Visible = false; // Disable update for API request
+            } else {
+                $this->nombre_jugador->setFormValue($val);
+            }
+        }
+
+        // Check field name 'votos_jugador' first before field var 'x_votos_jugador'
+        $val = $CurrentForm->hasValue("votos_jugador") ? $CurrentForm->getValue("votos_jugador") : $CurrentForm->getValue("x_votos_jugador");
+        if (!$this->votos_jugador->IsDetailKey) {
+            if (IsApi() && $val === null) {
+                $this->votos_jugador->Visible = false; // Disable update for API request
+            } else {
+                $this->votos_jugador->setFormValue($val);
+            }
         }
 
         // Check field name 'crea_dato' first before field var 'x_crea_dato'
@@ -1708,6 +1743,7 @@ class JugadorList extends Jugador
                 $this->posicion->setFormValue($val);
             }
         }
+        $this->getUploadFiles(); // Get upload files
     }
 
     // Restore form values
@@ -1717,6 +1753,8 @@ class JugadorList extends Jugador
         if (!$this->isGridAdd() && !$this->isAdd()) {
             $this->id_jugador->CurrentValue = $this->id_jugador->FormValue;
         }
+        $this->nombre_jugador->CurrentValue = $this->nombre_jugador->FormValue;
+        $this->votos_jugador->CurrentValue = $this->votos_jugador->FormValue;
         $this->crea_dato->CurrentValue = $this->crea_dato->FormValue;
         $this->crea_dato->CurrentValue = UnFormatDateTime($this->crea_dato->CurrentValue, $this->crea_dato->formatPattern());
         $this->modifica_dato->CurrentValue = $this->modifica_dato->FormValue;
@@ -1895,6 +1933,26 @@ class JugadorList extends Jugador
             $this->id_jugador->ViewValue = $this->id_jugador->CurrentValue;
             $this->id_jugador->ViewCustomAttributes = "";
 
+            // nombre_jugador
+            $this->nombre_jugador->ViewValue = $this->nombre_jugador->CurrentValue;
+            $this->nombre_jugador->ViewCustomAttributes = "";
+
+            // votos_jugador
+            $this->votos_jugador->ViewValue = $this->votos_jugador->CurrentValue;
+            $this->votos_jugador->ViewCustomAttributes = "";
+
+            // imagen_jugador
+            if (!EmptyValue($this->imagen_jugador->Upload->DbValue)) {
+                $this->imagen_jugador->ImageWidth = 50;
+                $this->imagen_jugador->ImageHeight = 0;
+                $this->imagen_jugador->ImageAlt = $this->imagen_jugador->alt();
+                $this->imagen_jugador->ImageCssClass = "ew-image";
+                $this->imagen_jugador->ViewValue = $this->imagen_jugador->Upload->DbValue;
+            } else {
+                $this->imagen_jugador->ViewValue = "";
+            }
+            $this->imagen_jugador->ViewCustomAttributes = "";
+
             // crea_dato
             $this->crea_dato->ViewValue = $this->crea_dato->CurrentValue;
             $this->crea_dato->ViewValue = FormatDateTime($this->crea_dato->ViewValue, $this->crea_dato->formatPattern());
@@ -1918,6 +1976,37 @@ class JugadorList extends Jugador
             $this->id_jugador->HrefValue = "";
             $this->id_jugador->TooltipValue = "";
 
+            // nombre_jugador
+            $this->nombre_jugador->LinkCustomAttributes = "";
+            $this->nombre_jugador->HrefValue = "";
+            $this->nombre_jugador->TooltipValue = "";
+
+            // votos_jugador
+            $this->votos_jugador->LinkCustomAttributes = "";
+            $this->votos_jugador->HrefValue = "";
+            $this->votos_jugador->TooltipValue = "";
+
+            // imagen_jugador
+            $this->imagen_jugador->LinkCustomAttributes = "";
+            if (!EmptyValue($this->imagen_jugador->Upload->DbValue)) {
+                $this->imagen_jugador->HrefValue = GetFileUploadUrl($this->imagen_jugador, $this->imagen_jugador->htmlDecode($this->imagen_jugador->Upload->DbValue)); // Add prefix/suffix
+                $this->imagen_jugador->LinkAttrs["target"] = ""; // Add target
+                if ($this->isExport()) {
+                    $this->imagen_jugador->HrefValue = FullUrl($this->imagen_jugador->HrefValue, "href");
+                }
+            } else {
+                $this->imagen_jugador->HrefValue = "";
+            }
+            $this->imagen_jugador->ExportHrefValue = $this->imagen_jugador->UploadPath . $this->imagen_jugador->Upload->DbValue;
+            $this->imagen_jugador->TooltipValue = "";
+            if ($this->imagen_jugador->UseColorbox) {
+                if (EmptyValue($this->imagen_jugador->TooltipValue)) {
+                    $this->imagen_jugador->LinkAttrs["title"] = $Language->phrase("ViewImageGallery");
+                }
+                $this->imagen_jugador->LinkAttrs["data-rel"] = "jugador_x" . $this->RowCount . "_imagen_jugador";
+                $this->imagen_jugador->LinkAttrs->appendClass("ew-lightbox");
+            }
+
             // crea_dato
             $this->crea_dato->LinkCustomAttributes = "";
             $this->crea_dato->HrefValue = "";
@@ -1939,6 +2028,41 @@ class JugadorList extends Jugador
             $this->posicion->TooltipValue = "";
         } elseif ($this->RowType == ROWTYPE_ADD) {
             // id_jugador
+
+            // nombre_jugador
+            $this->nombre_jugador->setupEditAttributes();
+            $this->nombre_jugador->EditCustomAttributes = "";
+            $this->nombre_jugador->EditValue = HtmlEncode($this->nombre_jugador->CurrentValue);
+            $this->nombre_jugador->PlaceHolder = RemoveHtml($this->nombre_jugador->caption());
+
+            // votos_jugador
+            $this->votos_jugador->setupEditAttributes();
+            $this->votos_jugador->EditCustomAttributes = "";
+            $this->votos_jugador->EditValue = HtmlEncode($this->votos_jugador->CurrentValue);
+            $this->votos_jugador->PlaceHolder = RemoveHtml($this->votos_jugador->caption());
+
+            // imagen_jugador
+            $this->imagen_jugador->setupEditAttributes();
+            $this->imagen_jugador->EditCustomAttributes = "";
+            if (!EmptyValue($this->imagen_jugador->Upload->DbValue)) {
+                $this->imagen_jugador->ImageWidth = 50;
+                $this->imagen_jugador->ImageHeight = 0;
+                $this->imagen_jugador->ImageAlt = $this->imagen_jugador->alt();
+                $this->imagen_jugador->ImageCssClass = "ew-image";
+                $this->imagen_jugador->EditValue = $this->imagen_jugador->Upload->DbValue;
+            } else {
+                $this->imagen_jugador->EditValue = "";
+            }
+            if (!EmptyValue($this->imagen_jugador->CurrentValue)) {
+                if ($this->RowIndex == '$rowindex$') {
+                    $this->imagen_jugador->Upload->FileName = "";
+                } else {
+                    $this->imagen_jugador->Upload->FileName = $this->imagen_jugador->CurrentValue;
+                }
+            }
+            if (is_numeric($this->RowIndex)) {
+                RenderUploadField($this->imagen_jugador, $this->RowIndex);
+            }
 
             // crea_dato
             $this->crea_dato->setupEditAttributes();
@@ -1973,6 +2097,27 @@ class JugadorList extends Jugador
             $this->id_jugador->LinkCustomAttributes = "";
             $this->id_jugador->HrefValue = "";
 
+            // nombre_jugador
+            $this->nombre_jugador->LinkCustomAttributes = "";
+            $this->nombre_jugador->HrefValue = "";
+
+            // votos_jugador
+            $this->votos_jugador->LinkCustomAttributes = "";
+            $this->votos_jugador->HrefValue = "";
+
+            // imagen_jugador
+            $this->imagen_jugador->LinkCustomAttributes = "";
+            if (!EmptyValue($this->imagen_jugador->Upload->DbValue)) {
+                $this->imagen_jugador->HrefValue = GetFileUploadUrl($this->imagen_jugador, $this->imagen_jugador->htmlDecode($this->imagen_jugador->Upload->DbValue)); // Add prefix/suffix
+                $this->imagen_jugador->LinkAttrs["target"] = ""; // Add target
+                if ($this->isExport()) {
+                    $this->imagen_jugador->HrefValue = FullUrl($this->imagen_jugador->HrefValue, "href");
+                }
+            } else {
+                $this->imagen_jugador->HrefValue = "";
+            }
+            $this->imagen_jugador->ExportHrefValue = $this->imagen_jugador->UploadPath . $this->imagen_jugador->Upload->DbValue;
+
             // crea_dato
             $this->crea_dato->LinkCustomAttributes = "";
             $this->crea_dato->HrefValue = "";
@@ -1994,6 +2139,41 @@ class JugadorList extends Jugador
             $this->id_jugador->EditCustomAttributes = "";
             $this->id_jugador->EditValue = $this->id_jugador->CurrentValue;
             $this->id_jugador->ViewCustomAttributes = "";
+
+            // nombre_jugador
+            $this->nombre_jugador->setupEditAttributes();
+            $this->nombre_jugador->EditCustomAttributes = "";
+            $this->nombre_jugador->EditValue = HtmlEncode($this->nombre_jugador->CurrentValue);
+            $this->nombre_jugador->PlaceHolder = RemoveHtml($this->nombre_jugador->caption());
+
+            // votos_jugador
+            $this->votos_jugador->setupEditAttributes();
+            $this->votos_jugador->EditCustomAttributes = "";
+            $this->votos_jugador->EditValue = HtmlEncode($this->votos_jugador->CurrentValue);
+            $this->votos_jugador->PlaceHolder = RemoveHtml($this->votos_jugador->caption());
+
+            // imagen_jugador
+            $this->imagen_jugador->setupEditAttributes();
+            $this->imagen_jugador->EditCustomAttributes = "";
+            if (!EmptyValue($this->imagen_jugador->Upload->DbValue)) {
+                $this->imagen_jugador->ImageWidth = 50;
+                $this->imagen_jugador->ImageHeight = 0;
+                $this->imagen_jugador->ImageAlt = $this->imagen_jugador->alt();
+                $this->imagen_jugador->ImageCssClass = "ew-image";
+                $this->imagen_jugador->EditValue = $this->imagen_jugador->Upload->DbValue;
+            } else {
+                $this->imagen_jugador->EditValue = "";
+            }
+            if (!EmptyValue($this->imagen_jugador->CurrentValue)) {
+                if ($this->RowIndex == '$rowindex$') {
+                    $this->imagen_jugador->Upload->FileName = "";
+                } else {
+                    $this->imagen_jugador->Upload->FileName = $this->imagen_jugador->CurrentValue;
+                }
+            }
+            if (is_numeric($this->RowIndex)) {
+                RenderUploadField($this->imagen_jugador, $this->RowIndex);
+            }
 
             // crea_dato
             $this->crea_dato->setupEditAttributes();
@@ -2029,6 +2209,27 @@ class JugadorList extends Jugador
             // id_jugador
             $this->id_jugador->LinkCustomAttributes = "";
             $this->id_jugador->HrefValue = "";
+
+            // nombre_jugador
+            $this->nombre_jugador->LinkCustomAttributes = "";
+            $this->nombre_jugador->HrefValue = "";
+
+            // votos_jugador
+            $this->votos_jugador->LinkCustomAttributes = "";
+            $this->votos_jugador->HrefValue = "";
+
+            // imagen_jugador
+            $this->imagen_jugador->LinkCustomAttributes = "";
+            if (!EmptyValue($this->imagen_jugador->Upload->DbValue)) {
+                $this->imagen_jugador->HrefValue = GetFileUploadUrl($this->imagen_jugador, $this->imagen_jugador->htmlDecode($this->imagen_jugador->Upload->DbValue)); // Add prefix/suffix
+                $this->imagen_jugador->LinkAttrs["target"] = ""; // Add target
+                if ($this->isExport()) {
+                    $this->imagen_jugador->HrefValue = FullUrl($this->imagen_jugador->HrefValue, "href");
+                }
+            } else {
+                $this->imagen_jugador->HrefValue = "";
+            }
+            $this->imagen_jugador->ExportHrefValue = $this->imagen_jugador->UploadPath . $this->imagen_jugador->Upload->DbValue;
 
             // crea_dato
             $this->crea_dato->LinkCustomAttributes = "";
@@ -2072,6 +2273,21 @@ class JugadorList extends Jugador
         if ($this->id_jugador->Required) {
             if (!$this->id_jugador->IsDetailKey && EmptyValue($this->id_jugador->FormValue)) {
                 $this->id_jugador->addErrorMessage(str_replace("%s", $this->id_jugador->caption(), $this->id_jugador->RequiredErrorMessage));
+            }
+        }
+        if ($this->nombre_jugador->Required) {
+            if (!$this->nombre_jugador->IsDetailKey && EmptyValue($this->nombre_jugador->FormValue)) {
+                $this->nombre_jugador->addErrorMessage(str_replace("%s", $this->nombre_jugador->caption(), $this->nombre_jugador->RequiredErrorMessage));
+            }
+        }
+        if ($this->votos_jugador->Required) {
+            if (!$this->votos_jugador->IsDetailKey && EmptyValue($this->votos_jugador->FormValue)) {
+                $this->votos_jugador->addErrorMessage(str_replace("%s", $this->votos_jugador->caption(), $this->votos_jugador->RequiredErrorMessage));
+            }
+        }
+        if ($this->imagen_jugador->Required) {
+            if ($this->imagen_jugador->Upload->FileName == "" && !$this->imagen_jugador->Upload->KeepFile) {
+                $this->imagen_jugador->addErrorMessage(str_replace("%s", $this->imagen_jugador->caption(), $this->imagen_jugador->RequiredErrorMessage));
             }
         }
         if ($this->crea_dato->Required) {
@@ -2130,11 +2346,68 @@ class JugadorList extends Jugador
         // Set new row
         $rsnew = [];
 
+        // nombre_jugador
+        $this->nombre_jugador->setDbValueDef($rsnew, $this->nombre_jugador->CurrentValue, null, $this->nombre_jugador->ReadOnly);
+
+        // votos_jugador
+        $this->votos_jugador->setDbValueDef($rsnew, $this->votos_jugador->CurrentValue, null, $this->votos_jugador->ReadOnly);
+
+        // imagen_jugador
+        if ($this->imagen_jugador->Visible && !$this->imagen_jugador->ReadOnly && !$this->imagen_jugador->Upload->KeepFile) {
+            $this->imagen_jugador->Upload->DbValue = $rsold['imagen_jugador']; // Get original value
+            if ($this->imagen_jugador->Upload->FileName == "") {
+                $rsnew['imagen_jugador'] = null;
+            } else {
+                $rsnew['imagen_jugador'] = $this->imagen_jugador->Upload->FileName;
+            }
+        }
+
         // posicion
         $this->posicion->setDbValueDef($rsnew, $this->posicion->CurrentValue, null, $this->posicion->ReadOnly);
 
         // Update current values
         $this->setCurrentValues($rsnew);
+        if ($this->imagen_jugador->Visible && !$this->imagen_jugador->Upload->KeepFile) {
+            $oldFiles = EmptyValue($this->imagen_jugador->Upload->DbValue) ? [] : [$this->imagen_jugador->htmlDecode($this->imagen_jugador->Upload->DbValue)];
+            if (!EmptyValue($this->imagen_jugador->Upload->FileName)) {
+                $newFiles = [$this->imagen_jugador->Upload->FileName];
+                $NewFileCount = count($newFiles);
+                for ($i = 0; $i < $NewFileCount; $i++) {
+                    if ($newFiles[$i] != "") {
+                        $file = $newFiles[$i];
+                        $tempPath = UploadTempPath($this->imagen_jugador, $this->imagen_jugador->Upload->Index);
+                        if (file_exists($tempPath . $file)) {
+                            if (Config("DELETE_UPLOADED_FILES")) {
+                                $oldFileFound = false;
+                                $oldFileCount = count($oldFiles);
+                                for ($j = 0; $j < $oldFileCount; $j++) {
+                                    $oldFile = $oldFiles[$j];
+                                    if ($oldFile == $file) { // Old file found, no need to delete anymore
+                                        array_splice($oldFiles, $j, 1);
+                                        $oldFileFound = true;
+                                        break;
+                                    }
+                                }
+                                if ($oldFileFound) { // No need to check if file exists further
+                                    continue;
+                                }
+                            }
+                            $file1 = UniqueFilename($this->imagen_jugador->physicalUploadPath(), $file); // Get new file name
+                            if ($file1 != $file) { // Rename temp file
+                                while (file_exists($tempPath . $file1) || file_exists($this->imagen_jugador->physicalUploadPath() . $file1)) { // Make sure no file name clash
+                                    $file1 = UniqueFilename([$this->imagen_jugador->physicalUploadPath(), $tempPath], $file1, true); // Use indexed name
+                                }
+                                rename($tempPath . $file, $tempPath . $file1);
+                                $newFiles[$i] = $file1;
+                            }
+                        }
+                    }
+                }
+                $this->imagen_jugador->Upload->DbValue = empty($oldFiles) ? "" : implode(Config("MULTIPLE_UPLOAD_SEPARATOR"), $oldFiles);
+                $this->imagen_jugador->Upload->FileName = implode(Config("MULTIPLE_UPLOAD_SEPARATOR"), $newFiles);
+                $this->imagen_jugador->setDbValueDef($rsnew, $this->imagen_jugador->Upload->FileName, null, $this->imagen_jugador->ReadOnly);
+            }
+        }
 
         // Call Row Updating event
         $updateRow = $this->rowUpdating($rsold, $rsnew);
@@ -2146,6 +2419,37 @@ class JugadorList extends Jugador
                 $editRow = true; // No field to update
             }
             if ($editRow) {
+                if ($this->imagen_jugador->Visible && !$this->imagen_jugador->Upload->KeepFile) {
+                    $oldFiles = EmptyValue($this->imagen_jugador->Upload->DbValue) ? [] : [$this->imagen_jugador->htmlDecode($this->imagen_jugador->Upload->DbValue)];
+                    if (!EmptyValue($this->imagen_jugador->Upload->FileName)) {
+                        $newFiles = [$this->imagen_jugador->Upload->FileName];
+                        $newFiles2 = [$this->imagen_jugador->htmlDecode($rsnew['imagen_jugador'])];
+                        $newFileCount = count($newFiles);
+                        for ($i = 0; $i < $newFileCount; $i++) {
+                            if ($newFiles[$i] != "") {
+                                $file = UploadTempPath($this->imagen_jugador, $this->imagen_jugador->Upload->Index) . $newFiles[$i];
+                                if (file_exists($file)) {
+                                    if (@$newFiles2[$i] != "") { // Use correct file name
+                                        $newFiles[$i] = $newFiles2[$i];
+                                    }
+                                    if (!$this->imagen_jugador->Upload->SaveToFile($newFiles[$i], true, $i)) { // Just replace
+                                        $this->setFailureMessage($Language->phrase("UploadErrMsg7"));
+                                        return false;
+                                    }
+                                }
+                            }
+                        }
+                    } else {
+                        $newFiles = [];
+                    }
+                    if (Config("DELETE_UPLOADED_FILES")) {
+                        foreach ($oldFiles as $oldFile) {
+                            if ($oldFile != "" && !in_array($oldFile, $newFiles)) {
+                                @unlink($this->imagen_jugador->oldPhysicalUploadPath() . $oldFile);
+                            }
+                        }
+                    }
+                }
             }
         } else {
             if ($this->getSuccessMessage() != "" || $this->getFailureMessage() != "") {
@@ -2166,6 +2470,8 @@ class JugadorList extends Jugador
 
         // Clean upload path if any
         if ($editRow) {
+            // imagen_jugador
+            CleanUploadTempPath($this->imagen_jugador, $this->imagen_jugador->Upload->Index);
         }
 
         // Write JSON for API request
@@ -2197,6 +2503,9 @@ class JugadorList extends Jugador
         }
         $row = ($rs instanceof Recordset) ? $rs->fields : $rs;
         $hash = "";
+        $hash .= GetFieldHash($row['nombre_jugador']); // nombre_jugador
+        $hash .= GetFieldHash($row['votos_jugador']); // votos_jugador
+        $hash .= GetFieldHash($row['imagen_jugador']); // imagen_jugador
         $hash .= GetFieldHash($row['posicion']); // posicion
         return md5($hash);
     }
@@ -2209,6 +2518,22 @@ class JugadorList extends Jugador
         // Set new row
         $rsnew = [];
 
+        // nombre_jugador
+        $this->nombre_jugador->setDbValueDef($rsnew, $this->nombre_jugador->CurrentValue, null, false);
+
+        // votos_jugador
+        $this->votos_jugador->setDbValueDef($rsnew, $this->votos_jugador->CurrentValue, null, false);
+
+        // imagen_jugador
+        if ($this->imagen_jugador->Visible && !$this->imagen_jugador->Upload->KeepFile) {
+            $this->imagen_jugador->Upload->DbValue = ""; // No need to delete old file
+            if ($this->imagen_jugador->Upload->FileName == "") {
+                $rsnew['imagen_jugador'] = null;
+            } else {
+                $rsnew['imagen_jugador'] = $this->imagen_jugador->Upload->FileName;
+            }
+        }
+
         // crea_dato
         $this->crea_dato->setDbValueDef($rsnew, UnFormatDateTime($this->crea_dato->CurrentValue, $this->crea_dato->formatPattern()), null, false);
 
@@ -2220,6 +2545,47 @@ class JugadorList extends Jugador
 
         // posicion
         $this->posicion->setDbValueDef($rsnew, $this->posicion->CurrentValue, null, false);
+        if ($this->imagen_jugador->Visible && !$this->imagen_jugador->Upload->KeepFile) {
+            $oldFiles = EmptyValue($this->imagen_jugador->Upload->DbValue) ? [] : [$this->imagen_jugador->htmlDecode($this->imagen_jugador->Upload->DbValue)];
+            if (!EmptyValue($this->imagen_jugador->Upload->FileName)) {
+                $newFiles = [$this->imagen_jugador->Upload->FileName];
+                $NewFileCount = count($newFiles);
+                for ($i = 0; $i < $NewFileCount; $i++) {
+                    if ($newFiles[$i] != "") {
+                        $file = $newFiles[$i];
+                        $tempPath = UploadTempPath($this->imagen_jugador, $this->imagen_jugador->Upload->Index);
+                        if (file_exists($tempPath . $file)) {
+                            if (Config("DELETE_UPLOADED_FILES")) {
+                                $oldFileFound = false;
+                                $oldFileCount = count($oldFiles);
+                                for ($j = 0; $j < $oldFileCount; $j++) {
+                                    $oldFile = $oldFiles[$j];
+                                    if ($oldFile == $file) { // Old file found, no need to delete anymore
+                                        array_splice($oldFiles, $j, 1);
+                                        $oldFileFound = true;
+                                        break;
+                                    }
+                                }
+                                if ($oldFileFound) { // No need to check if file exists further
+                                    continue;
+                                }
+                            }
+                            $file1 = UniqueFilename($this->imagen_jugador->physicalUploadPath(), $file); // Get new file name
+                            if ($file1 != $file) { // Rename temp file
+                                while (file_exists($tempPath . $file1) || file_exists($this->imagen_jugador->physicalUploadPath() . $file1)) { // Make sure no file name clash
+                                    $file1 = UniqueFilename([$this->imagen_jugador->physicalUploadPath(), $tempPath], $file1, true); // Use indexed name
+                                }
+                                rename($tempPath . $file, $tempPath . $file1);
+                                $newFiles[$i] = $file1;
+                            }
+                        }
+                    }
+                }
+                $this->imagen_jugador->Upload->DbValue = empty($oldFiles) ? "" : implode(Config("MULTIPLE_UPLOAD_SEPARATOR"), $oldFiles);
+                $this->imagen_jugador->Upload->FileName = implode(Config("MULTIPLE_UPLOAD_SEPARATOR"), $newFiles);
+                $this->imagen_jugador->setDbValueDef($rsnew, $this->imagen_jugador->Upload->FileName, null, false);
+            }
+        }
 
         // Update current values
         $this->setCurrentValues($rsnew);
@@ -2235,6 +2601,37 @@ class JugadorList extends Jugador
         if ($insertRow) {
             $addRow = $this->insert($rsnew);
             if ($addRow) {
+                if ($this->imagen_jugador->Visible && !$this->imagen_jugador->Upload->KeepFile) {
+                    $oldFiles = EmptyValue($this->imagen_jugador->Upload->DbValue) ? [] : [$this->imagen_jugador->htmlDecode($this->imagen_jugador->Upload->DbValue)];
+                    if (!EmptyValue($this->imagen_jugador->Upload->FileName)) {
+                        $newFiles = [$this->imagen_jugador->Upload->FileName];
+                        $newFiles2 = [$this->imagen_jugador->htmlDecode($rsnew['imagen_jugador'])];
+                        $newFileCount = count($newFiles);
+                        for ($i = 0; $i < $newFileCount; $i++) {
+                            if ($newFiles[$i] != "") {
+                                $file = UploadTempPath($this->imagen_jugador, $this->imagen_jugador->Upload->Index) . $newFiles[$i];
+                                if (file_exists($file)) {
+                                    if (@$newFiles2[$i] != "") { // Use correct file name
+                                        $newFiles[$i] = $newFiles2[$i];
+                                    }
+                                    if (!$this->imagen_jugador->Upload->SaveToFile($newFiles[$i], true, $i)) { // Just replace
+                                        $this->setFailureMessage($Language->phrase("UploadErrMsg7"));
+                                        return false;
+                                    }
+                                }
+                            }
+                        }
+                    } else {
+                        $newFiles = [];
+                    }
+                    if (Config("DELETE_UPLOADED_FILES")) {
+                        foreach ($oldFiles as $oldFile) {
+                            if ($oldFile != "" && !in_array($oldFile, $newFiles)) {
+                                @unlink($this->imagen_jugador->oldPhysicalUploadPath() . $oldFile);
+                            }
+                        }
+                    }
+                }
             }
         } else {
             if ($this->getSuccessMessage() != "" || $this->getFailureMessage() != "") {
@@ -2254,6 +2651,8 @@ class JugadorList extends Jugador
 
         // Clean upload path if any
         if ($addRow) {
+            // imagen_jugador
+            CleanUploadTempPath($this->imagen_jugador, $this->imagen_jugador->Upload->Index);
         }
 
         // Write JSON for API request

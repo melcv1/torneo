@@ -23,6 +23,9 @@ loadjs.ready(["wrapper", "head"], function () {
     var fields = currentTable.fields;
     fjugadorlist.addFields([
         ["id_jugador", [fields.id_jugador.visible && fields.id_jugador.required ? ew.Validators.required(fields.id_jugador.caption) : null], fields.id_jugador.isInvalid],
+        ["nombre_jugador", [fields.nombre_jugador.visible && fields.nombre_jugador.required ? ew.Validators.required(fields.nombre_jugador.caption) : null], fields.nombre_jugador.isInvalid],
+        ["votos_jugador", [fields.votos_jugador.visible && fields.votos_jugador.required ? ew.Validators.required(fields.votos_jugador.caption) : null], fields.votos_jugador.isInvalid],
+        ["imagen_jugador", [fields.imagen_jugador.visible && fields.imagen_jugador.required ? ew.Validators.fileRequired(fields.imagen_jugador.caption) : null], fields.imagen_jugador.isInvalid],
         ["crea_dato", [fields.crea_dato.visible && fields.crea_dato.required ? ew.Validators.required(fields.crea_dato.caption) : null], fields.crea_dato.isInvalid],
         ["modifica_dato", [fields.modifica_dato.visible && fields.modifica_dato.required ? ew.Validators.required(fields.modifica_dato.caption) : null], fields.modifica_dato.isInvalid],
         ["usuario_dato", [fields.usuario_dato.visible && fields.usuario_dato.required ? ew.Validators.required(fields.usuario_dato.caption) : null], fields.usuario_dato.isInvalid],
@@ -141,6 +144,15 @@ $Page->ListOptions->render("header", "left");
 ?>
 <?php if ($Page->id_jugador->Visible) { // id_jugador ?>
         <th data-name="id_jugador" class="<?= $Page->id_jugador->headerCellClass() ?>"><div id="elh_jugador_id_jugador" class="jugador_id_jugador"><?= $Page->renderFieldHeader($Page->id_jugador) ?></div></th>
+<?php } ?>
+<?php if ($Page->nombre_jugador->Visible) { // nombre_jugador ?>
+        <th data-name="nombre_jugador" class="<?= $Page->nombre_jugador->headerCellClass() ?>"><div id="elh_jugador_nombre_jugador" class="jugador_nombre_jugador"><?= $Page->renderFieldHeader($Page->nombre_jugador) ?></div></th>
+<?php } ?>
+<?php if ($Page->votos_jugador->Visible) { // votos_jugador ?>
+        <th data-name="votos_jugador" class="<?= $Page->votos_jugador->headerCellClass() ?>"><div id="elh_jugador_votos_jugador" class="jugador_votos_jugador"><?= $Page->renderFieldHeader($Page->votos_jugador) ?></div></th>
+<?php } ?>
+<?php if ($Page->imagen_jugador->Visible) { // imagen_jugador ?>
+        <th data-name="imagen_jugador" class="<?= $Page->imagen_jugador->headerCellClass() ?>"><div id="elh_jugador_imagen_jugador" class="jugador_imagen_jugador"><?= $Page->renderFieldHeader($Page->imagen_jugador) ?></div></th>
 <?php } ?>
 <?php if ($Page->crea_dato->Visible) { // crea_dato ?>
         <th data-name="crea_dato" class="<?= $Page->crea_dato->headerCellClass() ?>"><div id="elh_jugador_crea_dato" class="jugador_crea_dato"><?= $Page->renderFieldHeader($Page->crea_dato) ?></div></th>
@@ -272,6 +284,64 @@ $Page->ListOptions->render("body", "left", $Page->RowCount);
 </td>
     <?php } else { ?>
             <input type="hidden" data-table="jugador" data-field="x_id_jugador" data-hidden="1" name="x<?= $Page->RowIndex ?>_id_jugador" id="x<?= $Page->RowIndex ?>_id_jugador" value="<?= HtmlEncode($Page->id_jugador->CurrentValue) ?>">
+    <?php } ?>
+    <?php if ($Page->nombre_jugador->Visible) { // nombre_jugador ?>
+        <td data-name="nombre_jugador"<?= $Page->nombre_jugador->cellAttributes() ?>>
+<?php if ($Page->RowType == ROWTYPE_EDIT) { // Edit record ?>
+<span id="el<?= $Page->RowCount ?>_jugador_nombre_jugador" class="el_jugador_nombre_jugador">
+<textarea data-table="jugador" data-field="x_nombre_jugador" name="x<?= $Page->RowIndex ?>_nombre_jugador" id="x<?= $Page->RowIndex ?>_nombre_jugador" cols="35" rows="4" placeholder="<?= HtmlEncode($Page->nombre_jugador->getPlaceHolder()) ?>"<?= $Page->nombre_jugador->editAttributes() ?>><?= $Page->nombre_jugador->EditValue ?></textarea>
+<div class="invalid-feedback"><?= $Page->nombre_jugador->getErrorMessage() ?></div>
+</span>
+<?php } ?>
+<?php if ($Page->RowType == ROWTYPE_VIEW) { // View record ?>
+<span id="el<?= $Page->RowCount ?>_jugador_nombre_jugador" class="el_jugador_nombre_jugador">
+<span<?= $Page->nombre_jugador->viewAttributes() ?>>
+<?= $Page->nombre_jugador->getViewValue() ?></span>
+</span>
+<?php } ?>
+</td>
+    <?php } ?>
+    <?php if ($Page->votos_jugador->Visible) { // votos_jugador ?>
+        <td data-name="votos_jugador"<?= $Page->votos_jugador->cellAttributes() ?>>
+<?php if ($Page->RowType == ROWTYPE_EDIT) { // Edit record ?>
+<span id="el<?= $Page->RowCount ?>_jugador_votos_jugador" class="el_jugador_votos_jugador">
+<textarea data-table="jugador" data-field="x_votos_jugador" name="x<?= $Page->RowIndex ?>_votos_jugador" id="x<?= $Page->RowIndex ?>_votos_jugador" cols="35" rows="4" placeholder="<?= HtmlEncode($Page->votos_jugador->getPlaceHolder()) ?>"<?= $Page->votos_jugador->editAttributes() ?>><?= $Page->votos_jugador->EditValue ?></textarea>
+<div class="invalid-feedback"><?= $Page->votos_jugador->getErrorMessage() ?></div>
+</span>
+<?php } ?>
+<?php if ($Page->RowType == ROWTYPE_VIEW) { // View record ?>
+<span id="el<?= $Page->RowCount ?>_jugador_votos_jugador" class="el_jugador_votos_jugador">
+<span<?= $Page->votos_jugador->viewAttributes() ?>>
+<?= $Page->votos_jugador->getViewValue() ?></span>
+</span>
+<?php } ?>
+</td>
+    <?php } ?>
+    <?php if ($Page->imagen_jugador->Visible) { // imagen_jugador ?>
+        <td data-name="imagen_jugador"<?= $Page->imagen_jugador->cellAttributes() ?>>
+<?php if ($Page->RowType == ROWTYPE_EDIT) { // Edit record ?>
+<span id="el<?= $Page->RowCount ?>_jugador_imagen_jugador" class="el_jugador_imagen_jugador">
+<div id="fd_x<?= $Page->RowIndex ?>_imagen_jugador" class="fileinput-button ew-file-drop-zone">
+    <input type="file" class="form-control ew-file-input" title="<?= $Page->imagen_jugador->title() ?>" data-table="jugador" data-field="x_imagen_jugador" name="x<?= $Page->RowIndex ?>_imagen_jugador" id="x<?= $Page->RowIndex ?>_imagen_jugador" lang="<?= CurrentLanguageID() ?>"<?= $Page->imagen_jugador->editAttributes() ?><?= ($Page->imagen_jugador->ReadOnly || $Page->imagen_jugador->Disabled) ? " disabled" : "" ?>>
+    <div class="text-muted ew-file-text"><?= $Language->phrase("ChooseFile") ?></div>
+</div>
+<div class="invalid-feedback"><?= $Page->imagen_jugador->getErrorMessage() ?></div>
+<input type="hidden" name="fn_x<?= $Page->RowIndex ?>_imagen_jugador" id= "fn_x<?= $Page->RowIndex ?>_imagen_jugador" value="<?= $Page->imagen_jugador->Upload->FileName ?>">
+<input type="hidden" name="fa_x<?= $Page->RowIndex ?>_imagen_jugador" id= "fa_x<?= $Page->RowIndex ?>_imagen_jugador" value="<?= (Post("fa_x<?= $Page->RowIndex ?>_imagen_jugador") == "0") ? "0" : "1" ?>">
+<input type="hidden" name="fs_x<?= $Page->RowIndex ?>_imagen_jugador" id= "fs_x<?= $Page->RowIndex ?>_imagen_jugador" value="1024">
+<input type="hidden" name="fx_x<?= $Page->RowIndex ?>_imagen_jugador" id= "fx_x<?= $Page->RowIndex ?>_imagen_jugador" value="<?= $Page->imagen_jugador->UploadAllowedFileExt ?>">
+<input type="hidden" name="fm_x<?= $Page->RowIndex ?>_imagen_jugador" id= "fm_x<?= $Page->RowIndex ?>_imagen_jugador" value="<?= $Page->imagen_jugador->UploadMaxFileSize ?>">
+<table id="ft_x<?= $Page->RowIndex ?>_imagen_jugador" class="table table-sm float-start ew-upload-table"><tbody class="files"></tbody></table>
+</span>
+<?php } ?>
+<?php if ($Page->RowType == ROWTYPE_VIEW) { // View record ?>
+<span id="el<?= $Page->RowCount ?>_jugador_imagen_jugador" class="el_jugador_imagen_jugador">
+<span>
+<?= GetFileViewTag($Page->imagen_jugador, $Page->imagen_jugador->getViewValue(), false) ?>
+</span>
+</span>
+<?php } ?>
+</td>
     <?php } ?>
     <?php if ($Page->crea_dato->Visible) { // crea_dato ?>
         <td data-name="crea_dato"<?= $Page->crea_dato->cellAttributes() ?>>

@@ -200,6 +200,15 @@ function Api_Action($app) {
            }    
          return $response;
   });
+   $app->get('/v1/sumar/voto/{ID_JUGADOR}', function ($request, $response, $args) {
+        $ID_EQUIPO = $args["ID_JUGADOR"] ?? null; // Get the input value
+        if ($ID_EQUIPO !== null) {
+            $response = $response->withJson(ExecuteRows("SELECT votos_jugador from jugador WHERE ID_JUGADOR= '" . AdjustSql($ID_EQUIPO) . "'"));
+            $p= json_decode($response);
+            echo $p['votos_jugador'];
+       }    
+        return $p;
+    });
 }
 
 // Container Build event

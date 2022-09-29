@@ -43,6 +43,19 @@ loadjs.ready(["wrapper", "head"], function () {
     fjugadorequipolist.lists.id_jugador = <?= $Page->id_jugador->toClientList($Page) ?>;
     loadjs.done("fjugadorequipolist");
 });
+var fjugadorequiposrch, currentSearchForm, currentAdvancedSearchForm;
+loadjs.ready(["wrapper", "head"], function () {
+    var $ = jQuery;
+    // Form object for search
+    fjugadorequiposrch = new ew.Form("fjugadorequiposrch", "list");
+    currentSearchForm = fjugadorequiposrch;
+
+    // Dynamic selection lists
+
+    // Filters
+    fjugadorequiposrch.filterList = <?= $Page->getFilterList() ?>;
+    loadjs.done("fjugadorequiposrch");
+});
 </script>
 <script>
 loadjs.ready("head", function () {
@@ -58,11 +71,49 @@ loadjs.ready("head", function () {
 <?php if ($Page->ImportOptions->visible()) { ?>
 <?php $Page->ImportOptions->render("body") ?>
 <?php } ?>
+<?php if ($Page->SearchOptions->visible()) { ?>
+<?php $Page->SearchOptions->render("body") ?>
+<?php } ?>
+<?php if ($Page->FilterOptions->visible()) { ?>
+<?php $Page->FilterOptions->render("body") ?>
+<?php } ?>
 </div>
 <?php } ?>
 <?php
 $Page->renderOtherOptions();
 ?>
+<?php if ($Security->canSearch()) { ?>
+<?php if (!$Page->isExport() && !$Page->CurrentAction && $Page->hasSearchFields()) { ?>
+<form name="fjugadorequiposrch" id="fjugadorequiposrch" class="ew-form ew-ext-search-form" action="<?= CurrentPageUrl(false) ?>">
+<div id="fjugadorequiposrch_search_panel" class="mb-2 mb-sm-0 <?= $Page->SearchPanelClass ?>"><!-- .ew-search-panel -->
+<input type="hidden" name="cmd" value="search">
+<input type="hidden" name="t" value="jugadorequipo">
+<div class="ew-extended-search container-fluid">
+<div class="row mb-0">
+    <div class="col-sm-auto px-0 pe-sm-2">
+        <div class="ew-basic-search input-group">
+            <input type="search" name="<?= Config("TABLE_BASIC_SEARCH") ?>" id="<?= Config("TABLE_BASIC_SEARCH") ?>" class="form-control ew-basic-search-keyword" value="<?= HtmlEncode($Page->BasicSearch->getKeyword()) ?>" placeholder="<?= HtmlEncode($Language->phrase("Search")) ?>" aria-label="<?= HtmlEncode($Language->phrase("Search")) ?>">
+            <input type="hidden" name="<?= Config("TABLE_BASIC_SEARCH_TYPE") ?>" id="<?= Config("TABLE_BASIC_SEARCH_TYPE") ?>" class="ew-basic-search-type" value="<?= HtmlEncode($Page->BasicSearch->getType()) ?>">
+            <button type="button" data-bs-toggle="dropdown" class="btn btn-outline-secondary dropdown-toggle dropdown-toggle-split" aria-haspopup="true" aria-expanded="false">
+                <span id="searchtype"><?= $Page->BasicSearch->getTypeNameShort() ?></span>
+            </button>
+            <div class="dropdown-menu dropdown-menu-end">
+                <button type="button" class="dropdown-item<?= $Page->BasicSearch->getType() == "" ? " active" : "" ?>" form="fjugadorequiposrch" data-ew-action="search-type"><?= $Language->phrase("QuickSearchAuto") ?></button>
+                <button type="button" class="dropdown-item<?= $Page->BasicSearch->getType() == "=" ? " active" : "" ?>" form="fjugadorequiposrch" data-ew-action="search-type" data-search-type="="><?= $Language->phrase("QuickSearchExact") ?></button>
+                <button type="button" class="dropdown-item<?= $Page->BasicSearch->getType() == "AND" ? " active" : "" ?>" form="fjugadorequiposrch" data-ew-action="search-type" data-search-type="AND"><?= $Language->phrase("QuickSearchAll") ?></button>
+                <button type="button" class="dropdown-item<?= $Page->BasicSearch->getType() == "OR" ? " active" : "" ?>" form="fjugadorequiposrch" data-ew-action="search-type" data-search-type="OR"><?= $Language->phrase("QuickSearchAny") ?></button>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-auto mb-3">
+        <button class="btn btn-primary" name="btn-submit" id="btn-submit" type="submit"><?= $Language->phrase("SearchBtn") ?></button>
+    </div>
+</div>
+</div><!-- /.ew-extended-search -->
+</div><!-- /.ew-search-panel -->
+</form>
+<?php } ?>
+<?php } ?>
 <?php $Page->showPageHeader(); ?>
 <?php
 $Page->showMessage();

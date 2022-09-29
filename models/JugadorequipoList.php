@@ -699,8 +699,33 @@ class JugadorequipoList extends Jugadorequipo
                 $this->OtherOptions->hideAllOptions();
             }
 
+            // Get default search criteria
+            AddFilter($this->DefaultSearchWhere, $this->basicSearchWhere(true));
+
+            // Get basic search values
+            $this->loadBasicSearchValues();
+
+            // Process filter list
+            if ($this->processFilterList()) {
+                $this->terminate();
+                return;
+            }
+
+            // Restore search parms from Session if not searching / reset / export
+            if (($this->isExport() || $this->Command != "search" && $this->Command != "reset" && $this->Command != "resetall") && $this->Command != "json" && $this->checkSearchParms()) {
+                $this->restoreSearchParms();
+            }
+
+            // Call Recordset SearchValidated event
+            $this->recordsetSearchValidated();
+
             // Set up sorting order
             $this->setupSortOrder();
+
+            // Get basic search criteria
+            if (!$this->hasInvalidFields()) {
+                $srchBasic = $this->basicSearchWhere();
+            }
         }
 
         // Restore display records
@@ -709,6 +734,31 @@ class JugadorequipoList extends Jugadorequipo
         } else {
             $this->DisplayRecords = 20; // Load default
             $this->setRecordsPerPage($this->DisplayRecords); // Save default to Session
+        }
+
+        // Load search default if no existing search criteria
+        if (!$this->checkSearchParms()) {
+            // Load basic search from default
+            $this->BasicSearch->loadDefault();
+            if ($this->BasicSearch->Keyword != "") {
+                $srchBasic = $this->basicSearchWhere();
+            }
+        }
+
+        // Build search criteria
+        AddFilter($this->SearchWhere, $srchAdvanced);
+        AddFilter($this->SearchWhere, $srchBasic);
+
+        // Call Recordset_Searching event
+        $this->recordsetSearching($this->SearchWhere);
+
+        // Save search criteria
+        if ($this->Command == "search" && !$this->RestoreSearch) {
+            $this->setSearchWhere($this->SearchWhere); // Save to Session
+            $this->StartRecord = 1; // Reset start record counter
+            $this->setStartRecordNumber($this->StartRecord);
+        } elseif ($this->Command != "json") {
+            $this->SearchWhere = $this->getSearchWhere();
         }
 
         // Build filter
@@ -935,6 +985,183 @@ class JugadorequipoList extends Jugadorequipo
         return $wrkFilter;
     }
 
+    // Get list of filters
+    public function getFilterList()
+    {
+        global $UserProfile;
+
+        // Initialize
+        $filterList = "";
+        $savedFilterList = "";
+
+        // Load server side filters
+        if (Config("SEARCH_FILTER_OPTION") == "Server" && isset($UserProfile)) {
+            $savedFilterList = $UserProfile->getSearchFilters(CurrentUserName(), "fjugadorequiposrch");
+        }
+        $filterList = Concat($filterList, $this->id_jugadorequipo->AdvancedSearch->toJson(), ","); // Field id_jugadorequipo
+        $filterList = Concat($filterList, $this->id_equipo->AdvancedSearch->toJson(), ","); // Field id_equipo
+        $filterList = Concat($filterList, $this->id_jugador->AdvancedSearch->toJson(), ","); // Field id_jugador
+        $filterList = Concat($filterList, $this->crea_dato->AdvancedSearch->toJson(), ","); // Field crea_dato
+        $filterList = Concat($filterList, $this->modifica_dato->AdvancedSearch->toJson(), ","); // Field modifica_dato
+        if ($this->BasicSearch->Keyword != "") {
+            $wrk = "\"" . Config("TABLE_BASIC_SEARCH") . "\":\"" . JsEncode($this->BasicSearch->Keyword) . "\",\"" . Config("TABLE_BASIC_SEARCH_TYPE") . "\":\"" . JsEncode($this->BasicSearch->Type) . "\"";
+            $filterList = Concat($filterList, $wrk, ",");
+        }
+
+        // Return filter list in JSON
+        if ($filterList != "") {
+            $filterList = "\"data\":{" . $filterList . "}";
+        }
+        if ($savedFilterList != "") {
+            $filterList = Concat($filterList, "\"filters\":" . $savedFilterList, ",");
+        }
+        return ($filterList != "") ? "{" . $filterList . "}" : "null";
+    }
+
+    // Process filter list
+    protected function processFilterList()
+    {
+        global $UserProfile;
+        if (Post("ajax") == "savefilters") { // Save filter request (Ajax)
+            $filters = Post("filters");
+            $UserProfile->setSearchFilters(CurrentUserName(), "fjugadorequiposrch", $filters);
+            WriteJson([["success" => true]]); // Success
+            return true;
+        } elseif (Post("cmd") == "resetfilter") {
+            $this->restoreFilterList();
+        }
+        return false;
+    }
+
+    // Restore list of filters
+    protected function restoreFilterList()
+    {
+        // Return if not reset filter
+        if (Post("cmd") !== "resetfilter") {
+            return false;
+        }
+        $filter = json_decode(Post("filter"), true);
+        $this->Command = "search";
+
+        // Field id_jugadorequipo
+        $this->id_jugadorequipo->AdvancedSearch->SearchValue = @$filter["x_id_jugadorequipo"];
+        $this->id_jugadorequipo->AdvancedSearch->SearchOperator = @$filter["z_id_jugadorequipo"];
+        $this->id_jugadorequipo->AdvancedSearch->SearchCondition = @$filter["v_id_jugadorequipo"];
+        $this->id_jugadorequipo->AdvancedSearch->SearchValue2 = @$filter["y_id_jugadorequipo"];
+        $this->id_jugadorequipo->AdvancedSearch->SearchOperator2 = @$filter["w_id_jugadorequipo"];
+        $this->id_jugadorequipo->AdvancedSearch->save();
+
+        // Field id_equipo
+        $this->id_equipo->AdvancedSearch->SearchValue = @$filter["x_id_equipo"];
+        $this->id_equipo->AdvancedSearch->SearchOperator = @$filter["z_id_equipo"];
+        $this->id_equipo->AdvancedSearch->SearchCondition = @$filter["v_id_equipo"];
+        $this->id_equipo->AdvancedSearch->SearchValue2 = @$filter["y_id_equipo"];
+        $this->id_equipo->AdvancedSearch->SearchOperator2 = @$filter["w_id_equipo"];
+        $this->id_equipo->AdvancedSearch->save();
+
+        // Field id_jugador
+        $this->id_jugador->AdvancedSearch->SearchValue = @$filter["x_id_jugador"];
+        $this->id_jugador->AdvancedSearch->SearchOperator = @$filter["z_id_jugador"];
+        $this->id_jugador->AdvancedSearch->SearchCondition = @$filter["v_id_jugador"];
+        $this->id_jugador->AdvancedSearch->SearchValue2 = @$filter["y_id_jugador"];
+        $this->id_jugador->AdvancedSearch->SearchOperator2 = @$filter["w_id_jugador"];
+        $this->id_jugador->AdvancedSearch->save();
+
+        // Field crea_dato
+        $this->crea_dato->AdvancedSearch->SearchValue = @$filter["x_crea_dato"];
+        $this->crea_dato->AdvancedSearch->SearchOperator = @$filter["z_crea_dato"];
+        $this->crea_dato->AdvancedSearch->SearchCondition = @$filter["v_crea_dato"];
+        $this->crea_dato->AdvancedSearch->SearchValue2 = @$filter["y_crea_dato"];
+        $this->crea_dato->AdvancedSearch->SearchOperator2 = @$filter["w_crea_dato"];
+        $this->crea_dato->AdvancedSearch->save();
+
+        // Field modifica_dato
+        $this->modifica_dato->AdvancedSearch->SearchValue = @$filter["x_modifica_dato"];
+        $this->modifica_dato->AdvancedSearch->SearchOperator = @$filter["z_modifica_dato"];
+        $this->modifica_dato->AdvancedSearch->SearchCondition = @$filter["v_modifica_dato"];
+        $this->modifica_dato->AdvancedSearch->SearchValue2 = @$filter["y_modifica_dato"];
+        $this->modifica_dato->AdvancedSearch->SearchOperator2 = @$filter["w_modifica_dato"];
+        $this->modifica_dato->AdvancedSearch->save();
+        $this->BasicSearch->setKeyword(@$filter[Config("TABLE_BASIC_SEARCH")]);
+        $this->BasicSearch->setType(@$filter[Config("TABLE_BASIC_SEARCH_TYPE")]);
+    }
+
+    // Return basic search WHERE clause based on search keyword and type
+    protected function basicSearchWhere($default = false)
+    {
+        global $Security;
+        $searchStr = "";
+        if (!$Security->canSearch()) {
+            return "";
+        }
+
+        // Fields to search
+        $searchFlds = [];
+        $searchFlds[] = &$this->id_jugadorequipo;
+        $searchFlds[] = &$this->id_equipo;
+        $searchFlds[] = &$this->id_jugador;
+        $searchFlds[] = &$this->crea_dato;
+        $searchFlds[] = &$this->modifica_dato;
+        $searchKeyword = $default ? $this->BasicSearch->KeywordDefault : $this->BasicSearch->Keyword;
+        $searchType = $default ? $this->BasicSearch->TypeDefault : $this->BasicSearch->Type;
+
+        // Get search SQL
+        if ($searchKeyword != "") {
+            $ar = $this->BasicSearch->keywordList($default);
+            $searchStr = GetQuickSearchFilter($searchFlds, $ar, $searchType, Config("BASIC_SEARCH_ANY_FIELDS"), $this->Dbid);
+            if (!$default && in_array($this->Command, ["", "reset", "resetall"])) {
+                $this->Command = "search";
+            }
+        }
+        if (!$default && $this->Command == "search") {
+            $this->BasicSearch->setKeyword($searchKeyword);
+            $this->BasicSearch->setType($searchType);
+        }
+        return $searchStr;
+    }
+
+    // Check if search parm exists
+    protected function checkSearchParms()
+    {
+        // Check basic search
+        if ($this->BasicSearch->issetSession()) {
+            return true;
+        }
+        return false;
+    }
+
+    // Clear all search parameters
+    protected function resetSearchParms()
+    {
+        // Clear search WHERE clause
+        $this->SearchWhere = "";
+        $this->setSearchWhere($this->SearchWhere);
+
+        // Clear basic search parameters
+        $this->resetBasicSearchParms();
+    }
+
+    // Load advanced search default values
+    protected function loadAdvancedSearchDefault()
+    {
+        return false;
+    }
+
+    // Clear all basic search parameters
+    protected function resetBasicSearchParms()
+    {
+        $this->BasicSearch->unsetSession();
+    }
+
+    // Restore all search parameters
+    protected function restoreSearchParms()
+    {
+        $this->RestoreSearch = true;
+
+        // Restore basic search values
+        $this->BasicSearch->load();
+    }
+
     // Set up sort parameters
     protected function setupSortOrder()
     {
@@ -970,6 +1197,11 @@ class JugadorequipoList extends Jugadorequipo
     {
         // Check if reset command
         if (StartsString("reset", $this->Command)) {
+            // Reset search criteria
+            if ($this->Command == "reset" || $this->Command == "resetall") {
+                $this->resetSearchParms();
+            }
+
             // Reset (clear) sorting order
             if ($this->Command == "resetsort") {
                 $orderBy = "";
@@ -1228,10 +1460,10 @@ class JugadorequipoList extends Jugadorequipo
         // Filter button
         $item = &$this->FilterOptions->add("savecurrentfilter");
         $item->Body = "<a class=\"ew-save-filter\" data-form=\"fjugadorequiposrch\" data-ew-action=\"none\">" . $Language->phrase("SaveCurrentFilter") . "</a>";
-        $item->Visible = false;
+        $item->Visible = true;
         $item = &$this->FilterOptions->add("deletefilter");
         $item->Body = "<a class=\"ew-delete-filter\" data-form=\"fjugadorequiposrch\" data-ew-action=\"none\">" . $Language->phrase("DeleteFilter") . "</a>";
-        $item->Visible = false;
+        $item->Visible = true;
         $this->FilterOptions->UseDropDownButton = true;
         $this->FilterOptions->UseButtonGroup = !$this->FilterOptions->UseDropDownButton;
         $this->FilterOptions->DropDownButtonPhrase = $Language->phrase("Filters");
@@ -1377,6 +1609,16 @@ class JugadorequipoList extends Jugadorequipo
     // Load default values
     protected function loadDefaultValues()
     {
+    }
+
+    // Load basic search values
+    protected function loadBasicSearchValues()
+    {
+        $this->BasicSearch->setKeyword(Get(Config("TABLE_BASIC_SEARCH"), ""), false);
+        if ($this->BasicSearch->Keyword != "" && $this->Command == "") {
+            $this->Command = "search";
+        }
+        $this->BasicSearch->setType(Get(Config("TABLE_BASIC_SEARCH_TYPE"), ""), false);
     }
 
     // Load form values
@@ -2072,6 +2314,17 @@ class JugadorequipoList extends Jugadorequipo
         $pageUrl = $this->pageUrl(false);
         $this->SearchOptions = new ListOptions(["TagClassName" => "ew-search-option"]);
 
+        // Search button
+        $item = &$this->SearchOptions->add("searchtoggle");
+        $searchToggleClass = ($this->SearchWhere != "") ? " active" : " active";
+        $item->Body = "<a class=\"btn btn-default ew-search-toggle" . $searchToggleClass . "\" role=\"button\" title=\"" . $Language->phrase("SearchPanel") . "\" data-caption=\"" . $Language->phrase("SearchPanel") . "\" data-ew-action=\"search-toggle\" data-form=\"fjugadorequiposrch\" aria-pressed=\"" . ($searchToggleClass == " active" ? "true" : "false") . "\">" . $Language->phrase("SearchLink") . "</a>";
+        $item->Visible = true;
+
+        // Show all button
+        $item = &$this->SearchOptions->add("showall");
+        $item->Body = "<a class=\"btn btn-default ew-show-all\" title=\"" . $Language->phrase("ShowAll") . "\" data-caption=\"" . $Language->phrase("ShowAll") . "\" href=\"" . $pageUrl . "cmd=reset\">" . $Language->phrase("ShowAllBtn") . "</a>";
+        $item->Visible = ($this->SearchWhere != $this->DefaultSearchWhere && $this->SearchWhere != "0=101");
+
         // Button group for search
         $this->SearchOptions->UseDropDownButton = false;
         $this->SearchOptions->UseButtonGroup = true;
@@ -2095,7 +2348,7 @@ class JugadorequipoList extends Jugadorequipo
     // Check if any search fields
     public function hasSearchFields()
     {
-        return false;
+        return true;
     }
 
     // Render search options

@@ -2276,7 +2276,7 @@ class Partidos extends DbTable
     // Row Updated event
     public function rowUpdated($rsold, &$rsnew)
     {
-       if (ConvertToBool($this->automatico->CurrentValue)) {
+       if (ConvertToBool($this->automatico->CurrentValue) && $this->ESTADO_PARTIDO->CurrentValue==='Finalizado') {
                 //GOLES LOCAL 
                 $id_equipo_local= $this->equipo_local->CurrentValue;
                 $GOLES_LOCAL1=$this->GOLES_LOCAL->CurrentValue;

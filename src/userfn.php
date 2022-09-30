@@ -209,10 +209,10 @@ function Api_Action($app) {
         $ID_EQUIPO = $args["ID_JUGADOR"] ?? null; // Get the input value
         if ($ID_EQUIPO !== null) {
             $response = $response->withJson(ExecuteRows("SELECT votos_jugador from jugador WHERE ID_JUGADOR= '" . AdjustSql($ID_EQUIPO) . "'"));
-            $p= json_decode($response, true);
-            var_dump("datos".$p);
+            //$p= json_decode($response, true);
+            echo json_decode($response);
        }    
-        return $p;
+        return $response;
     });
 }
 

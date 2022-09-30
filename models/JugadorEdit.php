@@ -710,7 +710,7 @@ class JugadorEdit extends Jugador
             if (IsApi() && $val === null) {
                 $this->votos_jugador->Visible = false; // Disable update for API request
             } else {
-                $this->votos_jugador->setFormValue($val);
+                $this->votos_jugador->setFormValue($val, true, $validate);
             }
         }
 
@@ -889,6 +889,7 @@ class JugadorEdit extends Jugador
 
             // votos_jugador
             $this->votos_jugador->ViewValue = $this->votos_jugador->CurrentValue;
+            $this->votos_jugador->ViewValue = FormatNumber($this->votos_jugador->ViewValue, $this->votos_jugador->formatPattern());
             $this->votos_jugador->ViewCustomAttributes = "";
 
             // imagen_jugador
@@ -971,6 +972,9 @@ class JugadorEdit extends Jugador
             $this->votos_jugador->EditCustomAttributes = "";
             $this->votos_jugador->EditValue = HtmlEncode($this->votos_jugador->CurrentValue);
             $this->votos_jugador->PlaceHolder = RemoveHtml($this->votos_jugador->caption());
+            if (strval($this->votos_jugador->EditValue) != "" && is_numeric($this->votos_jugador->EditValue)) {
+                $this->votos_jugador->EditValue = FormatNumber($this->votos_jugador->EditValue, null);
+            }
 
             // imagen_jugador
             $this->imagen_jugador->setupEditAttributes();
@@ -1075,6 +1079,9 @@ class JugadorEdit extends Jugador
             if (!$this->votos_jugador->IsDetailKey && EmptyValue($this->votos_jugador->FormValue)) {
                 $this->votos_jugador->addErrorMessage(str_replace("%s", $this->votos_jugador->caption(), $this->votos_jugador->RequiredErrorMessage));
             }
+        }
+        if (!CheckInteger($this->votos_jugador->FormValue)) {
+            $this->votos_jugador->addErrorMessage($this->votos_jugador->getErrorMessage(false));
         }
         if ($this->imagen_jugador->Required) {
             if ($this->imagen_jugador->Upload->FileName == "" && !$this->imagen_jugador->Upload->KeepFile) {

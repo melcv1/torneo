@@ -24,7 +24,7 @@ loadjs.ready(["wrapper", "head"], function () {
     fjugadorlist.addFields([
         ["id_jugador", [fields.id_jugador.visible && fields.id_jugador.required ? ew.Validators.required(fields.id_jugador.caption) : null], fields.id_jugador.isInvalid],
         ["nombre_jugador", [fields.nombre_jugador.visible && fields.nombre_jugador.required ? ew.Validators.required(fields.nombre_jugador.caption) : null], fields.nombre_jugador.isInvalid],
-        ["votos_jugador", [fields.votos_jugador.visible && fields.votos_jugador.required ? ew.Validators.required(fields.votos_jugador.caption) : null], fields.votos_jugador.isInvalid],
+        ["votos_jugador", [fields.votos_jugador.visible && fields.votos_jugador.required ? ew.Validators.required(fields.votos_jugador.caption) : null, ew.Validators.integer], fields.votos_jugador.isInvalid],
         ["imagen_jugador", [fields.imagen_jugador.visible && fields.imagen_jugador.required ? ew.Validators.fileRequired(fields.imagen_jugador.caption) : null], fields.imagen_jugador.isInvalid],
         ["crea_dato", [fields.crea_dato.visible && fields.crea_dato.required ? ew.Validators.required(fields.crea_dato.caption) : null], fields.crea_dato.isInvalid],
         ["modifica_dato", [fields.modifica_dato.visible && fields.modifica_dato.required ? ew.Validators.required(fields.modifica_dato.caption) : null], fields.modifica_dato.isInvalid],
@@ -309,7 +309,7 @@ $Page->ListOptions->render("body", "left", $Page->RowCount);
         <td data-name="votos_jugador"<?= $Page->votos_jugador->cellAttributes() ?>>
 <?php if ($Page->RowType == ROWTYPE_EDIT) { // Edit record ?>
 <span id="el<?= $Page->RowCount ?>_jugador_votos_jugador" class="el_jugador_votos_jugador">
-<textarea data-table="jugador" data-field="x_votos_jugador" name="x<?= $Page->RowIndex ?>_votos_jugador" id="x<?= $Page->RowIndex ?>_votos_jugador" cols="35" rows="4" placeholder="<?= HtmlEncode($Page->votos_jugador->getPlaceHolder()) ?>"<?= $Page->votos_jugador->editAttributes() ?>><?= $Page->votos_jugador->EditValue ?></textarea>
+<input type="<?= $Page->votos_jugador->getInputTextType() ?>" name="x<?= $Page->RowIndex ?>_votos_jugador" id="x<?= $Page->RowIndex ?>_votos_jugador" data-table="jugador" data-field="x_votos_jugador" value="<?= $Page->votos_jugador->EditValue ?>" size="30" placeholder="<?= HtmlEncode($Page->votos_jugador->getPlaceHolder()) ?>"<?= $Page->votos_jugador->editAttributes() ?>>
 <div class="invalid-feedback"><?= $Page->votos_jugador->getErrorMessage() ?></div>
 </span>
 <?php } ?>

@@ -133,8 +133,8 @@ class Jugador extends DbTable
             'votos_jugador',
             '`votos_jugador`',
             '`votos_jugador`',
-            201,
-            1024,
+            3,
+            11,
             -1,
             false,
             '`votos_jugador`',
@@ -142,9 +142,10 @@ class Jugador extends DbTable
             false,
             false,
             'FORMATTED TEXT',
-            'TEXTAREA'
+            'TEXT'
         );
         $this->votos_jugador->InputTextType = "text";
+        $this->votos_jugador->DefaultErrorMessage = $Language->phrase("IncorrectInteger");
         $this->Fields['votos_jugador'] = &$this->votos_jugador;
 
         // imagen_jugador
@@ -1093,6 +1094,7 @@ class Jugador extends DbTable
 
         // votos_jugador
         $this->votos_jugador->ViewValue = $this->votos_jugador->CurrentValue;
+        $this->votos_jugador->ViewValue = FormatNumber($this->votos_jugador->ViewValue, $this->votos_jugador->formatPattern());
         $this->votos_jugador->ViewCustomAttributes = "";
 
         // imagen_jugador
@@ -1222,6 +1224,9 @@ class Jugador extends DbTable
         $this->votos_jugador->EditCustomAttributes = "";
         $this->votos_jugador->EditValue = $this->votos_jugador->CurrentValue;
         $this->votos_jugador->PlaceHolder = RemoveHtml($this->votos_jugador->caption());
+        if (strval($this->votos_jugador->EditValue) != "" && is_numeric($this->votos_jugador->EditValue)) {
+            $this->votos_jugador->EditValue = FormatNumber($this->votos_jugador->EditValue, null);
+        }
 
         // imagen_jugador
         $this->imagen_jugador->setupEditAttributes();

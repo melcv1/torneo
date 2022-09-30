@@ -822,6 +822,7 @@ class JugadorView extends Jugador
 
             // votos_jugador
             $this->votos_jugador->ViewValue = $this->votos_jugador->CurrentValue;
+            $this->votos_jugador->ViewValue = FormatNumber($this->votos_jugador->ViewValue, $this->votos_jugador->formatPattern());
             $this->votos_jugador->ViewCustomAttributes = "";
 
             // imagen_jugador

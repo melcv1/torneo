@@ -22,7 +22,7 @@ loadjs.ready(["wrapper", "head"], function () {
     fjugadoredit.addFields([
         ["id_jugador", [fields.id_jugador.visible && fields.id_jugador.required ? ew.Validators.required(fields.id_jugador.caption) : null], fields.id_jugador.isInvalid],
         ["nombre_jugador", [fields.nombre_jugador.visible && fields.nombre_jugador.required ? ew.Validators.required(fields.nombre_jugador.caption) : null], fields.nombre_jugador.isInvalid],
-        ["votos_jugador", [fields.votos_jugador.visible && fields.votos_jugador.required ? ew.Validators.required(fields.votos_jugador.caption) : null], fields.votos_jugador.isInvalid],
+        ["votos_jugador", [fields.votos_jugador.visible && fields.votos_jugador.required ? ew.Validators.required(fields.votos_jugador.caption) : null, ew.Validators.integer], fields.votos_jugador.isInvalid],
         ["imagen_jugador", [fields.imagen_jugador.visible && fields.imagen_jugador.required ? ew.Validators.fileRequired(fields.imagen_jugador.caption) : null], fields.imagen_jugador.isInvalid],
         ["posicion", [fields.posicion.visible && fields.posicion.required ? ew.Validators.required(fields.posicion.caption) : null], fields.posicion.isInvalid],
         ["nombre_equipo", [fields.nombre_equipo.visible && fields.nombre_equipo.required ? ew.Validators.required(fields.nombre_equipo.caption) : null], fields.nombre_equipo.isInvalid]
@@ -89,7 +89,7 @@ $Page->showMessage();
         <label id="elh_jugador_votos_jugador" for="x_votos_jugador" class="<?= $Page->LeftColumnClass ?>"><?= $Page->votos_jugador->caption() ?><?= $Page->votos_jugador->Required ? $Language->phrase("FieldRequiredIndicator") : "" ?></label>
         <div class="<?= $Page->RightColumnClass ?>"><div<?= $Page->votos_jugador->cellAttributes() ?>>
 <span id="el_jugador_votos_jugador">
-<textarea data-table="jugador" data-field="x_votos_jugador" name="x_votos_jugador" id="x_votos_jugador" cols="35" rows="4" placeholder="<?= HtmlEncode($Page->votos_jugador->getPlaceHolder()) ?>"<?= $Page->votos_jugador->editAttributes() ?> aria-describedby="x_votos_jugador_help"><?= $Page->votos_jugador->EditValue ?></textarea>
+<input type="<?= $Page->votos_jugador->getInputTextType() ?>" name="x_votos_jugador" id="x_votos_jugador" data-table="jugador" data-field="x_votos_jugador" value="<?= $Page->votos_jugador->EditValue ?>" size="30" placeholder="<?= HtmlEncode($Page->votos_jugador->getPlaceHolder()) ?>"<?= $Page->votos_jugador->editAttributes() ?> aria-describedby="x_votos_jugador_help">
 <?= $Page->votos_jugador->getCustomMessage() ?>
 <div class="invalid-feedback"><?= $Page->votos_jugador->getErrorMessage() ?></div>
 </span>

@@ -212,17 +212,9 @@ function Api_Action($app) {
             //$p= json_decode($response, true);
             echo 'hola';
             $json = utf8_encode($response);
-            print_r("json:".$json);
             $data = json_decode($json);
-            print_r("data".$data);
-
-            $json2 = str_replace('&quot;', '"', $response);
-            print_r("json2;". $json2);
-            $object = json_decode($json2);
-            print_r("object;". $object);
-            print_r(json_decode( preg_replace('/[\x00-\x1F\x80-\xFF]/', '', $response), true ));
        }    
-        return $response;
+        return $json;
     });
 }
 

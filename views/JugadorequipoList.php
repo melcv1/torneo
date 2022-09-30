@@ -279,6 +279,7 @@ $Page->ListOptions->render("body", "left", $Page->RowCount);
         <td data-name="id_equipo"<?= $Page->id_equipo->cellAttributes() ?>>
 <?php if ($Page->RowType == ROWTYPE_EDIT) { // Edit record ?>
 <span id="el<?= $Page->RowCount ?>_jugadorequipo_id_equipo" class="el_jugadorequipo_id_equipo">
+<div class="input-group flex-nowrap">
     <select
         id="x<?= $Page->RowIndex ?>_id_equipo"
         name="x<?= $Page->RowIndex ?>_id_equipo"
@@ -291,7 +292,9 @@ $Page->ListOptions->render("body", "left", $Page->RowCount);
         <?= $Page->id_equipo->editAttributes() ?>>
         <?= $Page->id_equipo->selectOptionListHtml("x{$Page->RowIndex}_id_equipo") ?>
     </select>
-    <div class="invalid-feedback"><?= $Page->id_equipo->getErrorMessage() ?></div>
+    <button type="button" class="btn btn-default ew-add-opt-btn" id="aol_x<?= $Page->RowIndex ?>_id_equipo" title="<?= HtmlTitle($Language->phrase("AddLink")) . "&nbsp;" . $Page->id_equipo->caption() ?>" data-title="<?= $Page->id_equipo->caption() ?>" data-ew-action="add-option" data-el="x<?= $Page->RowIndex ?>_id_equipo" data-url="<?= GetUrl("equipoaddopt") ?>"><i class="fas fa-plus ew-icon"></i></button>
+</div>
+<div class="invalid-feedback"><?= $Page->id_equipo->getErrorMessage() ?></div>
 <?= $Page->id_equipo->Lookup->getParamTag($Page, "p_x" . $Page->RowIndex . "_id_equipo") ?>
 <script>
 loadjs.ready("fjugadorequipolist", function() {
@@ -322,6 +325,7 @@ loadjs.ready("fjugadorequipolist", function() {
         <td data-name="id_jugador"<?= $Page->id_jugador->cellAttributes() ?>>
 <?php if ($Page->RowType == ROWTYPE_EDIT) { // Edit record ?>
 <span id="el<?= $Page->RowCount ?>_jugadorequipo_id_jugador" class="el_jugadorequipo_id_jugador">
+<div class="input-group flex-nowrap">
     <select
         id="x<?= $Page->RowIndex ?>_id_jugador"
         name="x<?= $Page->RowIndex ?>_id_jugador"
@@ -334,7 +338,9 @@ loadjs.ready("fjugadorequipolist", function() {
         <?= $Page->id_jugador->editAttributes() ?>>
         <?= $Page->id_jugador->selectOptionListHtml("x{$Page->RowIndex}_id_jugador") ?>
     </select>
-    <div class="invalid-feedback"><?= $Page->id_jugador->getErrorMessage() ?></div>
+    <button type="button" class="btn btn-default ew-add-opt-btn" id="aol_x<?= $Page->RowIndex ?>_id_jugador" title="<?= HtmlTitle($Language->phrase("AddLink")) . "&nbsp;" . $Page->id_jugador->caption() ?>" data-title="<?= $Page->id_jugador->caption() ?>" data-ew-action="add-option" data-el="x<?= $Page->RowIndex ?>_id_jugador" data-url="<?= GetUrl("jugadoraddopt") ?>"><i class="fas fa-plus ew-icon"></i></button>
+</div>
+<div class="invalid-feedback"><?= $Page->id_jugador->getErrorMessage() ?></div>
 <?= $Page->id_jugador->Lookup->getParamTag($Page, "p_x" . $Page->RowIndex . "_id_jugador") ?>
 <script>
 loadjs.ready("fjugadorequipolist", function() {

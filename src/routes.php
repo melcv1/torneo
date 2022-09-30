@@ -135,6 +135,7 @@ return function (App $app) {
     // jugador
     $app->map(["GET","POST","OPTIONS"], '/jugadorlist[/{id_jugador}]', JugadorController::class . ':list')->add(PermissionMiddleware::class)->setName('jugadorlist-jugador-list'); // list
     $app->map(["GET","POST","OPTIONS"], '/jugadoradd[/{id_jugador}]', JugadorController::class . ':add')->add(PermissionMiddleware::class)->setName('jugadoradd-jugador-add'); // add
+    $app->map(["GET","POST","OPTIONS"], '/jugadoraddopt', JugadorController::class . ':addopt')->add(PermissionMiddleware::class)->setName('jugadoraddopt-jugador-addopt'); // addopt
     $app->map(["GET","POST","OPTIONS"], '/jugadorview[/{id_jugador}]', JugadorController::class . ':view')->add(PermissionMiddleware::class)->setName('jugadorview-jugador-view'); // view
     $app->map(["GET","POST","OPTIONS"], '/jugadoredit[/{id_jugador}]', JugadorController::class . ':edit')->add(PermissionMiddleware::class)->setName('jugadoredit-jugador-edit'); // edit
     $app->map(["GET","POST","OPTIONS"], '/jugadordelete[/{id_jugador}]', JugadorController::class . ':delete')->add(PermissionMiddleware::class)->setName('jugadordelete-jugador-delete'); // delete
@@ -143,6 +144,7 @@ return function (App $app) {
         function (RouteCollectorProxy $group) {
             $group->map(["GET","POST","OPTIONS"], '/' . Config("LIST_ACTION") . '[/{id_jugador}]', JugadorController::class . ':list')->add(PermissionMiddleware::class)->setName('jugador/list-jugador-list-2'); // list
             $group->map(["GET","POST","OPTIONS"], '/' . Config("ADD_ACTION") . '[/{id_jugador}]', JugadorController::class . ':add')->add(PermissionMiddleware::class)->setName('jugador/add-jugador-add-2'); // add
+            $group->map(["GET","POST","OPTIONS"], '/' . Config("ADDOPT_ACTION") . '', JugadorController::class . ':addopt')->add(PermissionMiddleware::class)->setName('jugador/addopt-jugador-addopt-2'); // addopt
             $group->map(["GET","POST","OPTIONS"], '/' . Config("VIEW_ACTION") . '[/{id_jugador}]', JugadorController::class . ':view')->add(PermissionMiddleware::class)->setName('jugador/view-jugador-view-2'); // view
             $group->map(["GET","POST","OPTIONS"], '/' . Config("EDIT_ACTION") . '[/{id_jugador}]', JugadorController::class . ':edit')->add(PermissionMiddleware::class)->setName('jugador/edit-jugador-edit-2'); // edit
             $group->map(["GET","POST","OPTIONS"], '/' . Config("DELETE_ACTION") . '[/{id_jugador}]', JugadorController::class . ':delete')->add(PermissionMiddleware::class)->setName('jugador/delete-jugador-delete-2'); // delete

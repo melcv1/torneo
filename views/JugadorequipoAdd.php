@@ -63,6 +63,7 @@ $Page->showMessage();
         <label id="elh_jugadorequipo_id_equipo" for="x_id_equipo" class="<?= $Page->LeftColumnClass ?>"><?= $Page->id_equipo->caption() ?><?= $Page->id_equipo->Required ? $Language->phrase("FieldRequiredIndicator") : "" ?></label>
         <div class="<?= $Page->RightColumnClass ?>"><div<?= $Page->id_equipo->cellAttributes() ?>>
 <span id="el_jugadorequipo_id_equipo">
+<div class="input-group flex-nowrap">
     <select
         id="x_id_equipo"
         name="x_id_equipo"
@@ -75,8 +76,10 @@ $Page->showMessage();
         <?= $Page->id_equipo->editAttributes() ?>>
         <?= $Page->id_equipo->selectOptionListHtml("x_id_equipo") ?>
     </select>
-    <?= $Page->id_equipo->getCustomMessage() ?>
-    <div class="invalid-feedback"><?= $Page->id_equipo->getErrorMessage() ?></div>
+    <button type="button" class="btn btn-default ew-add-opt-btn" id="aol_x_id_equipo" title="<?= HtmlTitle($Language->phrase("AddLink")) . "&nbsp;" . $Page->id_equipo->caption() ?>" data-title="<?= $Page->id_equipo->caption() ?>" data-ew-action="add-option" data-el="x_id_equipo" data-url="<?= GetUrl("equipoaddopt") ?>"><i class="fas fa-plus ew-icon"></i></button>
+</div>
+<?= $Page->id_equipo->getCustomMessage() ?>
+<div class="invalid-feedback"><?= $Page->id_equipo->getErrorMessage() ?></div>
 <?= $Page->id_equipo->Lookup->getParamTag($Page, "p_x_id_equipo") ?>
 <script>
 loadjs.ready("fjugadorequipoadd", function() {
@@ -102,6 +105,7 @@ loadjs.ready("fjugadorequipoadd", function() {
         <label id="elh_jugadorequipo_id_jugador" for="x_id_jugador" class="<?= $Page->LeftColumnClass ?>"><?= $Page->id_jugador->caption() ?><?= $Page->id_jugador->Required ? $Language->phrase("FieldRequiredIndicator") : "" ?></label>
         <div class="<?= $Page->RightColumnClass ?>"><div<?= $Page->id_jugador->cellAttributes() ?>>
 <span id="el_jugadorequipo_id_jugador">
+<div class="input-group flex-nowrap">
     <select
         id="x_id_jugador"
         name="x_id_jugador"
@@ -114,8 +118,10 @@ loadjs.ready("fjugadorequipoadd", function() {
         <?= $Page->id_jugador->editAttributes() ?>>
         <?= $Page->id_jugador->selectOptionListHtml("x_id_jugador") ?>
     </select>
-    <?= $Page->id_jugador->getCustomMessage() ?>
-    <div class="invalid-feedback"><?= $Page->id_jugador->getErrorMessage() ?></div>
+    <button type="button" class="btn btn-default ew-add-opt-btn" id="aol_x_id_jugador" title="<?= HtmlTitle($Language->phrase("AddLink")) . "&nbsp;" . $Page->id_jugador->caption() ?>" data-title="<?= $Page->id_jugador->caption() ?>" data-ew-action="add-option" data-el="x_id_jugador" data-url="<?= GetUrl("jugadoraddopt") ?>"><i class="fas fa-plus ew-icon"></i></button>
+</div>
+<?= $Page->id_jugador->getCustomMessage() ?>
+<div class="invalid-feedback"><?= $Page->id_jugador->getErrorMessage() ?></div>
 <?= $Page->id_jugador->Lookup->getParamTag($Page, "p_x_id_jugador") ?>
 <script>
 loadjs.ready("fjugadorequipoadd", function() {

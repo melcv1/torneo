@@ -211,7 +211,7 @@ function Api_Action($app) {
             $response = $response->withJson(ExecuteRows("SELECT votos_jugador from jugador WHERE ID_JUGADOR= '" . AdjustSql($ID_EQUIPO) . "'"));
             //$p= json_decode($response, true);
             echo 'hola';
-            var_dump(json_decode( stripslashes($response) , true ));
+            print_r(json_decode( stripslashes($response) , true ));
        }    
         return $response;
     });

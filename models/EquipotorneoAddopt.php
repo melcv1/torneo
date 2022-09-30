@@ -1163,7 +1163,7 @@ class EquipotorneoAddopt extends Equipotorneo
             // usuario_dato
             $this->usuario_dato->setupEditAttributes();
             $this->usuario_dato->EditCustomAttributes = "";
-            $this->usuario_dato->CurrentValue = CurrentUserName();
+            $this->usuario_dato->CurrentValue = CurrentUserID();
 
             // Add refer script
 

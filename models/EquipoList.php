@@ -2793,7 +2793,7 @@ class EquipoList extends Equipo
         $this->modifica_dato->setDbValueDef($rsnew, UnFormatDateTime($this->modifica_dato->CurrentValue, $this->modifica_dato->formatPattern()), null, false);
 
         // usuario_dato
-        $this->usuario_dato->CurrentValue = CurrentUserName();
+        $this->usuario_dato->CurrentValue = CurrentUserID();
         $this->usuario_dato->setDbValueDef($rsnew, $this->usuario_dato->CurrentValue, null);
         if ($this->ESCUDO_EQUIPO->Visible && !$this->ESCUDO_EQUIPO->Upload->KeepFile) {
             $oldFiles = EmptyValue($this->ESCUDO_EQUIPO->Upload->DbValue) ? [] : [$this->ESCUDO_EQUIPO->htmlDecode($this->ESCUDO_EQUIPO->Upload->DbValue)];

@@ -454,6 +454,9 @@ class JugadorList extends Jugador
         if ($this->isAdd() || $this->isCopy() || $this->isGridAdd()) {
             $this->id_jugador->Visible = false;
         }
+        if ($this->isAddOrEdit()) {
+            $this->usuario_dato->Visible = false;
+        }
     }
 
     // Lookup data
@@ -1655,6 +1658,8 @@ class JugadorList extends Jugador
     // Load default values
     protected function loadDefaultValues()
     {
+        $this->votos_jugador->DefaultValue = "0";
+        $this->votos_jugador->OldValue = $this->votos_jugador->DefaultValue;
         $this->usuario_dato->DefaultValue = "admin";
         $this->usuario_dato->OldValue = $this->usuario_dato->DefaultValue;
     }
@@ -2077,10 +2082,6 @@ class JugadorList extends Jugador
             $this->modifica_dato->PlaceHolder = RemoveHtml($this->modifica_dato->caption());
 
             // usuario_dato
-            $this->usuario_dato->setupEditAttributes();
-            $this->usuario_dato->EditCustomAttributes = "";
-            $this->usuario_dato->EditValue = HtmlEncode($this->usuario_dato->CurrentValue);
-            $this->usuario_dato->PlaceHolder = RemoveHtml($this->usuario_dato->caption());
 
             // posicion
             $this->posicion->setupEditAttributes();
@@ -2190,10 +2191,6 @@ class JugadorList extends Jugador
             $this->modifica_dato->ViewCustomAttributes = "";
 
             // usuario_dato
-            $this->usuario_dato->setupEditAttributes();
-            $this->usuario_dato->EditCustomAttributes = "";
-            $this->usuario_dato->EditValue = $this->usuario_dato->CurrentValue;
-            $this->usuario_dato->ViewCustomAttributes = "";
 
             // posicion
             $this->posicion->setupEditAttributes();
@@ -2541,7 +2538,8 @@ class JugadorList extends Jugador
         $this->modifica_dato->setDbValueDef($rsnew, UnFormatDateTime($this->modifica_dato->CurrentValue, $this->modifica_dato->formatPattern()), null, false);
 
         // usuario_dato
-        $this->usuario_dato->setDbValueDef($rsnew, $this->usuario_dato->CurrentValue, null, strval($this->usuario_dato->CurrentValue ?? "") == "");
+        $this->usuario_dato->CurrentValue = CurrentUserID();
+        $this->usuario_dato->setDbValueDef($rsnew, $this->usuario_dato->CurrentValue, null);
 
         // posicion
         $this->posicion->setDbValueDef($rsnew, $this->posicion->CurrentValue, null, false);

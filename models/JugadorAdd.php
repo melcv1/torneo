@@ -650,6 +650,8 @@ class JugadorAdd extends Jugador
     // Load default values
     protected function loadDefaultValues()
     {
+        $this->votos_jugador->DefaultValue = "0";
+        $this->votos_jugador->OldValue = $this->votos_jugador->DefaultValue;
         $this->usuario_dato->DefaultValue = "admin";
         $this->usuario_dato->OldValue = $this->usuario_dato->DefaultValue;
     }

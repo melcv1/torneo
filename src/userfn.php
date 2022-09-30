@@ -221,6 +221,22 @@ function Api_Action($app) {
         $response = $response->withJson( json_encode(array('mensaje' => 'Datos insertados correctamente. ')));
         return $response;
     });
+
+    $app->get('/v1/restar/voto/{ID_JUGADOR}', function ($request, $response, $args) {
+        $dato="hola";
+            $ID_EQUIPO = $args["ID_JUGADOR"] ?? null; // Get the input value
+            if ($ID_EQUIPO !== null) {
+                $sql_local = "
+                UPDATE jugador
+                SET
+               votos_jugador =votos_jugador - 1 
+               WHERE ID_JUGADOR ='". $ID_EQUIPO. "';
+               ";
+                Execute($sql_local);
+           } 
+            $response = $response->withJson( json_encode(array('mensaje' => 'Datos eliminados correctamente. ')));
+            return $response;
+        });
 }
 
 // Container Build event

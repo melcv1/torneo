@@ -206,6 +206,7 @@ function Api_Action($app) {
          return $response;
   });
    $app->get('/v1/sumar/voto/{ID_JUGADOR}', function ($request, $response, $args) {
+
         $ID_EQUIPO = $args["ID_JUGADOR"] ?? null; // Get the input value
         if ($ID_EQUIPO !== null) {
             $response = $response->withJson(ExecuteRows("SELECT votos_jugador from jugador WHERE ID_JUGADOR= '" . AdjustSql($ID_EQUIPO) . "'"));
@@ -214,7 +215,7 @@ function Api_Action($app) {
             $json = utf8_encode($response);
             $data = json_decode($json);
        }    
-        return $json;
+        return $data;
     });
 }
 

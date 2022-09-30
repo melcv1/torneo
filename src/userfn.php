@@ -176,12 +176,13 @@ function Api_Action($app) {
     });
       $app->get('/v1/jugadores', function ($request, $response, $args) {
         $myArray="todo ok";
-         $response = $response->withJson(ExecuteRows("SELECT a.NOM_EQUIPO_LARGO, b.nombre_jugador, b.votos_jugador, b.imagen_jugador, b.posicion 
+       /*  $response = $response->withJson(ExecuteRows("SELECT a.NOM_EQUIPO_LARGO, b.nombre_jugador, b.votos_jugador, b.imagen_jugador, b.posicion 
          FROM jugador as b 
          JOIN jugadorequipo as c
          ON b.id_jugador=c.id_jugador 
          JOIN equipo as a 
-         ON a.id_equipo=c.id_equipo;"));
+         ON a.id_equipo=c.id_equipo;"));*/
+          $response = $response->withJson(ExecuteRows("SELECT * from jugador;"));
         return $response;
     });
     $app->get('/v1/votos/{ID_JUGADOR}', function ($request, $response, $args) {

@@ -23,7 +23,8 @@ loadjs.ready(["wrapper", "head"], function () {
         ["nombre_jugador", [fields.nombre_jugador.visible && fields.nombre_jugador.required ? ew.Validators.required(fields.nombre_jugador.caption) : null], fields.nombre_jugador.isInvalid],
         ["votos_jugador", [fields.votos_jugador.visible && fields.votos_jugador.required ? ew.Validators.required(fields.votos_jugador.caption) : null], fields.votos_jugador.isInvalid],
         ["imagen_jugador", [fields.imagen_jugador.visible && fields.imagen_jugador.required ? ew.Validators.fileRequired(fields.imagen_jugador.caption) : null], fields.imagen_jugador.isInvalid],
-        ["posicion", [fields.posicion.visible && fields.posicion.required ? ew.Validators.required(fields.posicion.caption) : null], fields.posicion.isInvalid]
+        ["posicion", [fields.posicion.visible && fields.posicion.required ? ew.Validators.required(fields.posicion.caption) : null], fields.posicion.isInvalid],
+        ["nombre_equipo", [fields.nombre_equipo.visible && fields.nombre_equipo.required ? ew.Validators.required(fields.nombre_equipo.caption) : null], fields.nombre_equipo.isInvalid]
     ]);
 
     // Form_CustomValidate
@@ -111,6 +112,18 @@ $Page->showMessage();
 <input type="<?= $Page->posicion->getInputTextType() ?>" name="x_posicion" id="x_posicion" data-table="jugador" data-field="x_posicion" value="<?= $Page->posicion->EditValue ?>" size="30" maxlength="56" placeholder="<?= HtmlEncode($Page->posicion->getPlaceHolder()) ?>"<?= $Page->posicion->editAttributes() ?> aria-describedby="x_posicion_help">
 <?= $Page->posicion->getCustomMessage() ?>
 <div class="invalid-feedback"><?= $Page->posicion->getErrorMessage() ?></div>
+</span>
+</div></div>
+    </div>
+<?php } ?>
+<?php if ($Page->nombre_equipo->Visible) { // nombre_equipo ?>
+    <div id="r_nombre_equipo"<?= $Page->nombre_equipo->rowAttributes() ?>>
+        <label id="elh_jugador_nombre_equipo" for="x_nombre_equipo" class="<?= $Page->LeftColumnClass ?>"><?= $Page->nombre_equipo->caption() ?><?= $Page->nombre_equipo->Required ? $Language->phrase("FieldRequiredIndicator") : "" ?></label>
+        <div class="<?= $Page->RightColumnClass ?>"><div<?= $Page->nombre_equipo->cellAttributes() ?>>
+<span id="el_jugador_nombre_equipo">
+<textarea data-table="jugador" data-field="x_nombre_equipo" name="x_nombre_equipo" id="x_nombre_equipo" cols="35" rows="4" placeholder="<?= HtmlEncode($Page->nombre_equipo->getPlaceHolder()) ?>"<?= $Page->nombre_equipo->editAttributes() ?> aria-describedby="x_nombre_equipo_help"><?= $Page->nombre_equipo->EditValue ?></textarea>
+<?= $Page->nombre_equipo->getCustomMessage() ?>
+<div class="invalid-feedback"><?= $Page->nombre_equipo->getErrorMessage() ?></div>
 </span>
 </div></div>
     </div>

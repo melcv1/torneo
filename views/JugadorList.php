@@ -29,7 +29,8 @@ loadjs.ready(["wrapper", "head"], function () {
         ["crea_dato", [fields.crea_dato.visible && fields.crea_dato.required ? ew.Validators.required(fields.crea_dato.caption) : null], fields.crea_dato.isInvalid],
         ["modifica_dato", [fields.modifica_dato.visible && fields.modifica_dato.required ? ew.Validators.required(fields.modifica_dato.caption) : null], fields.modifica_dato.isInvalid],
         ["usuario_dato", [fields.usuario_dato.visible && fields.usuario_dato.required ? ew.Validators.required(fields.usuario_dato.caption) : null], fields.usuario_dato.isInvalid],
-        ["posicion", [fields.posicion.visible && fields.posicion.required ? ew.Validators.required(fields.posicion.caption) : null], fields.posicion.isInvalid]
+        ["posicion", [fields.posicion.visible && fields.posicion.required ? ew.Validators.required(fields.posicion.caption) : null], fields.posicion.isInvalid],
+        ["nombre_equipo", [fields.nombre_equipo.visible && fields.nombre_equipo.required ? ew.Validators.required(fields.nombre_equipo.caption) : null], fields.nombre_equipo.isInvalid]
     ]);
 
     // Form_CustomValidate
@@ -165,6 +166,9 @@ $Page->ListOptions->render("header", "left");
 <?php } ?>
 <?php if ($Page->posicion->Visible) { // posicion ?>
         <th data-name="posicion" class="<?= $Page->posicion->headerCellClass() ?>"><div id="elh_jugador_posicion" class="jugador_posicion"><?= $Page->renderFieldHeader($Page->posicion) ?></div></th>
+<?php } ?>
+<?php if ($Page->nombre_equipo->Visible) { // nombre_equipo ?>
+        <th data-name="nombre_equipo" class="<?= $Page->nombre_equipo->headerCellClass() ?>"><div id="elh_jugador_nombre_equipo" class="jugador_nombre_equipo"><?= $Page->renderFieldHeader($Page->nombre_equipo) ?></div></th>
 <?php } ?>
 <?php
 // Render list options (header, right)
@@ -401,6 +405,22 @@ $Page->ListOptions->render("body", "left", $Page->RowCount);
 <span id="el<?= $Page->RowCount ?>_jugador_posicion" class="el_jugador_posicion">
 <span<?= $Page->posicion->viewAttributes() ?>>
 <?= $Page->posicion->getViewValue() ?></span>
+</span>
+<?php } ?>
+</td>
+    <?php } ?>
+    <?php if ($Page->nombre_equipo->Visible) { // nombre_equipo ?>
+        <td data-name="nombre_equipo"<?= $Page->nombre_equipo->cellAttributes() ?>>
+<?php if ($Page->RowType == ROWTYPE_EDIT) { // Edit record ?>
+<span id="el<?= $Page->RowCount ?>_jugador_nombre_equipo" class="el_jugador_nombre_equipo">
+<textarea data-table="jugador" data-field="x_nombre_equipo" name="x<?= $Page->RowIndex ?>_nombre_equipo" id="x<?= $Page->RowIndex ?>_nombre_equipo" cols="35" rows="4" placeholder="<?= HtmlEncode($Page->nombre_equipo->getPlaceHolder()) ?>"<?= $Page->nombre_equipo->editAttributes() ?>><?= $Page->nombre_equipo->EditValue ?></textarea>
+<div class="invalid-feedback"><?= $Page->nombre_equipo->getErrorMessage() ?></div>
+</span>
+<?php } ?>
+<?php if ($Page->RowType == ROWTYPE_VIEW) { // View record ?>
+<span id="el<?= $Page->RowCount ?>_jugador_nombre_equipo" class="el_jugador_nombre_equipo">
+<span<?= $Page->nombre_equipo->viewAttributes() ?>>
+<?= $Page->nombre_equipo->getViewValue() ?></span>
 </span>
 <?php } ?>
 </td>

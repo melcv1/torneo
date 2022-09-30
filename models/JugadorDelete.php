@@ -403,6 +403,7 @@ class JugadorDelete extends Jugador
         $this->modifica_dato->setVisibility();
         $this->usuario_dato->setVisibility();
         $this->posicion->setVisibility();
+        $this->nombre_equipo->setVisibility();
         $this->hideFieldsForAddEdit();
 
         // Set lookup cache
@@ -595,6 +596,7 @@ class JugadorDelete extends Jugador
         $this->modifica_dato->setDbValue($row['modifica_dato']);
         $this->usuario_dato->setDbValue($row['usuario_dato']);
         $this->posicion->setDbValue($row['posicion']);
+        $this->nombre_equipo->setDbValue($row['nombre_equipo']);
     }
 
     // Return a row with default values
@@ -609,6 +611,7 @@ class JugadorDelete extends Jugador
         $row['modifica_dato'] = $this->modifica_dato->DefaultValue;
         $row['usuario_dato'] = $this->usuario_dato->DefaultValue;
         $row['posicion'] = $this->posicion->DefaultValue;
+        $row['nombre_equipo'] = $this->nombre_equipo->DefaultValue;
         return $row;
     }
 
@@ -639,6 +642,8 @@ class JugadorDelete extends Jugador
         // usuario_dato
 
         // posicion
+
+        // nombre_equipo
 
         // View row
         if ($this->RowType == ROWTYPE_VIEW) {
@@ -683,6 +688,10 @@ class JugadorDelete extends Jugador
             // posicion
             $this->posicion->ViewValue = $this->posicion->CurrentValue;
             $this->posicion->ViewCustomAttributes = "";
+
+            // nombre_equipo
+            $this->nombre_equipo->ViewValue = $this->nombre_equipo->CurrentValue;
+            $this->nombre_equipo->ViewCustomAttributes = "";
 
             // id_jugador
             $this->id_jugador->LinkCustomAttributes = "";
@@ -739,6 +748,11 @@ class JugadorDelete extends Jugador
             $this->posicion->LinkCustomAttributes = "";
             $this->posicion->HrefValue = "";
             $this->posicion->TooltipValue = "";
+
+            // nombre_equipo
+            $this->nombre_equipo->LinkCustomAttributes = "";
+            $this->nombre_equipo->HrefValue = "";
+            $this->nombre_equipo->TooltipValue = "";
         }
 
         // Call Row Rendered event

@@ -499,6 +499,7 @@ class JugadorEdit extends Jugador
         $this->modifica_dato->Visible = false;
         $this->usuario_dato->Visible = false;
         $this->posicion->setVisibility();
+        $this->nombre_equipo->setVisibility();
         $this->hideFieldsForAddEdit();
 
         // Set lookup cache
@@ -722,6 +723,16 @@ class JugadorEdit extends Jugador
                 $this->posicion->setFormValue($val);
             }
         }
+
+        // Check field name 'nombre_equipo' first before field var 'x_nombre_equipo'
+        $val = $CurrentForm->hasValue("nombre_equipo") ? $CurrentForm->getValue("nombre_equipo") : $CurrentForm->getValue("x_nombre_equipo");
+        if (!$this->nombre_equipo->IsDetailKey) {
+            if (IsApi() && $val === null) {
+                $this->nombre_equipo->Visible = false; // Disable update for API request
+            } else {
+                $this->nombre_equipo->setFormValue($val);
+            }
+        }
         $this->getUploadFiles(); // Get upload files
     }
 
@@ -733,6 +744,7 @@ class JugadorEdit extends Jugador
         $this->nombre_jugador->CurrentValue = $this->nombre_jugador->FormValue;
         $this->votos_jugador->CurrentValue = $this->votos_jugador->FormValue;
         $this->posicion->CurrentValue = $this->posicion->FormValue;
+        $this->nombre_equipo->CurrentValue = $this->nombre_equipo->FormValue;
     }
 
     /**
@@ -791,6 +803,7 @@ class JugadorEdit extends Jugador
         $this->modifica_dato->setDbValue($row['modifica_dato']);
         $this->usuario_dato->setDbValue($row['usuario_dato']);
         $this->posicion->setDbValue($row['posicion']);
+        $this->nombre_equipo->setDbValue($row['nombre_equipo']);
     }
 
     // Return a row with default values
@@ -805,6 +818,7 @@ class JugadorEdit extends Jugador
         $row['modifica_dato'] = $this->modifica_dato->DefaultValue;
         $row['usuario_dato'] = $this->usuario_dato->DefaultValue;
         $row['posicion'] = $this->posicion->DefaultValue;
+        $row['nombre_equipo'] = $this->nombre_equipo->DefaultValue;
         return $row;
     }
 
@@ -860,6 +874,9 @@ class JugadorEdit extends Jugador
         // posicion
         $this->posicion->RowCssClass = "row";
 
+        // nombre_equipo
+        $this->nombre_equipo->RowCssClass = "row";
+
         // View row
         if ($this->RowType == ROWTYPE_VIEW) {
             // id_jugador
@@ -900,6 +917,10 @@ class JugadorEdit extends Jugador
             $this->posicion->ViewValue = $this->posicion->CurrentValue;
             $this->posicion->ViewCustomAttributes = "";
 
+            // nombre_equipo
+            $this->nombre_equipo->ViewValue = $this->nombre_equipo->CurrentValue;
+            $this->nombre_equipo->ViewCustomAttributes = "";
+
             // id_jugador
             $this->id_jugador->LinkCustomAttributes = "";
             $this->id_jugador->HrefValue = "";
@@ -928,6 +949,10 @@ class JugadorEdit extends Jugador
             // posicion
             $this->posicion->LinkCustomAttributes = "";
             $this->posicion->HrefValue = "";
+
+            // nombre_equipo
+            $this->nombre_equipo->LinkCustomAttributes = "";
+            $this->nombre_equipo->HrefValue = "";
         } elseif ($this->RowType == ROWTYPE_EDIT) {
             // id_jugador
             $this->id_jugador->setupEditAttributes();
@@ -975,6 +1000,12 @@ class JugadorEdit extends Jugador
             $this->posicion->EditValue = HtmlEncode($this->posicion->CurrentValue);
             $this->posicion->PlaceHolder = RemoveHtml($this->posicion->caption());
 
+            // nombre_equipo
+            $this->nombre_equipo->setupEditAttributes();
+            $this->nombre_equipo->EditCustomAttributes = "";
+            $this->nombre_equipo->EditValue = HtmlEncode($this->nombre_equipo->CurrentValue);
+            $this->nombre_equipo->PlaceHolder = RemoveHtml($this->nombre_equipo->caption());
+
             // Edit refer script
 
             // id_jugador
@@ -1005,6 +1036,10 @@ class JugadorEdit extends Jugador
             // posicion
             $this->posicion->LinkCustomAttributes = "";
             $this->posicion->HrefValue = "";
+
+            // nombre_equipo
+            $this->nombre_equipo->LinkCustomAttributes = "";
+            $this->nombre_equipo->HrefValue = "";
         }
         if ($this->RowType == ROWTYPE_ADD || $this->RowType == ROWTYPE_EDIT || $this->RowType == ROWTYPE_SEARCH) { // Add/Edit/Search row
             $this->setupFieldTitles();
@@ -1049,6 +1084,11 @@ class JugadorEdit extends Jugador
         if ($this->posicion->Required) {
             if (!$this->posicion->IsDetailKey && EmptyValue($this->posicion->FormValue)) {
                 $this->posicion->addErrorMessage(str_replace("%s", $this->posicion->caption(), $this->posicion->RequiredErrorMessage));
+            }
+        }
+        if ($this->nombre_equipo->Required) {
+            if (!$this->nombre_equipo->IsDetailKey && EmptyValue($this->nombre_equipo->FormValue)) {
+                $this->nombre_equipo->addErrorMessage(str_replace("%s", $this->nombre_equipo->caption(), $this->nombre_equipo->RequiredErrorMessage));
             }
         }
 
@@ -1105,6 +1145,9 @@ class JugadorEdit extends Jugador
 
         // posicion
         $this->posicion->setDbValueDef($rsnew, $this->posicion->CurrentValue, null, $this->posicion->ReadOnly);
+
+        // nombre_equipo
+        $this->nombre_equipo->setDbValueDef($rsnew, $this->nombre_equipo->CurrentValue, null, $this->nombre_equipo->ReadOnly);
 
         // Update current values
         $this->setCurrentValues($rsnew);

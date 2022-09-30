@@ -465,6 +465,7 @@ class JugadorAddopt extends Jugador
         $this->modifica_dato->setVisibility();
         $this->usuario_dato->setVisibility();
         $this->posicion->setVisibility();
+        $this->nombre_equipo->setVisibility();
         $this->hideFieldsForAddEdit();
 
         // Set lookup cache
@@ -580,6 +581,12 @@ class JugadorAddopt extends Jugador
             $this->posicion->setFormValue(ConvertFromUtf8($val));
         }
 
+        // Check field name 'nombre_equipo' first before field var 'x_nombre_equipo'
+        $val = $CurrentForm->hasValue("nombre_equipo") ? $CurrentForm->getValue("nombre_equipo") : $CurrentForm->getValue("x_nombre_equipo");
+        if (!$this->nombre_equipo->IsDetailKey) {
+            $this->nombre_equipo->setFormValue(ConvertFromUtf8($val));
+        }
+
         // Check field name 'id_jugador' first before field var 'x_id_jugador'
         $val = $CurrentForm->hasValue("id_jugador") ? $CurrentForm->getValue("id_jugador") : $CurrentForm->getValue("x_id_jugador");
         $this->getUploadFiles(); // Get upload files
@@ -597,6 +604,7 @@ class JugadorAddopt extends Jugador
         $this->modifica_dato->CurrentValue = UnFormatDateTime($this->modifica_dato->CurrentValue, $this->modifica_dato->formatPattern());
         $this->usuario_dato->CurrentValue = ConvertToUtf8($this->usuario_dato->FormValue);
         $this->posicion->CurrentValue = ConvertToUtf8($this->posicion->FormValue);
+        $this->nombre_equipo->CurrentValue = ConvertToUtf8($this->nombre_equipo->FormValue);
     }
 
     /**
@@ -655,6 +663,7 @@ class JugadorAddopt extends Jugador
         $this->modifica_dato->setDbValue($row['modifica_dato']);
         $this->usuario_dato->setDbValue($row['usuario_dato']);
         $this->posicion->setDbValue($row['posicion']);
+        $this->nombre_equipo->setDbValue($row['nombre_equipo']);
     }
 
     // Return a row with default values
@@ -669,6 +678,7 @@ class JugadorAddopt extends Jugador
         $row['modifica_dato'] = $this->modifica_dato->DefaultValue;
         $row['usuario_dato'] = $this->usuario_dato->DefaultValue;
         $row['posicion'] = $this->posicion->DefaultValue;
+        $row['nombre_equipo'] = $this->nombre_equipo->DefaultValue;
         return $row;
     }
 
@@ -707,6 +717,9 @@ class JugadorAddopt extends Jugador
 
         // posicion
         $this->posicion->RowCssClass = "row";
+
+        // nombre_equipo
+        $this->nombre_equipo->RowCssClass = "row";
 
         // View row
         if ($this->RowType == ROWTYPE_VIEW) {
@@ -751,6 +764,10 @@ class JugadorAddopt extends Jugador
             // posicion
             $this->posicion->ViewValue = $this->posicion->CurrentValue;
             $this->posicion->ViewCustomAttributes = "";
+
+            // nombre_equipo
+            $this->nombre_equipo->ViewValue = $this->nombre_equipo->CurrentValue;
+            $this->nombre_equipo->ViewCustomAttributes = "";
 
             // nombre_jugador
             $this->nombre_jugador->LinkCustomAttributes = "";
@@ -802,6 +819,11 @@ class JugadorAddopt extends Jugador
             $this->posicion->LinkCustomAttributes = "";
             $this->posicion->HrefValue = "";
             $this->posicion->TooltipValue = "";
+
+            // nombre_equipo
+            $this->nombre_equipo->LinkCustomAttributes = "";
+            $this->nombre_equipo->HrefValue = "";
+            $this->nombre_equipo->TooltipValue = "";
         } elseif ($this->RowType == ROWTYPE_ADD) {
             // nombre_jugador
             $this->nombre_jugador->setupEditAttributes();
@@ -860,6 +882,12 @@ class JugadorAddopt extends Jugador
             $this->posicion->EditValue = HtmlEncode($this->posicion->CurrentValue);
             $this->posicion->PlaceHolder = RemoveHtml($this->posicion->caption());
 
+            // nombre_equipo
+            $this->nombre_equipo->setupEditAttributes();
+            $this->nombre_equipo->EditCustomAttributes = "";
+            $this->nombre_equipo->EditValue = HtmlEncode($this->nombre_equipo->CurrentValue);
+            $this->nombre_equipo->PlaceHolder = RemoveHtml($this->nombre_equipo->caption());
+
             // Add refer script
 
             // nombre_jugador
@@ -898,6 +926,10 @@ class JugadorAddopt extends Jugador
             // posicion
             $this->posicion->LinkCustomAttributes = "";
             $this->posicion->HrefValue = "";
+
+            // nombre_equipo
+            $this->nombre_equipo->LinkCustomAttributes = "";
+            $this->nombre_equipo->HrefValue = "";
         }
         if ($this->RowType == ROWTYPE_ADD || $this->RowType == ROWTYPE_EDIT || $this->RowType == ROWTYPE_SEARCH) { // Add/Edit/Search row
             $this->setupFieldTitles();
@@ -958,6 +990,11 @@ class JugadorAddopt extends Jugador
         if ($this->posicion->Required) {
             if (!$this->posicion->IsDetailKey && EmptyValue($this->posicion->FormValue)) {
                 $this->posicion->addErrorMessage(str_replace("%s", $this->posicion->caption(), $this->posicion->RequiredErrorMessage));
+            }
+        }
+        if ($this->nombre_equipo->Required) {
+            if (!$this->nombre_equipo->IsDetailKey && EmptyValue($this->nombre_equipo->FormValue)) {
+                $this->nombre_equipo->addErrorMessage(str_replace("%s", $this->nombre_equipo->caption(), $this->nombre_equipo->RequiredErrorMessage));
             }
         }
 

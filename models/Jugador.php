@@ -39,6 +39,7 @@ class Jugador extends DbTable
     public $modifica_dato;
     public $usuario_dato;
     public $posicion;
+    public $nombre_equipo;
 
     // Page ID
     public $PageID = ""; // To be overridden by subclass
@@ -257,6 +258,28 @@ class Jugador extends DbTable
         );
         $this->posicion->InputTextType = "text";
         $this->Fields['posicion'] = &$this->posicion;
+
+        // nombre_equipo
+        $this->nombre_equipo = new DbField(
+            'jugador',
+            'jugador',
+            'x_nombre_equipo',
+            'nombre_equipo',
+            '`nombre_equipo`',
+            '`nombre_equipo`',
+            201,
+            256,
+            -1,
+            false,
+            '`nombre_equipo`',
+            false,
+            false,
+            false,
+            'FORMATTED TEXT',
+            'TEXTAREA'
+        );
+        $this->nombre_equipo->InputTextType = "text";
+        $this->Fields['nombre_equipo'] = &$this->nombre_equipo;
 
         // Add Doctrine Cache
         $this->Cache = new ArrayCache();
@@ -696,6 +719,7 @@ class Jugador extends DbTable
         $this->modifica_dato->DbValue = $row['modifica_dato'];
         $this->usuario_dato->DbValue = $row['usuario_dato'];
         $this->posicion->DbValue = $row['posicion'];
+        $this->nombre_equipo->DbValue = $row['nombre_equipo'];
     }
 
     // Delete uploaded files
@@ -1028,6 +1052,7 @@ class Jugador extends DbTable
         $this->modifica_dato->setDbValue($row['modifica_dato']);
         $this->usuario_dato->setDbValue($row['usuario_dato']);
         $this->posicion->setDbValue($row['posicion']);
+        $this->nombre_equipo->setDbValue($row['nombre_equipo']);
     }
 
     // Render list row values
@@ -1055,6 +1080,8 @@ class Jugador extends DbTable
         // usuario_dato
 
         // posicion
+
+        // nombre_equipo
 
         // id_jugador
         $this->id_jugador->ViewValue = $this->id_jugador->CurrentValue;
@@ -1097,6 +1124,10 @@ class Jugador extends DbTable
         // posicion
         $this->posicion->ViewValue = $this->posicion->CurrentValue;
         $this->posicion->ViewCustomAttributes = "";
+
+        // nombre_equipo
+        $this->nombre_equipo->ViewValue = $this->nombre_equipo->CurrentValue;
+        $this->nombre_equipo->ViewCustomAttributes = "";
 
         // id_jugador
         $this->id_jugador->LinkCustomAttributes = "";
@@ -1153,6 +1184,11 @@ class Jugador extends DbTable
         $this->posicion->LinkCustomAttributes = "";
         $this->posicion->HrefValue = "";
         $this->posicion->TooltipValue = "";
+
+        // nombre_equipo
+        $this->nombre_equipo->LinkCustomAttributes = "";
+        $this->nombre_equipo->HrefValue = "";
+        $this->nombre_equipo->TooltipValue = "";
 
         // Call Row Rendered event
         $this->rowRendered();
@@ -1228,6 +1264,12 @@ class Jugador extends DbTable
         $this->posicion->EditValue = $this->posicion->CurrentValue;
         $this->posicion->PlaceHolder = RemoveHtml($this->posicion->caption());
 
+        // nombre_equipo
+        $this->nombre_equipo->setupEditAttributes();
+        $this->nombre_equipo->EditCustomAttributes = "";
+        $this->nombre_equipo->EditValue = $this->nombre_equipo->CurrentValue;
+        $this->nombre_equipo->PlaceHolder = RemoveHtml($this->nombre_equipo->caption());
+
         // Call Row Rendered event
         $this->rowRendered();
     }
@@ -1264,6 +1306,7 @@ class Jugador extends DbTable
                     $doc->exportCaption($this->modifica_dato);
                     $doc->exportCaption($this->usuario_dato);
                     $doc->exportCaption($this->posicion);
+                    $doc->exportCaption($this->nombre_equipo);
                 } else {
                     $doc->exportCaption($this->id_jugador);
                     $doc->exportCaption($this->crea_dato);
@@ -1306,6 +1349,7 @@ class Jugador extends DbTable
                         $doc->exportField($this->modifica_dato);
                         $doc->exportField($this->usuario_dato);
                         $doc->exportField($this->posicion);
+                        $doc->exportField($this->nombre_equipo);
                     } else {
                         $doc->exportField($this->id_jugador);
                         $doc->exportField($this->crea_dato);

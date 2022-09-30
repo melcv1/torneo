@@ -68,6 +68,9 @@ $Page->showMessage();
 <?php if ($Page->posicion->Visible) { // posicion ?>
         <th class="<?= $Page->posicion->headerCellClass() ?>"><span id="elh_jugador_posicion" class="jugador_posicion"><?= $Page->posicion->caption() ?></span></th>
 <?php } ?>
+<?php if ($Page->nombre_equipo->Visible) { // nombre_equipo ?>
+        <th class="<?= $Page->nombre_equipo->headerCellClass() ?>"><span id="elh_jugador_nombre_equipo" class="jugador_nombre_equipo"><?= $Page->nombre_equipo->caption() ?></span></th>
+<?php } ?>
     </tr>
     </thead>
     <tbody>
@@ -151,6 +154,14 @@ while (!$Page->Recordset->EOF) {
 <span id="el<?= $Page->RowCount ?>_jugador_posicion" class="el_jugador_posicion">
 <span<?= $Page->posicion->viewAttributes() ?>>
 <?= $Page->posicion->getViewValue() ?></span>
+</span>
+</td>
+<?php } ?>
+<?php if ($Page->nombre_equipo->Visible) { // nombre_equipo ?>
+        <td<?= $Page->nombre_equipo->cellAttributes() ?>>
+<span id="el<?= $Page->RowCount ?>_jugador_nombre_equipo" class="el_jugador_nombre_equipo">
+<span<?= $Page->nombre_equipo->viewAttributes() ?>>
+<?= $Page->nombre_equipo->getViewValue() ?></span>
 </span>
 </td>
 <?php } ?>

@@ -133,6 +133,17 @@ $Page->showMessage();
 </td>
     </tr>
 <?php } ?>
+<?php if ($Page->nombre_equipo->Visible) { // nombre_equipo ?>
+    <tr id="r_nombre_equipo"<?= $Page->nombre_equipo->rowAttributes() ?>>
+        <td class="<?= $Page->TableLeftColumnClass ?>"><span id="elh_jugador_nombre_equipo"><?= $Page->nombre_equipo->caption() ?></span></td>
+        <td data-name="nombre_equipo"<?= $Page->nombre_equipo->cellAttributes() ?>>
+<span id="el_jugador_nombre_equipo">
+<span<?= $Page->nombre_equipo->viewAttributes() ?>>
+<?= $Page->nombre_equipo->getViewValue() ?></span>
+</span>
+</td>
+    </tr>
+<?php } ?>
 </table>
 </form>
 <?php

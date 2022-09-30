@@ -26,7 +26,8 @@ loadjs.ready(["wrapper", "head"], function () {
         ["crea_dato", [fields.crea_dato.visible && fields.crea_dato.required ? ew.Validators.required(fields.crea_dato.caption) : null, ew.Validators.datetime(fields.crea_dato.clientFormatPattern)], fields.crea_dato.isInvalid],
         ["modifica_dato", [fields.modifica_dato.visible && fields.modifica_dato.required ? ew.Validators.required(fields.modifica_dato.caption) : null, ew.Validators.datetime(fields.modifica_dato.clientFormatPattern)], fields.modifica_dato.isInvalid],
         ["usuario_dato", [fields.usuario_dato.visible && fields.usuario_dato.required ? ew.Validators.required(fields.usuario_dato.caption) : null], fields.usuario_dato.isInvalid],
-        ["posicion", [fields.posicion.visible && fields.posicion.required ? ew.Validators.required(fields.posicion.caption) : null], fields.posicion.isInvalid]
+        ["posicion", [fields.posicion.visible && fields.posicion.required ? ew.Validators.required(fields.posicion.caption) : null], fields.posicion.isInvalid],
+        ["nombre_equipo", [fields.nombre_equipo.visible && fields.nombre_equipo.required ? ew.Validators.required(fields.nombre_equipo.caption) : null], fields.nombre_equipo.isInvalid]
     ]);
 
     // Form_CustomValidate
@@ -175,6 +176,15 @@ loadjs.ready(["fjugadoraddopt", "datetimepicker"], function () {
         <div class="col-sm-10"><div<?= $Page->posicion->cellAttributes() ?>>
 <input type="<?= $Page->posicion->getInputTextType() ?>" name="x_posicion" id="x_posicion" data-table="jugador" data-field="x_posicion" value="<?= $Page->posicion->EditValue ?>" size="30" maxlength="56" placeholder="<?= HtmlEncode($Page->posicion->getPlaceHolder()) ?>"<?= $Page->posicion->editAttributes() ?>>
 <div class="invalid-feedback"><?= $Page->posicion->getErrorMessage() ?></div>
+</div></div>
+    </div>
+<?php } ?>
+<?php if ($Page->nombre_equipo->Visible) { // nombre_equipo ?>
+    <div<?= $Page->nombre_equipo->rowAttributes() ?>>
+        <label class="col-sm-2 col-form-label ew-label" for="x_nombre_equipo"><?= $Page->nombre_equipo->caption() ?><?= $Page->nombre_equipo->Required ? $Language->phrase("FieldRequiredIndicator") : "" ?></label>
+        <div class="col-sm-10"><div<?= $Page->nombre_equipo->cellAttributes() ?>>
+<textarea data-table="jugador" data-field="x_nombre_equipo" name="x_nombre_equipo" id="x_nombre_equipo" cols="35" rows="4" placeholder="<?= HtmlEncode($Page->nombre_equipo->getPlaceHolder()) ?>"<?= $Page->nombre_equipo->editAttributes() ?>><?= $Page->nombre_equipo->EditValue ?></textarea>
+<div class="invalid-feedback"><?= $Page->nombre_equipo->getErrorMessage() ?></div>
 </div></div>
     </div>
 <?php } ?>

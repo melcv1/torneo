@@ -214,8 +214,9 @@ function Api_Action($app) {
             echo 'hola';
             $json = utf8_encode($response);
             $data = json_decode($json);
+            print_r("data:". $data);
        }    
-        return $data;
+        return $response;
     });
 }
 

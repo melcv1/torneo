@@ -176,12 +176,13 @@ function Api_Action($app) {
     });
       $app->get('/v1/jugadores', function ($request, $response, $args) {
         $myArray="todo ok";
-         $response = $response->withJson(ExecuteRows("SELECT a.NOM_EQUIPO_LARGO, b.nombre_jugador, b.votos_jugador, b.imagen_jugador, b.posicion 
-         FROM jugador as b 
-         JOIN jugadorequipo as c
-         ON b.id_jugador=c.id_jugador 
-         JOIN equipo as a 
-         ON a.id_equipo=c.id_equipo;"));
+        $response = $response->withJson(ExecuteRows("SELECT a.NOM_EQUIPO_LARGO, b.nombre_jugador, b.votos_jugador, b.imagen_jugador, b.posicion 
+        FROM jugador as b 
+        JOIN jugadorequipo as c
+        ON b.id_jugador=c.id_jugador 
+        JOIN equipo as a 
+        ON a.id_equipo=c.id_equipo;"));
+        
         return $response;
     });
     $app->get('/v1/votos/{ID_JUGADOR}', function ($request, $response, $args) {
@@ -205,18 +206,19 @@ function Api_Action($app) {
            }    
          return $response;
   });
-   $app->get('/v1/sumar/voto/{ID_JUGADOR}', function ($request, $response, $args) {
+  $app->get('/v1/sumar/voto/{ID_JUGADOR}', function ($request, $response, $args) {
+    $dato="hola";
         $ID_EQUIPO = $args["ID_JUGADOR"] ?? null; // Get the input value
         if ($ID_EQUIPO !== null) {
-            $response = $response->withJson(ExecuteRows("SELECT votos_jugador from jugador WHERE ID_JUGADOR= '" . AdjustSql($ID_EQUIPO) . "'"));
-            //$p= json_decode($response, true);
-            $json = utf8_encode($response);
-            $data = json_decode($json);
-            print_r("data".$data);
-            $json2 = str_replace('&quot;', '"', $response);
-            $object = json_decode($json2);
-            print_r("object;". $object);
-       }    
+            $sql_local = "
+            UPDATE jugador
+            SET
+           votos_jugador =votos_jugador + 1 
+           WHERE ID_JUGADOR ='". $ID_EQUIPO. "';
+           ";
+            Execute($sql_local);
+       } 
+        $response = $response->withJson( json_encode(array('mensaje' => 'Datos insertados correctamente. ')));
         return $response;
     });
 }

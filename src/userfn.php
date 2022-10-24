@@ -185,6 +185,11 @@ function Api_Action($app) {
           $response = $response->withJson(ExecuteRows("SELECT * from jugador;"));
         return $response;
     });
+     $app->get('/v1/pronostica', function ($request, $response, $args) {
+        $myArray="todo ok";
+          $response = $response->withJson(ExecuteRows("SELECT * from pronosticador;"));
+        return $response;
+    });
     $app->get('/v1/votos/{ID_JUGADOR}', function ($request, $response, $args) {
         $ID_EQUIPO = $args["ID_JUGADOR"] ?? null; // Get the input value
         if ($ID_EQUIPO !== null) {

@@ -187,7 +187,7 @@ function Api_Action($app) {
     });
      $app->get('/v1/pronostica', function ($request, $response, $args) {
         $myArray="todo ok";
-          $response = $response->withJson(ExecuteRows("SELECT * from pronosticador;"));
+          $response = $response->withJson(ExecuteRows("SELECT a.NOM_EQUIPO_CORTO, a.NOM_EQUIPO_LARGO, a.ESCUDO_EQUIPO, b.GRUPO, c.posicion, c.numeracion FROM equipotorneo as b INNER JOIN equipo as a ON a.id_equipo=b.ID_EQUIPO INNER JOIN pronosticador as c ON b.ID_EQUIPO_TORNEO = c.ID_EQUIPOTORNEO;"));
         return $response;
     });
     $app->get('/v1/votos/{ID_JUGADOR}', function ($request, $response, $args) {

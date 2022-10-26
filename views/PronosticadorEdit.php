@@ -28,7 +28,8 @@ loadjs.ready(["wrapper", "head"], function () {
         ["NUMERACION", [fields.NUMERACION.visible && fields.NUMERACION.required ? ew.Validators.required(fields.NUMERACION.caption) : null], fields.NUMERACION.isInvalid],
         ["crea_dato", [fields.crea_dato.visible && fields.crea_dato.required ? ew.Validators.required(fields.crea_dato.caption) : null], fields.crea_dato.isInvalid],
         ["modifica_dato", [fields.modifica_dato.visible && fields.modifica_dato.required ? ew.Validators.required(fields.modifica_dato.caption) : null], fields.modifica_dato.isInvalid],
-        ["usuario_dato", [fields.usuario_dato.visible && fields.usuario_dato.required ? ew.Validators.required(fields.usuario_dato.caption) : null], fields.usuario_dato.isInvalid]
+        ["usuario_dato", [fields.usuario_dato.visible && fields.usuario_dato.required ? ew.Validators.required(fields.usuario_dato.caption) : null], fields.usuario_dato.isInvalid],
+        ["ID_EQUIPOTORNEO", [fields.ID_EQUIPOTORNEO.visible && fields.ID_EQUIPOTORNEO.required ? ew.Validators.required(fields.ID_EQUIPOTORNEO.caption) : null], fields.ID_EQUIPOTORNEO.isInvalid]
     ]);
 
     // Form_CustomValidate
@@ -45,6 +46,7 @@ loadjs.ready(["wrapper", "head"], function () {
     fpronosticadoredit.lists.GRUPO = <?= $Page->GRUPO->toClientList($Page) ?>;
     fpronosticadoredit.lists.EQUIPO = <?= $Page->EQUIPO->toClientList($Page) ?>;
     fpronosticadoredit.lists.POSICION = <?= $Page->POSICION->toClientList($Page) ?>;
+    fpronosticadoredit.lists.ID_EQUIPOTORNEO = <?= $Page->ID_EQUIPOTORNEO->toClientList($Page) ?>;
     loadjs.done("fpronosticadoredit");
 });
 </script>
@@ -137,6 +139,7 @@ loadjs.ready("fpronosticadoredit", function() {
     </select>
     <?= $Page->GRUPO->getCustomMessage() ?>
     <div class="invalid-feedback"><?= $Page->GRUPO->getErrorMessage() ?></div>
+<?= $Page->GRUPO->Lookup->getParamTag($Page, "p_x_GRUPO") ?>
 <script>
 loadjs.ready("fpronosticadoredit", function() {
     var options = { name: "x_GRUPO", selectId: "fpronosticadoredit_x_GRUPO" },
@@ -266,6 +269,46 @@ loadjs.ready("fpronosticadoredit", function() {
 <input type="text" readonly class="form-control-plaintext" value="<?= HtmlEncode(RemoveHtml($Page->modifica_dato->getDisplayValue($Page->modifica_dato->EditValue))) ?>"></span>
 </span>
 <input type="hidden" data-table="pronosticador" data-field="x_modifica_dato" data-hidden="1" name="x_modifica_dato" id="x_modifica_dato" value="<?= HtmlEncode($Page->modifica_dato->CurrentValue) ?>">
+</div></div>
+    </div>
+<?php } ?>
+<?php if ($Page->ID_EQUIPOTORNEO->Visible) { // ID_EQUIPOTORNEO ?>
+    <div id="r_ID_EQUIPOTORNEO"<?= $Page->ID_EQUIPOTORNEO->rowAttributes() ?>>
+        <label id="elh_pronosticador_ID_EQUIPOTORNEO" for="x_ID_EQUIPOTORNEO" class="<?= $Page->LeftColumnClass ?>"><?= $Page->ID_EQUIPOTORNEO->caption() ?><?= $Page->ID_EQUIPOTORNEO->Required ? $Language->phrase("FieldRequiredIndicator") : "" ?></label>
+        <div class="<?= $Page->RightColumnClass ?>"><div<?= $Page->ID_EQUIPOTORNEO->cellAttributes() ?>>
+<span id="el_pronosticador_ID_EQUIPOTORNEO">
+<?php $Page->ID_EQUIPOTORNEO->EditAttrs->prepend("onchange", "ew.updateOptions.call(this);"); ?>
+    <select
+        id="x_ID_EQUIPOTORNEO"
+        name="x_ID_EQUIPOTORNEO"
+        class="form-select ew-select<?= $Page->ID_EQUIPOTORNEO->isInvalidClass() ?>"
+        data-select2-id="fpronosticadoredit_x_ID_EQUIPOTORNEO"
+        data-table="pronosticador"
+        data-field="x_ID_EQUIPOTORNEO"
+        data-value-separator="<?= $Page->ID_EQUIPOTORNEO->displayValueSeparatorAttribute() ?>"
+        data-placeholder="<?= HtmlEncode($Page->ID_EQUIPOTORNEO->getPlaceHolder()) ?>"
+        <?= $Page->ID_EQUIPOTORNEO->editAttributes() ?>>
+        <?= $Page->ID_EQUIPOTORNEO->selectOptionListHtml("x_ID_EQUIPOTORNEO") ?>
+    </select>
+    <?= $Page->ID_EQUIPOTORNEO->getCustomMessage() ?>
+    <div class="invalid-feedback"><?= $Page->ID_EQUIPOTORNEO->getErrorMessage() ?></div>
+<?= $Page->ID_EQUIPOTORNEO->Lookup->getParamTag($Page, "p_x_ID_EQUIPOTORNEO") ?>
+<script>
+loadjs.ready("fpronosticadoredit", function() {
+    var options = { name: "x_ID_EQUIPOTORNEO", selectId: "fpronosticadoredit_x_ID_EQUIPOTORNEO" },
+        el = document.querySelector("select[data-select2-id='" + options.selectId + "']");
+    options.dropdownParent = el.closest("#ew-modal-dialog, #ew-add-opt-dialog");
+    if (fpronosticadoredit.lists.ID_EQUIPOTORNEO.lookupOptions.length) {
+        options.data = { id: "x_ID_EQUIPOTORNEO", form: "fpronosticadoredit" };
+    } else {
+        options.ajax = { id: "x_ID_EQUIPOTORNEO", form: "fpronosticadoredit", limit: ew.LOOKUP_PAGE_SIZE };
+    }
+    options.minimumResultsForSearch = Infinity;
+    options = Object.assign({}, ew.selectOptions, options, ew.vars.tables.pronosticador.fields.ID_EQUIPOTORNEO.selectOptions);
+    ew.createSelect(options);
+});
+</script>
+</span>
 </div></div>
     </div>
 <?php } ?>

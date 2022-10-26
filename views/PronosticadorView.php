@@ -143,6 +143,17 @@ $Page->showMessage();
 </td>
     </tr>
 <?php } ?>
+<?php if ($Page->ID_EQUIPOTORNEO->Visible) { // ID_EQUIPOTORNEO ?>
+    <tr id="r_ID_EQUIPOTORNEO"<?= $Page->ID_EQUIPOTORNEO->rowAttributes() ?>>
+        <td class="<?= $Page->TableLeftColumnClass ?>"><span id="elh_pronosticador_ID_EQUIPOTORNEO"><?= $Page->ID_EQUIPOTORNEO->caption() ?></span></td>
+        <td data-name="ID_EQUIPOTORNEO"<?= $Page->ID_EQUIPOTORNEO->cellAttributes() ?>>
+<span id="el_pronosticador_ID_EQUIPOTORNEO">
+<span<?= $Page->ID_EQUIPOTORNEO->viewAttributes() ?>>
+<?= $Page->ID_EQUIPOTORNEO->getViewValue() ?></span>
+</span>
+</td>
+    </tr>
+<?php } ?>
 </table>
 </form>
 <?php

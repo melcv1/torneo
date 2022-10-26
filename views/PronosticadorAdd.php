@@ -24,7 +24,8 @@ loadjs.ready(["wrapper", "head"], function () {
         ["GRUPO", [fields.GRUPO.visible && fields.GRUPO.required ? ew.Validators.required(fields.GRUPO.caption) : null], fields.GRUPO.isInvalid],
         ["EQUIPO", [fields.EQUIPO.visible && fields.EQUIPO.required ? ew.Validators.required(fields.EQUIPO.caption) : null], fields.EQUIPO.isInvalid],
         ["POSICION", [fields.POSICION.visible && fields.POSICION.required ? ew.Validators.required(fields.POSICION.caption) : null], fields.POSICION.isInvalid],
-        ["NUMERACION", [fields.NUMERACION.visible && fields.NUMERACION.required ? ew.Validators.required(fields.NUMERACION.caption) : null], fields.NUMERACION.isInvalid]
+        ["NUMERACION", [fields.NUMERACION.visible && fields.NUMERACION.required ? ew.Validators.required(fields.NUMERACION.caption) : null], fields.NUMERACION.isInvalid],
+        ["ID_EQUIPOTORNEO", [fields.ID_EQUIPOTORNEO.visible && fields.ID_EQUIPOTORNEO.required ? ew.Validators.required(fields.ID_EQUIPOTORNEO.caption) : null], fields.ID_EQUIPOTORNEO.isInvalid]
     ]);
 
     // Form_CustomValidate
@@ -41,6 +42,7 @@ loadjs.ready(["wrapper", "head"], function () {
     fpronosticadoradd.lists.GRUPO = <?= $Page->GRUPO->toClientList($Page) ?>;
     fpronosticadoradd.lists.EQUIPO = <?= $Page->EQUIPO->toClientList($Page) ?>;
     fpronosticadoradd.lists.POSICION = <?= $Page->POSICION->toClientList($Page) ?>;
+    fpronosticadoradd.lists.ID_EQUIPOTORNEO = <?= $Page->ID_EQUIPOTORNEO->toClientList($Page) ?>;
     loadjs.done("fpronosticadoradd");
 });
 </script>
@@ -121,6 +123,7 @@ loadjs.ready("fpronosticadoradd", function() {
     </select>
     <?= $Page->GRUPO->getCustomMessage() ?>
     <div class="invalid-feedback"><?= $Page->GRUPO->getErrorMessage() ?></div>
+<?= $Page->GRUPO->Lookup->getParamTag($Page, "p_x_GRUPO") ?>
 <script>
 loadjs.ready("fpronosticadoradd", function() {
     var options = { name: "x_GRUPO", selectId: "fpronosticadoradd_x_GRUPO" },
@@ -225,6 +228,46 @@ loadjs.ready("fpronosticadoradd", function() {
 <input type="<?= $Page->NUMERACION->getInputTextType() ?>" name="x_NUMERACION" id="x_NUMERACION" data-table="pronosticador" data-field="x_NUMERACION" value="<?= $Page->NUMERACION->EditValue ?>" size="30" maxlength="4" placeholder="<?= HtmlEncode($Page->NUMERACION->getPlaceHolder()) ?>"<?= $Page->NUMERACION->editAttributes() ?> aria-describedby="x_NUMERACION_help">
 <?= $Page->NUMERACION->getCustomMessage() ?>
 <div class="invalid-feedback"><?= $Page->NUMERACION->getErrorMessage() ?></div>
+</span>
+</div></div>
+    </div>
+<?php } ?>
+<?php if ($Page->ID_EQUIPOTORNEO->Visible) { // ID_EQUIPOTORNEO ?>
+    <div id="r_ID_EQUIPOTORNEO"<?= $Page->ID_EQUIPOTORNEO->rowAttributes() ?>>
+        <label id="elh_pronosticador_ID_EQUIPOTORNEO" for="x_ID_EQUIPOTORNEO" class="<?= $Page->LeftColumnClass ?>"><?= $Page->ID_EQUIPOTORNEO->caption() ?><?= $Page->ID_EQUIPOTORNEO->Required ? $Language->phrase("FieldRequiredIndicator") : "" ?></label>
+        <div class="<?= $Page->RightColumnClass ?>"><div<?= $Page->ID_EQUIPOTORNEO->cellAttributes() ?>>
+<span id="el_pronosticador_ID_EQUIPOTORNEO">
+<?php $Page->ID_EQUIPOTORNEO->EditAttrs->prepend("onchange", "ew.updateOptions.call(this);"); ?>
+    <select
+        id="x_ID_EQUIPOTORNEO"
+        name="x_ID_EQUIPOTORNEO"
+        class="form-select ew-select<?= $Page->ID_EQUIPOTORNEO->isInvalidClass() ?>"
+        data-select2-id="fpronosticadoradd_x_ID_EQUIPOTORNEO"
+        data-table="pronosticador"
+        data-field="x_ID_EQUIPOTORNEO"
+        data-value-separator="<?= $Page->ID_EQUIPOTORNEO->displayValueSeparatorAttribute() ?>"
+        data-placeholder="<?= HtmlEncode($Page->ID_EQUIPOTORNEO->getPlaceHolder()) ?>"
+        <?= $Page->ID_EQUIPOTORNEO->editAttributes() ?>>
+        <?= $Page->ID_EQUIPOTORNEO->selectOptionListHtml("x_ID_EQUIPOTORNEO") ?>
+    </select>
+    <?= $Page->ID_EQUIPOTORNEO->getCustomMessage() ?>
+    <div class="invalid-feedback"><?= $Page->ID_EQUIPOTORNEO->getErrorMessage() ?></div>
+<?= $Page->ID_EQUIPOTORNEO->Lookup->getParamTag($Page, "p_x_ID_EQUIPOTORNEO") ?>
+<script>
+loadjs.ready("fpronosticadoradd", function() {
+    var options = { name: "x_ID_EQUIPOTORNEO", selectId: "fpronosticadoradd_x_ID_EQUIPOTORNEO" },
+        el = document.querySelector("select[data-select2-id='" + options.selectId + "']");
+    options.dropdownParent = el.closest("#ew-modal-dialog, #ew-add-opt-dialog");
+    if (fpronosticadoradd.lists.ID_EQUIPOTORNEO.lookupOptions.length) {
+        options.data = { id: "x_ID_EQUIPOTORNEO", form: "fpronosticadoradd" };
+    } else {
+        options.ajax = { id: "x_ID_EQUIPOTORNEO", form: "fpronosticadoradd", limit: ew.LOOKUP_PAGE_SIZE };
+    }
+    options.minimumResultsForSearch = Infinity;
+    options = Object.assign({}, ew.selectOptions, options, ew.vars.tables.pronosticador.fields.ID_EQUIPOTORNEO.selectOptions);
+    ew.createSelect(options);
+});
+</script>
 </span>
 </div></div>
     </div>

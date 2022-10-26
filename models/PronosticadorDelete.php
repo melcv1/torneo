@@ -412,6 +412,7 @@ class PronosticadorDelete extends Pronosticador
         $this->crea_dato->setVisibility();
         $this->modifica_dato->setVisibility();
         $this->usuario_dato->Visible = false;
+        $this->ID_EQUIPOTORNEO->setVisibility();
         $this->hideFieldsForAddEdit();
 
         // Set lookup cache
@@ -432,6 +433,7 @@ class PronosticadorDelete extends Pronosticador
         $this->setupLookupOptions($this->GRUPO);
         $this->setupLookupOptions($this->EQUIPO);
         $this->setupLookupOptions($this->POSICION);
+        $this->setupLookupOptions($this->ID_EQUIPOTORNEO);
 
         // Set up Breadcrumb
         $this->setupBreadcrumb();
@@ -608,6 +610,7 @@ class PronosticadorDelete extends Pronosticador
         $this->crea_dato->setDbValue($row['crea_dato']);
         $this->modifica_dato->setDbValue($row['modifica_dato']);
         $this->usuario_dato->setDbValue($row['usuario_dato']);
+        $this->ID_EQUIPOTORNEO->setDbValue($row['ID_EQUIPOTORNEO']);
     }
 
     // Return a row with default values
@@ -623,6 +626,7 @@ class PronosticadorDelete extends Pronosticador
         $row['crea_dato'] = $this->crea_dato->DefaultValue;
         $row['modifica_dato'] = $this->modifica_dato->DefaultValue;
         $row['usuario_dato'] = $this->usuario_dato->DefaultValue;
+        $row['ID_EQUIPOTORNEO'] = $this->ID_EQUIPOTORNEO->DefaultValue;
         return $row;
     }
 
@@ -656,6 +660,8 @@ class PronosticadorDelete extends Pronosticador
 
         // usuario_dato
 
+        // ID_EQUIPOTORNEO
+
         // View row
         if ($this->RowType == ROWTYPE_VIEW) {
             // ID_ENCUESTA
@@ -687,8 +693,24 @@ class PronosticadorDelete extends Pronosticador
             $this->ID_PARTICIPANTE->ViewCustomAttributes = "";
 
             // GRUPO
-            if (strval($this->GRUPO->CurrentValue) != "") {
-                $this->GRUPO->ViewValue = $this->GRUPO->optionCaption($this->GRUPO->CurrentValue);
+            $curVal = strval($this->GRUPO->CurrentValue);
+            if ($curVal != "") {
+                $this->GRUPO->ViewValue = $this->GRUPO->lookupCacheOption($curVal);
+                if ($this->GRUPO->ViewValue === null) { // Lookup from database
+                    $filterWrk = "`GRUPO`" . SearchString("=", $curVal, DATATYPE_MEMO, "");
+                    $sqlWrk = $this->GRUPO->Lookup->getSql(false, $filterWrk, '', $this, true, true);
+                    $conn = Conn();
+                    $config = $conn->getConfiguration();
+                    $config->setResultCacheImpl($this->Cache);
+                    $rswrk = $conn->executeCacheQuery($sqlWrk, [], [], $this->CacheProfile)->fetchAll();
+                    $ari = count($rswrk);
+                    if ($ari > 0) { // Lookup values found
+                        $arwrk = $this->GRUPO->Lookup->renderViewRow($rswrk[0]);
+                        $this->GRUPO->ViewValue = $this->GRUPO->displayValue($arwrk);
+                    } else {
+                        $this->GRUPO->ViewValue = $this->GRUPO->CurrentValue;
+                    }
+                }
             } else {
                 $this->GRUPO->ViewValue = null;
             }
@@ -699,7 +721,7 @@ class PronosticadorDelete extends Pronosticador
             if ($curVal != "") {
                 $this->EQUIPO->ViewValue = $this->EQUIPO->lookupCacheOption($curVal);
                 if ($this->EQUIPO->ViewValue === null) { // Lookup from database
-                    $filterWrk = "`NOM_EQUIPO_CORTO`" . SearchString("=", $curVal, DATATYPE_MEMO, "");
+                    $filterWrk = "`NOM_EQUIPO_LARGO`" . SearchString("=", $curVal, DATATYPE_MEMO, "");
                     $sqlWrk = $this->EQUIPO->Lookup->getSql(false, $filterWrk, '', $this, true, true);
                     $conn = Conn();
                     $config = $conn->getConfiguration();
@@ -740,6 +762,30 @@ class PronosticadorDelete extends Pronosticador
             $this->modifica_dato->ViewValue = FormatDateTime($this->modifica_dato->ViewValue, $this->modifica_dato->formatPattern());
             $this->modifica_dato->ViewCustomAttributes = "";
 
+            // ID_EQUIPOTORNEO
+            $curVal = strval($this->ID_EQUIPOTORNEO->CurrentValue);
+            if ($curVal != "") {
+                $this->ID_EQUIPOTORNEO->ViewValue = $this->ID_EQUIPOTORNEO->lookupCacheOption($curVal);
+                if ($this->ID_EQUIPOTORNEO->ViewValue === null) { // Lookup from database
+                    $filterWrk = "`ID_EQUIPO_TORNEO`" . SearchString("=", $curVal, DATATYPE_NUMBER, "");
+                    $sqlWrk = $this->ID_EQUIPOTORNEO->Lookup->getSql(false, $filterWrk, '', $this, true, true);
+                    $conn = Conn();
+                    $config = $conn->getConfiguration();
+                    $config->setResultCacheImpl($this->Cache);
+                    $rswrk = $conn->executeCacheQuery($sqlWrk, [], [], $this->CacheProfile)->fetchAll();
+                    $ari = count($rswrk);
+                    if ($ari > 0) { // Lookup values found
+                        $arwrk = $this->ID_EQUIPOTORNEO->Lookup->renderViewRow($rswrk[0]);
+                        $this->ID_EQUIPOTORNEO->ViewValue = $this->ID_EQUIPOTORNEO->displayValue($arwrk);
+                    } else {
+                        $this->ID_EQUIPOTORNEO->ViewValue = FormatNumber($this->ID_EQUIPOTORNEO->CurrentValue, $this->ID_EQUIPOTORNEO->formatPattern());
+                    }
+                }
+            } else {
+                $this->ID_EQUIPOTORNEO->ViewValue = null;
+            }
+            $this->ID_EQUIPOTORNEO->ViewCustomAttributes = "";
+
             // ID_ENCUESTA
             $this->ID_ENCUESTA->LinkCustomAttributes = "";
             $this->ID_ENCUESTA->HrefValue = "";
@@ -779,6 +825,11 @@ class PronosticadorDelete extends Pronosticador
             $this->modifica_dato->LinkCustomAttributes = "";
             $this->modifica_dato->HrefValue = "";
             $this->modifica_dato->TooltipValue = "";
+
+            // ID_EQUIPOTORNEO
+            $this->ID_EQUIPOTORNEO->LinkCustomAttributes = "";
+            $this->ID_EQUIPOTORNEO->HrefValue = "";
+            $this->ID_EQUIPOTORNEO->TooltipValue = "";
         }
 
         // Call Row Rendered event
@@ -915,6 +966,8 @@ class PronosticadorDelete extends Pronosticador
                 case "x_EQUIPO":
                     break;
                 case "x_POSICION":
+                    break;
+                case "x_ID_EQUIPOTORNEO":
                     break;
                 default:
                     $lookupFilter = "";

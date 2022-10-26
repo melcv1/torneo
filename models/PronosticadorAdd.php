@@ -503,6 +503,7 @@ class PronosticadorAdd extends Pronosticador
         $this->crea_dato->Visible = false;
         $this->modifica_dato->Visible = false;
         $this->usuario_dato->Visible = false;
+        $this->ID_EQUIPOTORNEO->setVisibility();
         $this->hideFieldsForAddEdit();
 
         // Set lookup cache
@@ -523,6 +524,7 @@ class PronosticadorAdd extends Pronosticador
         $this->setupLookupOptions($this->GRUPO);
         $this->setupLookupOptions($this->EQUIPO);
         $this->setupLookupOptions($this->POSICION);
+        $this->setupLookupOptions($this->ID_EQUIPOTORNEO);
 
         // Load default values for add
         $this->loadDefaultValues();
@@ -721,6 +723,16 @@ class PronosticadorAdd extends Pronosticador
             }
         }
 
+        // Check field name 'ID_EQUIPOTORNEO' first before field var 'x_ID_EQUIPOTORNEO'
+        $val = $CurrentForm->hasValue("ID_EQUIPOTORNEO") ? $CurrentForm->getValue("ID_EQUIPOTORNEO") : $CurrentForm->getValue("x_ID_EQUIPOTORNEO");
+        if (!$this->ID_EQUIPOTORNEO->IsDetailKey) {
+            if (IsApi() && $val === null) {
+                $this->ID_EQUIPOTORNEO->Visible = false; // Disable update for API request
+            } else {
+                $this->ID_EQUIPOTORNEO->setFormValue($val);
+            }
+        }
+
         // Check field name 'ID_ENCUESTA' first before field var 'x_ID_ENCUESTA'
         $val = $CurrentForm->hasValue("ID_ENCUESTA") ? $CurrentForm->getValue("ID_ENCUESTA") : $CurrentForm->getValue("x_ID_ENCUESTA");
     }
@@ -734,6 +746,7 @@ class PronosticadorAdd extends Pronosticador
         $this->EQUIPO->CurrentValue = $this->EQUIPO->FormValue;
         $this->POSICION->CurrentValue = $this->POSICION->FormValue;
         $this->NUMERACION->CurrentValue = $this->NUMERACION->FormValue;
+        $this->ID_EQUIPOTORNEO->CurrentValue = $this->ID_EQUIPOTORNEO->FormValue;
     }
 
     /**
@@ -792,6 +805,7 @@ class PronosticadorAdd extends Pronosticador
         $this->crea_dato->setDbValue($row['crea_dato']);
         $this->modifica_dato->setDbValue($row['modifica_dato']);
         $this->usuario_dato->setDbValue($row['usuario_dato']);
+        $this->ID_EQUIPOTORNEO->setDbValue($row['ID_EQUIPOTORNEO']);
     }
 
     // Return a row with default values
@@ -807,6 +821,7 @@ class PronosticadorAdd extends Pronosticador
         $row['crea_dato'] = $this->crea_dato->DefaultValue;
         $row['modifica_dato'] = $this->modifica_dato->DefaultValue;
         $row['usuario_dato'] = $this->usuario_dato->DefaultValue;
+        $row['ID_EQUIPOTORNEO'] = $this->ID_EQUIPOTORNEO->DefaultValue;
         return $row;
     }
 
@@ -865,6 +880,9 @@ class PronosticadorAdd extends Pronosticador
         // usuario_dato
         $this->usuario_dato->RowCssClass = "row";
 
+        // ID_EQUIPOTORNEO
+        $this->ID_EQUIPOTORNEO->RowCssClass = "row";
+
         // View row
         if ($this->RowType == ROWTYPE_VIEW) {
             // ID_ENCUESTA
@@ -896,8 +914,24 @@ class PronosticadorAdd extends Pronosticador
             $this->ID_PARTICIPANTE->ViewCustomAttributes = "";
 
             // GRUPO
-            if (strval($this->GRUPO->CurrentValue) != "") {
-                $this->GRUPO->ViewValue = $this->GRUPO->optionCaption($this->GRUPO->CurrentValue);
+            $curVal = strval($this->GRUPO->CurrentValue);
+            if ($curVal != "") {
+                $this->GRUPO->ViewValue = $this->GRUPO->lookupCacheOption($curVal);
+                if ($this->GRUPO->ViewValue === null) { // Lookup from database
+                    $filterWrk = "`GRUPO`" . SearchString("=", $curVal, DATATYPE_MEMO, "");
+                    $sqlWrk = $this->GRUPO->Lookup->getSql(false, $filterWrk, '', $this, true, true);
+                    $conn = Conn();
+                    $config = $conn->getConfiguration();
+                    $config->setResultCacheImpl($this->Cache);
+                    $rswrk = $conn->executeCacheQuery($sqlWrk, [], [], $this->CacheProfile)->fetchAll();
+                    $ari = count($rswrk);
+                    if ($ari > 0) { // Lookup values found
+                        $arwrk = $this->GRUPO->Lookup->renderViewRow($rswrk[0]);
+                        $this->GRUPO->ViewValue = $this->GRUPO->displayValue($arwrk);
+                    } else {
+                        $this->GRUPO->ViewValue = $this->GRUPO->CurrentValue;
+                    }
+                }
             } else {
                 $this->GRUPO->ViewValue = null;
             }
@@ -908,7 +942,7 @@ class PronosticadorAdd extends Pronosticador
             if ($curVal != "") {
                 $this->EQUIPO->ViewValue = $this->EQUIPO->lookupCacheOption($curVal);
                 if ($this->EQUIPO->ViewValue === null) { // Lookup from database
-                    $filterWrk = "`NOM_EQUIPO_CORTO`" . SearchString("=", $curVal, DATATYPE_MEMO, "");
+                    $filterWrk = "`NOM_EQUIPO_LARGO`" . SearchString("=", $curVal, DATATYPE_MEMO, "");
                     $sqlWrk = $this->EQUIPO->Lookup->getSql(false, $filterWrk, '', $this, true, true);
                     $conn = Conn();
                     $config = $conn->getConfiguration();
@@ -949,6 +983,30 @@ class PronosticadorAdd extends Pronosticador
             $this->modifica_dato->ViewValue = FormatDateTime($this->modifica_dato->ViewValue, $this->modifica_dato->formatPattern());
             $this->modifica_dato->ViewCustomAttributes = "";
 
+            // ID_EQUIPOTORNEO
+            $curVal = strval($this->ID_EQUIPOTORNEO->CurrentValue);
+            if ($curVal != "") {
+                $this->ID_EQUIPOTORNEO->ViewValue = $this->ID_EQUIPOTORNEO->lookupCacheOption($curVal);
+                if ($this->ID_EQUIPOTORNEO->ViewValue === null) { // Lookup from database
+                    $filterWrk = "`ID_EQUIPO_TORNEO`" . SearchString("=", $curVal, DATATYPE_NUMBER, "");
+                    $sqlWrk = $this->ID_EQUIPOTORNEO->Lookup->getSql(false, $filterWrk, '', $this, true, true);
+                    $conn = Conn();
+                    $config = $conn->getConfiguration();
+                    $config->setResultCacheImpl($this->Cache);
+                    $rswrk = $conn->executeCacheQuery($sqlWrk, [], [], $this->CacheProfile)->fetchAll();
+                    $ari = count($rswrk);
+                    if ($ari > 0) { // Lookup values found
+                        $arwrk = $this->ID_EQUIPOTORNEO->Lookup->renderViewRow($rswrk[0]);
+                        $this->ID_EQUIPOTORNEO->ViewValue = $this->ID_EQUIPOTORNEO->displayValue($arwrk);
+                    } else {
+                        $this->ID_EQUIPOTORNEO->ViewValue = FormatNumber($this->ID_EQUIPOTORNEO->CurrentValue, $this->ID_EQUIPOTORNEO->formatPattern());
+                    }
+                }
+            } else {
+                $this->ID_EQUIPOTORNEO->ViewValue = null;
+            }
+            $this->ID_EQUIPOTORNEO->ViewCustomAttributes = "";
+
             // ID_PARTICIPANTE
             $this->ID_PARTICIPANTE->LinkCustomAttributes = "";
             $this->ID_PARTICIPANTE->HrefValue = "";
@@ -968,6 +1026,10 @@ class PronosticadorAdd extends Pronosticador
             // NUMERACION
             $this->NUMERACION->LinkCustomAttributes = "";
             $this->NUMERACION->HrefValue = "";
+
+            // ID_EQUIPOTORNEO
+            $this->ID_EQUIPOTORNEO->LinkCustomAttributes = "";
+            $this->ID_EQUIPOTORNEO->HrefValue = "";
         } elseif ($this->RowType == ROWTYPE_ADD) {
             // ID_PARTICIPANTE
             $this->ID_PARTICIPANTE->setupEditAttributes();
@@ -1000,7 +1062,29 @@ class PronosticadorAdd extends Pronosticador
             // GRUPO
             $this->GRUPO->setupEditAttributes();
             $this->GRUPO->EditCustomAttributes = "";
-            $this->GRUPO->EditValue = $this->GRUPO->options(true);
+            $curVal = trim(strval($this->GRUPO->CurrentValue));
+            if ($curVal != "") {
+                $this->GRUPO->ViewValue = $this->GRUPO->lookupCacheOption($curVal);
+            } else {
+                $this->GRUPO->ViewValue = $this->GRUPO->Lookup !== null && is_array($this->GRUPO->lookupOptions()) ? $curVal : null;
+            }
+            if ($this->GRUPO->ViewValue !== null) { // Load from cache
+                $this->GRUPO->EditValue = array_values($this->GRUPO->lookupOptions());
+            } else { // Lookup from database
+                if ($curVal == "") {
+                    $filterWrk = "0=1";
+                } else {
+                    $filterWrk = "`GRUPO`" . SearchString("=", $this->GRUPO->CurrentValue, DATATYPE_MEMO, "");
+                }
+                $sqlWrk = $this->GRUPO->Lookup->getSql(true, $filterWrk, '', $this, false, true);
+                $conn = Conn();
+                $config = $conn->getConfiguration();
+                $config->setResultCacheImpl($this->Cache);
+                $rswrk = $conn->executeCacheQuery($sqlWrk, [], [], $this->CacheProfile)->fetchAll();
+                $ari = count($rswrk);
+                $arwrk = $rswrk;
+                $this->GRUPO->EditValue = $arwrk;
+            }
             $this->GRUPO->PlaceHolder = RemoveHtml($this->GRUPO->caption());
 
             // EQUIPO
@@ -1018,7 +1102,7 @@ class PronosticadorAdd extends Pronosticador
                 if ($curVal == "") {
                     $filterWrk = "0=1";
                 } else {
-                    $filterWrk = "`NOM_EQUIPO_CORTO`" . SearchString("=", $this->EQUIPO->CurrentValue, DATATYPE_MEMO, "");
+                    $filterWrk = "`NOM_EQUIPO_LARGO`" . SearchString("=", $this->EQUIPO->CurrentValue, DATATYPE_MEMO, "");
                 }
                 $sqlWrk = $this->EQUIPO->Lookup->getSql(true, $filterWrk, '', $this, false, true);
                 $conn = Conn();
@@ -1046,6 +1130,37 @@ class PronosticadorAdd extends Pronosticador
             $this->NUMERACION->EditValue = HtmlEncode($this->NUMERACION->CurrentValue);
             $this->NUMERACION->PlaceHolder = RemoveHtml($this->NUMERACION->caption());
 
+            // ID_EQUIPOTORNEO
+            $this->ID_EQUIPOTORNEO->setupEditAttributes();
+            $this->ID_EQUIPOTORNEO->EditCustomAttributes = "";
+            $curVal = trim(strval($this->ID_EQUIPOTORNEO->CurrentValue));
+            if ($curVal != "") {
+                $this->ID_EQUIPOTORNEO->ViewValue = $this->ID_EQUIPOTORNEO->lookupCacheOption($curVal);
+            } else {
+                $this->ID_EQUIPOTORNEO->ViewValue = $this->ID_EQUIPOTORNEO->Lookup !== null && is_array($this->ID_EQUIPOTORNEO->lookupOptions()) ? $curVal : null;
+            }
+            if ($this->ID_EQUIPOTORNEO->ViewValue !== null) { // Load from cache
+                $this->ID_EQUIPOTORNEO->EditValue = array_values($this->ID_EQUIPOTORNEO->lookupOptions());
+            } else { // Lookup from database
+                if ($curVal == "") {
+                    $filterWrk = "0=1";
+                } else {
+                    $filterWrk = "`ID_EQUIPO_TORNEO`" . SearchString("=", $this->ID_EQUIPOTORNEO->CurrentValue, DATATYPE_NUMBER, "");
+                }
+                $sqlWrk = $this->ID_EQUIPOTORNEO->Lookup->getSql(true, $filterWrk, '', $this, false, true);
+                $conn = Conn();
+                $config = $conn->getConfiguration();
+                $config->setResultCacheImpl($this->Cache);
+                $rswrk = $conn->executeCacheQuery($sqlWrk, [], [], $this->CacheProfile)->fetchAll();
+                $ari = count($rswrk);
+                $arwrk = $rswrk;
+                foreach ($arwrk as &$row) {
+                    $row = $this->ID_EQUIPOTORNEO->Lookup->renderViewRow($row);
+                }
+                $this->ID_EQUIPOTORNEO->EditValue = $arwrk;
+            }
+            $this->ID_EQUIPOTORNEO->PlaceHolder = RemoveHtml($this->ID_EQUIPOTORNEO->caption());
+
             // Add refer script
 
             // ID_PARTICIPANTE
@@ -1067,6 +1182,10 @@ class PronosticadorAdd extends Pronosticador
             // NUMERACION
             $this->NUMERACION->LinkCustomAttributes = "";
             $this->NUMERACION->HrefValue = "";
+
+            // ID_EQUIPOTORNEO
+            $this->ID_EQUIPOTORNEO->LinkCustomAttributes = "";
+            $this->ID_EQUIPOTORNEO->HrefValue = "";
         }
         if ($this->RowType == ROWTYPE_ADD || $this->RowType == ROWTYPE_EDIT || $this->RowType == ROWTYPE_SEARCH) { // Add/Edit/Search row
             $this->setupFieldTitles();
@@ -1113,6 +1232,11 @@ class PronosticadorAdd extends Pronosticador
                 $this->NUMERACION->addErrorMessage(str_replace("%s", $this->NUMERACION->caption(), $this->NUMERACION->RequiredErrorMessage));
             }
         }
+        if ($this->ID_EQUIPOTORNEO->Required) {
+            if (!$this->ID_EQUIPOTORNEO->IsDetailKey && EmptyValue($this->ID_EQUIPOTORNEO->FormValue)) {
+                $this->ID_EQUIPOTORNEO->addErrorMessage(str_replace("%s", $this->ID_EQUIPOTORNEO->caption(), $this->ID_EQUIPOTORNEO->RequiredErrorMessage));
+            }
+        }
 
         // Return validate result
         $validateForm = $validateForm && !$this->hasInvalidFields();
@@ -1148,6 +1272,9 @@ class PronosticadorAdd extends Pronosticador
 
         // NUMERACION
         $this->NUMERACION->setDbValueDef($rsnew, $this->NUMERACION->CurrentValue, null, false);
+
+        // ID_EQUIPOTORNEO
+        $this->ID_EQUIPOTORNEO->setDbValueDef($rsnew, $this->ID_EQUIPOTORNEO->CurrentValue, 0, false);
 
         // Update current values
         $this->setCurrentValues($rsnew);
@@ -1223,6 +1350,8 @@ class PronosticadorAdd extends Pronosticador
                 case "x_EQUIPO":
                     break;
                 case "x_POSICION":
+                    break;
+                case "x_ID_EQUIPOTORNEO":
                     break;
                 default:
                     $lookupFilter = "";

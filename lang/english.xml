@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<ew-language version="18.12.0" id="en-US" name="English (US)" desc="English (US)" author="e.World Technology Limited" date="2022/9/30">
+<ew-language version="18.12.0" id="en-US" name="English (US)" desc="English (US)" author="e.World Technology Limited" date="2022/10/26">
   <!--
     IMPORTANT NOTES:
     1. Language ID must be RFC 4646 language tags (which use hyphen, not underscore), e.g. en-US, fr-CA, fr-FR,
@@ -1082,6 +1082,9 @@
       </field>
       <field id="usuario_dato">
         <phrase id="fldcaption" value="usuario dato" />
+      </field>
+      <field id="id_equipotorneo">
+        <phrase id="fldcaption" value="ID EQUIPOTORNEO" />
       </field>
     </table>
     <table id="equipo">

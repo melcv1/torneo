@@ -128,7 +128,7 @@ function Api_Action($app) {
         return $response;
     });
 
-    $app->get('/v1/equipos/{ID_TORNEO}', function ($request, $response, $args) {
+    $app->get('/v1/equipos/torneo/{ID_TORNEO}', function ($request, $response, $args) {
         
         $ID_TORNEO = $args["ID_TORNEO"] ?? null; // Get the input value
         if ($ID_TORNEO !== null) {

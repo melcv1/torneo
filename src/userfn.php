@@ -127,6 +127,18 @@ function Api_Action($app) {
          $response = $response->withJson(ExecuteRows("SELECT a.NOM_EQUIPO_CORTO, a.NOM_EQUIPO_LARGO, a.ESCUDO_EQUIPO, b.GRUPO FROM equipotorneo as b INNER JOIN equipo as a ON a.id_equipo=b.ID_EQUIPO"));
         return $response;
     });
+
+    $app->get('/v1/equipos/{ID_TORNEO}', function ($request, $response, $args) {
+        
+        $ID_TORNEO = $args["ID_TORNEO"] ?? null; // Get the input value
+        if ($ID_TORNEO !== null) {
+            $response = $response->withJson(ExecuteRows("SELECT a.NOM_EQUIPO_CORTO, a.NOM_EQUIPO_LARGO, a.ESCUDO_EQUIPO, b.GRUPO FROM equipotorneo as b INNER JOIN equipo as a ON a.id_equipo=b.ID_EQUIPO WHERE b.ID_TORNEO = '" . AdjustSql($ID_TORNEO) . "'"));
+        }    
+        return $response;
+
+    });
+
+
       $app->post('/v1/agregar', function ($request, $response, $args) {
       	$p2 = json_encode($request->getParsedBody());
         $p= json_decode($p2);

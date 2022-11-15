@@ -220,7 +220,7 @@ class ComposerStaticInit8e016a304843c1091baa8f1b127ca428
         ),
         'Doctrine\\Common\\' => 
         array (
-            0 => __DIR__ . '/..' . '/doctrine/event-manager/lib/Doctrine/Common',
+            0 => __DIR__ . '/..' . '/doctrine/event-manager/src',
         ),
         'DiDom\\' => 
         array (

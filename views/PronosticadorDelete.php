@@ -47,14 +47,14 @@ $Page->showMessage();
 <?php if ($Page->ID_ENCUESTA->Visible) { // ID_ENCUESTA ?>
         <th class="<?= $Page->ID_ENCUESTA->headerCellClass() ?>"><span id="elh_pronosticador_ID_ENCUESTA" class="pronosticador_ID_ENCUESTA"><?= $Page->ID_ENCUESTA->caption() ?></span></th>
 <?php } ?>
-<?php if ($Page->ID_PARTICIPANTE->Visible) { // ID_PARTICIPANTE ?>
-        <th class="<?= $Page->ID_PARTICIPANTE->headerCellClass() ?>"><span id="elh_pronosticador_ID_PARTICIPANTE" class="pronosticador_ID_PARTICIPANTE"><?= $Page->ID_PARTICIPANTE->caption() ?></span></th>
-<?php } ?>
-<?php if ($Page->GRUPO->Visible) { // GRUPO ?>
-        <th class="<?= $Page->GRUPO->headerCellClass() ?>"><span id="elh_pronosticador_GRUPO" class="pronosticador_GRUPO"><?= $Page->GRUPO->caption() ?></span></th>
+<?php if ($Page->ID_EQUIPOTORNEO->Visible) { // ID_EQUIPOTORNEO ?>
+        <th class="<?= $Page->ID_EQUIPOTORNEO->headerCellClass() ?>"><span id="elh_pronosticador_ID_EQUIPOTORNEO" class="pronosticador_ID_EQUIPOTORNEO"><?= $Page->ID_EQUIPOTORNEO->caption() ?></span></th>
 <?php } ?>
 <?php if ($Page->EQUIPO->Visible) { // EQUIPO ?>
         <th class="<?= $Page->EQUIPO->headerCellClass() ?>"><span id="elh_pronosticador_EQUIPO" class="pronosticador_EQUIPO"><?= $Page->EQUIPO->caption() ?></span></th>
+<?php } ?>
+<?php if ($Page->GRUPO->Visible) { // GRUPO ?>
+        <th class="<?= $Page->GRUPO->headerCellClass() ?>"><span id="elh_pronosticador_GRUPO" class="pronosticador_GRUPO"><?= $Page->GRUPO->caption() ?></span></th>
 <?php } ?>
 <?php if ($Page->POSICION->Visible) { // POSICION ?>
         <th class="<?= $Page->POSICION->headerCellClass() ?>"><span id="elh_pronosticador_POSICION" class="pronosticador_POSICION"><?= $Page->POSICION->caption() ?></span></th>
@@ -68,8 +68,8 @@ $Page->showMessage();
 <?php if ($Page->modifica_dato->Visible) { // modifica_dato ?>
         <th class="<?= $Page->modifica_dato->headerCellClass() ?>"><span id="elh_pronosticador_modifica_dato" class="pronosticador_modifica_dato"><?= $Page->modifica_dato->caption() ?></span></th>
 <?php } ?>
-<?php if ($Page->ID_EQUIPOTORNEO->Visible) { // ID_EQUIPOTORNEO ?>
-        <th class="<?= $Page->ID_EQUIPOTORNEO->headerCellClass() ?>"><span id="elh_pronosticador_ID_EQUIPOTORNEO" class="pronosticador_ID_EQUIPOTORNEO"><?= $Page->ID_EQUIPOTORNEO->caption() ?></span></th>
+<?php if ($Page->ID_PARTICIPANTE->Visible) { // ID_PARTICIPANTE ?>
+        <th class="<?= $Page->ID_PARTICIPANTE->headerCellClass() ?>"><span id="elh_pronosticador_ID_PARTICIPANTE" class="pronosticador_ID_PARTICIPANTE"><?= $Page->ID_PARTICIPANTE->caption() ?></span></th>
 <?php } ?>
     </tr>
     </thead>
@@ -100,19 +100,11 @@ while (!$Page->Recordset->EOF) {
 </span>
 </td>
 <?php } ?>
-<?php if ($Page->ID_PARTICIPANTE->Visible) { // ID_PARTICIPANTE ?>
-        <td<?= $Page->ID_PARTICIPANTE->cellAttributes() ?>>
-<span id="el<?= $Page->RowCount ?>_pronosticador_ID_PARTICIPANTE" class="el_pronosticador_ID_PARTICIPANTE">
-<span<?= $Page->ID_PARTICIPANTE->viewAttributes() ?>>
-<?= $Page->ID_PARTICIPANTE->getViewValue() ?></span>
-</span>
-</td>
-<?php } ?>
-<?php if ($Page->GRUPO->Visible) { // GRUPO ?>
-        <td<?= $Page->GRUPO->cellAttributes() ?>>
-<span id="el<?= $Page->RowCount ?>_pronosticador_GRUPO" class="el_pronosticador_GRUPO">
-<span<?= $Page->GRUPO->viewAttributes() ?>>
-<?= $Page->GRUPO->getViewValue() ?></span>
+<?php if ($Page->ID_EQUIPOTORNEO->Visible) { // ID_EQUIPOTORNEO ?>
+        <td<?= $Page->ID_EQUIPOTORNEO->cellAttributes() ?>>
+<span id="el<?= $Page->RowCount ?>_pronosticador_ID_EQUIPOTORNEO" class="el_pronosticador_ID_EQUIPOTORNEO">
+<span<?= $Page->ID_EQUIPOTORNEO->viewAttributes() ?>>
+<?= $Page->ID_EQUIPOTORNEO->getViewValue() ?></span>
 </span>
 </td>
 <?php } ?>
@@ -121,6 +113,14 @@ while (!$Page->Recordset->EOF) {
 <span id="el<?= $Page->RowCount ?>_pronosticador_EQUIPO" class="el_pronosticador_EQUIPO">
 <span<?= $Page->EQUIPO->viewAttributes() ?>>
 <?= $Page->EQUIPO->getViewValue() ?></span>
+</span>
+</td>
+<?php } ?>
+<?php if ($Page->GRUPO->Visible) { // GRUPO ?>
+        <td<?= $Page->GRUPO->cellAttributes() ?>>
+<span id="el<?= $Page->RowCount ?>_pronosticador_GRUPO" class="el_pronosticador_GRUPO">
+<span<?= $Page->GRUPO->viewAttributes() ?>>
+<?= $Page->GRUPO->getViewValue() ?></span>
 </span>
 </td>
 <?php } ?>
@@ -156,11 +156,11 @@ while (!$Page->Recordset->EOF) {
 </span>
 </td>
 <?php } ?>
-<?php if ($Page->ID_EQUIPOTORNEO->Visible) { // ID_EQUIPOTORNEO ?>
-        <td<?= $Page->ID_EQUIPOTORNEO->cellAttributes() ?>>
-<span id="el<?= $Page->RowCount ?>_pronosticador_ID_EQUIPOTORNEO" class="el_pronosticador_ID_EQUIPOTORNEO">
-<span<?= $Page->ID_EQUIPOTORNEO->viewAttributes() ?>>
-<?= $Page->ID_EQUIPOTORNEO->getViewValue() ?></span>
+<?php if ($Page->ID_PARTICIPANTE->Visible) { // ID_PARTICIPANTE ?>
+        <td<?= $Page->ID_PARTICIPANTE->cellAttributes() ?>>
+<span id="el<?= $Page->RowCount ?>_pronosticador_ID_PARTICIPANTE" class="el_pronosticador_ID_PARTICIPANTE">
+<span<?= $Page->ID_PARTICIPANTE->viewAttributes() ?>>
+<?= $Page->ID_PARTICIPANTE->getViewValue() ?></span>
 </span>
 </td>
 <?php } ?>

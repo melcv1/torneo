@@ -55,24 +55,13 @@ $Page->showMessage();
 </td>
     </tr>
 <?php } ?>
-<?php if ($Page->ID_PARTICIPANTE->Visible) { // ID_PARTICIPANTE ?>
-    <tr id="r_ID_PARTICIPANTE"<?= $Page->ID_PARTICIPANTE->rowAttributes() ?>>
-        <td class="<?= $Page->TableLeftColumnClass ?>"><span id="elh_pronosticador_ID_PARTICIPANTE"><?= $Page->ID_PARTICIPANTE->caption() ?></span></td>
-        <td data-name="ID_PARTICIPANTE"<?= $Page->ID_PARTICIPANTE->cellAttributes() ?>>
-<span id="el_pronosticador_ID_PARTICIPANTE">
-<span<?= $Page->ID_PARTICIPANTE->viewAttributes() ?>>
-<?= $Page->ID_PARTICIPANTE->getViewValue() ?></span>
-</span>
-</td>
-    </tr>
-<?php } ?>
-<?php if ($Page->GRUPO->Visible) { // GRUPO ?>
-    <tr id="r_GRUPO"<?= $Page->GRUPO->rowAttributes() ?>>
-        <td class="<?= $Page->TableLeftColumnClass ?>"><span id="elh_pronosticador_GRUPO"><?= $Page->GRUPO->caption() ?></span></td>
-        <td data-name="GRUPO"<?= $Page->GRUPO->cellAttributes() ?>>
-<span id="el_pronosticador_GRUPO">
-<span<?= $Page->GRUPO->viewAttributes() ?>>
-<?= $Page->GRUPO->getViewValue() ?></span>
+<?php if ($Page->ID_EQUIPOTORNEO->Visible) { // ID_EQUIPOTORNEO ?>
+    <tr id="r_ID_EQUIPOTORNEO"<?= $Page->ID_EQUIPOTORNEO->rowAttributes() ?>>
+        <td class="<?= $Page->TableLeftColumnClass ?>"><span id="elh_pronosticador_ID_EQUIPOTORNEO"><?= $Page->ID_EQUIPOTORNEO->caption() ?></span></td>
+        <td data-name="ID_EQUIPOTORNEO"<?= $Page->ID_EQUIPOTORNEO->cellAttributes() ?>>
+<span id="el_pronosticador_ID_EQUIPOTORNEO">
+<span<?= $Page->ID_EQUIPOTORNEO->viewAttributes() ?>>
+<?= $Page->ID_EQUIPOTORNEO->getViewValue() ?></span>
 </span>
 </td>
     </tr>
@@ -84,6 +73,17 @@ $Page->showMessage();
 <span id="el_pronosticador_EQUIPO">
 <span<?= $Page->EQUIPO->viewAttributes() ?>>
 <?= $Page->EQUIPO->getViewValue() ?></span>
+</span>
+</td>
+    </tr>
+<?php } ?>
+<?php if ($Page->GRUPO->Visible) { // GRUPO ?>
+    <tr id="r_GRUPO"<?= $Page->GRUPO->rowAttributes() ?>>
+        <td class="<?= $Page->TableLeftColumnClass ?>"><span id="elh_pronosticador_GRUPO"><?= $Page->GRUPO->caption() ?></span></td>
+        <td data-name="GRUPO"<?= $Page->GRUPO->cellAttributes() ?>>
+<span id="el_pronosticador_GRUPO">
+<span<?= $Page->GRUPO->viewAttributes() ?>>
+<?= $Page->GRUPO->getViewValue() ?></span>
 </span>
 </td>
     </tr>
@@ -143,13 +143,13 @@ $Page->showMessage();
 </td>
     </tr>
 <?php } ?>
-<?php if ($Page->ID_EQUIPOTORNEO->Visible) { // ID_EQUIPOTORNEO ?>
-    <tr id="r_ID_EQUIPOTORNEO"<?= $Page->ID_EQUIPOTORNEO->rowAttributes() ?>>
-        <td class="<?= $Page->TableLeftColumnClass ?>"><span id="elh_pronosticador_ID_EQUIPOTORNEO"><?= $Page->ID_EQUIPOTORNEO->caption() ?></span></td>
-        <td data-name="ID_EQUIPOTORNEO"<?= $Page->ID_EQUIPOTORNEO->cellAttributes() ?>>
-<span id="el_pronosticador_ID_EQUIPOTORNEO">
-<span<?= $Page->ID_EQUIPOTORNEO->viewAttributes() ?>>
-<?= $Page->ID_EQUIPOTORNEO->getViewValue() ?></span>
+<?php if ($Page->ID_PARTICIPANTE->Visible) { // ID_PARTICIPANTE ?>
+    <tr id="r_ID_PARTICIPANTE"<?= $Page->ID_PARTICIPANTE->rowAttributes() ?>>
+        <td class="<?= $Page->TableLeftColumnClass ?>"><span id="elh_pronosticador_ID_PARTICIPANTE"><?= $Page->ID_PARTICIPANTE->caption() ?></span></td>
+        <td data-name="ID_PARTICIPANTE"<?= $Page->ID_PARTICIPANTE->cellAttributes() ?>>
+<span id="el_pronosticador_ID_PARTICIPANTE">
+<span<?= $Page->ID_PARTICIPANTE->viewAttributes() ?>>
+<?= $Page->ID_PARTICIPANTE->getViewValue() ?></span>
 </span>
 </td>
     </tr>

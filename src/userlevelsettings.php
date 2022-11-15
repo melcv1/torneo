@@ -7,26 +7,26 @@ namespace PHPMaker2022\project11;
 // User level info
 $USER_LEVELS = [["-2","Anonymous"]];
 // User level priv info
-$USER_LEVEL_PRIVS = [["{1FEE5CED-11BB-4991-94A0-946354AE0202}audittrail","-2","0"],
-    ["{1FEE5CED-11BB-4991-94A0-946354AE0202}pronosticador","-2","0"],
-    ["{1FEE5CED-11BB-4991-94A0-946354AE0202}equipo","-2","0"],
-    ["{1FEE5CED-11BB-4991-94A0-946354AE0202}equipotorneo","-2","0"],
-    ["{1FEE5CED-11BB-4991-94A0-946354AE0202}participante","-2","0"],
-    ["{1FEE5CED-11BB-4991-94A0-946354AE0202}partidos","-2","0"],
-    ["{1FEE5CED-11BB-4991-94A0-946354AE0202}torneo","-2","0"],
-    ["{1FEE5CED-11BB-4991-94A0-946354AE0202}usuario","-2","0"],
-    ["{1FEE5CED-11BB-4991-94A0-946354AE0202}estadio","-2","0"],
-    ["{1FEE5CED-11BB-4991-94A0-946354AE0202}jugador","-2","0"],
-    ["{1FEE5CED-11BB-4991-94A0-946354AE0202}jugadorequipo","-2","0"]];
+$USER_LEVEL_PRIVS = [["{4A0F714B-8654-4C88-BF21-989887219213}audittrail","-2","0"],
+    ["{4A0F714B-8654-4C88-BF21-989887219213}pronosticador","-2","0"],
+    ["{4A0F714B-8654-4C88-BF21-989887219213}equipo","-2","0"],
+    ["{4A0F714B-8654-4C88-BF21-989887219213}equipotorneo","-2","0"],
+    ["{4A0F714B-8654-4C88-BF21-989887219213}participante","-2","0"],
+    ["{4A0F714B-8654-4C88-BF21-989887219213}partidos","-2","0"],
+    ["{4A0F714B-8654-4C88-BF21-989887219213}torneo","-2","0"],
+    ["{4A0F714B-8654-4C88-BF21-989887219213}usuario","-2","0"],
+    ["{4A0F714B-8654-4C88-BF21-989887219213}estadio","-2","0"],
+    ["{4A0F714B-8654-4C88-BF21-989887219213}jugador","-2","0"],
+    ["{4A0F714B-8654-4C88-BF21-989887219213}jugadorequipo","-2","0"]];
 // User level table info
-$USER_LEVEL_TABLES = [["audittrail","audittrail","audittrail",true,"{1FEE5CED-11BB-4991-94A0-946354AE0202}",""],
-    ["pronosticador","pronosticador","Pronosticador",true,"{1FEE5CED-11BB-4991-94A0-946354AE0202}","pronosticadorlist"],
-    ["equipo","equipo","Equipo",true,"{1FEE5CED-11BB-4991-94A0-946354AE0202}","equipolist"],
-    ["equipotorneo","equipotorneo","Equipo Torneo",true,"{1FEE5CED-11BB-4991-94A0-946354AE0202}","equipotorneolist"],
-    ["participante","participante","Participante",true,"{1FEE5CED-11BB-4991-94A0-946354AE0202}","participantelist"],
-    ["partidos","partidos","Partidos",true,"{1FEE5CED-11BB-4991-94A0-946354AE0202}","partidoslist"],
-    ["torneo","torneo","Torneo",true,"{1FEE5CED-11BB-4991-94A0-946354AE0202}","torneolist"],
-    ["usuario","usuario","usuario",true,"{1FEE5CED-11BB-4991-94A0-946354AE0202}",""],
-    ["estadio","estadio","Estadio",true,"{1FEE5CED-11BB-4991-94A0-946354AE0202}","estadiolist"],
-    ["jugador","jugador","Jugador",true,"{1FEE5CED-11BB-4991-94A0-946354AE0202}","jugadorlist"],
-    ["jugadorequipo","jugadorequipo","Jugador Equipo",true,"{1FEE5CED-11BB-4991-94A0-946354AE0202}","jugadorequipolist"]];
+$USER_LEVEL_TABLES = [["audittrail","audittrail","audittrail",true,"{4A0F714B-8654-4C88-BF21-989887219213}",""],
+    ["pronosticador","pronosticador","Pronosticador",true,"{4A0F714B-8654-4C88-BF21-989887219213}","pronosticadorlist"],
+    ["equipo","equipo","Equipo",true,"{4A0F714B-8654-4C88-BF21-989887219213}","equipolist"],
+    ["equipotorneo","equipotorneo","Equipo Torneo",true,"{4A0F714B-8654-4C88-BF21-989887219213}","equipotorneolist"],
+    ["participante","participante","Participante",true,"{4A0F714B-8654-4C88-BF21-989887219213}","participantelist"],
+    ["partidos","partidos","Partidos",true,"{4A0F714B-8654-4C88-BF21-989887219213}","partidoslist"],
+    ["torneo","torneo","Torneo",true,"{4A0F714B-8654-4C88-BF21-989887219213}","torneolist"],
+    ["usuario","usuario","usuario",true,"{4A0F714B-8654-4C88-BF21-989887219213}",""],
+    ["estadio","estadio","Estadio",true,"{4A0F714B-8654-4C88-BF21-989887219213}","estadiolist"],
+    ["jugador","jugador","Jugador",true,"{4A0F714B-8654-4C88-BF21-989887219213}","jugadorlist"],
+    ["jugadorequipo","jugadorequipo","Jugador Equipo",true,"{4A0F714B-8654-4C88-BF21-989887219213}","jugadorequipolist"]];

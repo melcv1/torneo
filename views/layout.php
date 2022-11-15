@@ -221,7 +221,7 @@ ew.ready("head", [
                     <a class="nav-link" data-widget="pushmenu" data-enable-remember="true" data-ew-action="none"><i class="fas fa-bars ew-icon"></i></a>
                 </li>
                 <a class="navbar-brand d-none d-md-block" href="#" data-ew-action="none">
-                    <span class="brand-text">Torneos</span>
+                    <span class="brand-text">PHPMaker 2022</span>
                 </a>
             </ul>
             <!-- Right navbar links -->
@@ -234,7 +234,7 @@ ew.ready("head", [
         <div class="brand-container">
             <!-- Brand Logo //** Note: Only licensed users are allowed to change the logo ** -->
             <a href="#" class="brand-link">
-                <span class="brand-text">Torneos</span>
+                <span class="brand-text">PHPMaker 2022</span>
             </a>
             <?php if (preg_match('/\bsidebar-mini\b/', Config("BODY_CLASS"))) { ?>
             <a class="pushmenu mx-1" data-pushmenu="mini" role="button"><i class="fas fa-angle-double-left"></i></a>
@@ -379,6 +379,8 @@ loadjs.done("wrapper");
 </script>
 <!-- modal dialog -->
 <div id="ew-modal-dialog" class="modal" role="dialog" aria-hidden="true"><div class="modal-dialog modal-fullscreen-sm-down"><div class="modal-content"><div class="modal-header"><h5 class="modal-title"></h5><button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="<?= $Language->phrase("CloseBtn") ?>"></div><div class="modal-body"></div><div class="modal-footer"></div></div></div></div>
+<!-- modal lookup dialog -->
+<div id="ew-modal-lookup-dialog" class="modal" role="dialog" aria-hidden="true"><div class="modal-dialog modal-fullscreen-sm-down"><div class="modal-content"><div class="modal-header"><h5 class="modal-title"></h5></div><div class="modal-body p-0"></div><div class="modal-footer"><button type="button" class="btn btn-primary ew-btn" data-value="true" data-bs-dismiss="modal"><?= $Language->phrase("OKBtn") ?></button><button type="button" class="btn btn-default ew-btn" data-value="false" data-bs-dismiss="modal"><?= $Language->phrase("CancelBtn") ?></button></div></div></div></div>
 <!-- table header filter dropdown footer -->
 <div id="ew-filter-dropdown-footer" class="d-none"><div class="dropdown-divider my-0"></div><div class="dropdown-footer text-start p-2"><button type="button" class="btn btn-link ew-btn ew-filter-clear"><?= $Language->phrase("Clear") ?></button><button type="button" class="btn btn-default ew-btn ew-filter-btn ms-2 float-end" data-value="false"><?= $Language->phrase("CancelBtn") ?></button><button type="button" class="btn btn-primary ew-btn ew-filter-btn ms-1 float-end" data-value="true"><?= $Language->phrase("OKBtn") ?></button></div></div>
 <!-- add option dialog -->

@@ -81,7 +81,7 @@ define(PROJECT_NAMESPACE . "PRODUCT_VERSION", "18.12.0");
 
 // Project
 define(PROJECT_NAMESPACE . "PROJECT_NAME", "project11"); // Project name
-define(PROJECT_NAMESPACE . "PROJECT_ID", "{1FEE5CED-11BB-4991-94A0-946354AE0202}"); // Project ID
+define(PROJECT_NAMESPACE . "PROJECT_ID", "{4A0F714B-8654-4C88-BF21-989887219213}"); // Project ID
 
 /**
  * Character encoding

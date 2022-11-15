@@ -11,7 +11,6 @@ return function (App $app) {
     $app->map(["GET","POST","OPTIONS"], '/pronosticadorlist[/{ID_ENCUESTA}]', PronosticadorController::class . ':list')->add(PermissionMiddleware::class)->setName('pronosticadorlist-pronosticador-list'); // list
     $app->map(["GET","POST","OPTIONS"], '/pronosticadoradd[/{ID_ENCUESTA}]', PronosticadorController::class . ':add')->add(PermissionMiddleware::class)->setName('pronosticadoradd-pronosticador-add'); // add
     $app->map(["GET","POST","OPTIONS"], '/pronosticadorview[/{ID_ENCUESTA}]', PronosticadorController::class . ':view')->add(PermissionMiddleware::class)->setName('pronosticadorview-pronosticador-view'); // view
-    $app->map(["GET","POST","OPTIONS"], '/pronosticadoredit[/{ID_ENCUESTA}]', PronosticadorController::class . ':edit')->add(PermissionMiddleware::class)->setName('pronosticadoredit-pronosticador-edit'); // edit
     $app->map(["GET","POST","OPTIONS"], '/pronosticadordelete[/{ID_ENCUESTA}]', PronosticadorController::class . ':delete')->add(PermissionMiddleware::class)->setName('pronosticadordelete-pronosticador-delete'); // delete
     $app->group(
         '/pronosticador',
@@ -19,7 +18,6 @@ return function (App $app) {
             $group->map(["GET","POST","OPTIONS"], '/' . Config("LIST_ACTION") . '[/{ID_ENCUESTA}]', PronosticadorController::class . ':list')->add(PermissionMiddleware::class)->setName('pronosticador/list-pronosticador-list-2'); // list
             $group->map(["GET","POST","OPTIONS"], '/' . Config("ADD_ACTION") . '[/{ID_ENCUESTA}]', PronosticadorController::class . ':add')->add(PermissionMiddleware::class)->setName('pronosticador/add-pronosticador-add-2'); // add
             $group->map(["GET","POST","OPTIONS"], '/' . Config("VIEW_ACTION") . '[/{ID_ENCUESTA}]', PronosticadorController::class . ':view')->add(PermissionMiddleware::class)->setName('pronosticador/view-pronosticador-view-2'); // view
-            $group->map(["GET","POST","OPTIONS"], '/' . Config("EDIT_ACTION") . '[/{ID_ENCUESTA}]', PronosticadorController::class . ':edit')->add(PermissionMiddleware::class)->setName('pronosticador/edit-pronosticador-edit-2'); // edit
             $group->map(["GET","POST","OPTIONS"], '/' . Config("DELETE_ACTION") . '[/{ID_ENCUESTA}]', PronosticadorController::class . ':delete')->add(PermissionMiddleware::class)->setName('pronosticador/delete-pronosticador-delete-2'); // delete
         }
     );

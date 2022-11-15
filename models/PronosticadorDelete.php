@@ -404,15 +404,15 @@ class PronosticadorDelete extends Pronosticador
         $this->UseLayout = $this->UseLayout && ConvertToBool(Param("layout", true));
         $this->CurrentAction = Param("action"); // Set up current action
         $this->ID_ENCUESTA->setVisibility();
-        $this->ID_PARTICIPANTE->setVisibility();
-        $this->GRUPO->setVisibility();
+        $this->ID_EQUIPOTORNEO->setVisibility();
         $this->EQUIPO->setVisibility();
+        $this->GRUPO->setVisibility();
         $this->POSICION->setVisibility();
         $this->NUMERACION->setVisibility();
         $this->crea_dato->setVisibility();
         $this->modifica_dato->setVisibility();
         $this->usuario_dato->Visible = false;
-        $this->ID_EQUIPOTORNEO->setVisibility();
+        $this->ID_PARTICIPANTE->setVisibility();
         $this->hideFieldsForAddEdit();
 
         // Set lookup cache
@@ -429,11 +429,12 @@ class PronosticadorDelete extends Pronosticador
         }
 
         // Set up lookup cache
-        $this->setupLookupOptions($this->ID_PARTICIPANTE);
-        $this->setupLookupOptions($this->GRUPO);
-        $this->setupLookupOptions($this->EQUIPO);
-        $this->setupLookupOptions($this->POSICION);
         $this->setupLookupOptions($this->ID_EQUIPOTORNEO);
+        $this->setupLookupOptions($this->EQUIPO);
+        $this->setupLookupOptions($this->GRUPO);
+        $this->setupLookupOptions($this->POSICION);
+        $this->setupLookupOptions($this->NUMERACION);
+        $this->setupLookupOptions($this->ID_PARTICIPANTE);
 
         // Set up Breadcrumb
         $this->setupBreadcrumb();
@@ -602,15 +603,20 @@ class PronosticadorDelete extends Pronosticador
         // Call Row Selected event
         $this->rowSelected($row);
         $this->ID_ENCUESTA->setDbValue($row['ID_ENCUESTA']);
-        $this->ID_PARTICIPANTE->setDbValue($row['ID_PARTICIPANTE']);
-        $this->GRUPO->setDbValue($row['GRUPO']);
+        $this->ID_EQUIPOTORNEO->setDbValue($row['ID_EQUIPOTORNEO']);
         $this->EQUIPO->setDbValue($row['EQUIPO']);
+        if (array_key_exists('EV__EQUIPO', $row)) {
+            $this->EQUIPO->VirtualValue = $row['EV__EQUIPO']; // Set up virtual field value
+        } else {
+            $this->EQUIPO->VirtualValue = ""; // Clear value
+        }
+        $this->GRUPO->setDbValue($row['GRUPO']);
         $this->POSICION->setDbValue($row['POSICION']);
         $this->NUMERACION->setDbValue($row['NUMERACION']);
         $this->crea_dato->setDbValue($row['crea_dato']);
         $this->modifica_dato->setDbValue($row['modifica_dato']);
         $this->usuario_dato->setDbValue($row['usuario_dato']);
-        $this->ID_EQUIPOTORNEO->setDbValue($row['ID_EQUIPOTORNEO']);
+        $this->ID_PARTICIPANTE->setDbValue($row['ID_PARTICIPANTE']);
     }
 
     // Return a row with default values
@@ -618,15 +624,15 @@ class PronosticadorDelete extends Pronosticador
     {
         $row = [];
         $row['ID_ENCUESTA'] = $this->ID_ENCUESTA->DefaultValue;
-        $row['ID_PARTICIPANTE'] = $this->ID_PARTICIPANTE->DefaultValue;
-        $row['GRUPO'] = $this->GRUPO->DefaultValue;
+        $row['ID_EQUIPOTORNEO'] = $this->ID_EQUIPOTORNEO->DefaultValue;
         $row['EQUIPO'] = $this->EQUIPO->DefaultValue;
+        $row['GRUPO'] = $this->GRUPO->DefaultValue;
         $row['POSICION'] = $this->POSICION->DefaultValue;
         $row['NUMERACION'] = $this->NUMERACION->DefaultValue;
         $row['crea_dato'] = $this->crea_dato->DefaultValue;
         $row['modifica_dato'] = $this->modifica_dato->DefaultValue;
         $row['usuario_dato'] = $this->usuario_dato->DefaultValue;
-        $row['ID_EQUIPOTORNEO'] = $this->ID_EQUIPOTORNEO->DefaultValue;
+        $row['ID_PARTICIPANTE'] = $this->ID_PARTICIPANTE->DefaultValue;
         return $row;
     }
 
@@ -644,11 +650,11 @@ class PronosticadorDelete extends Pronosticador
 
         // ID_ENCUESTA
 
-        // ID_PARTICIPANTE
-
-        // GRUPO
+        // ID_EQUIPOTORNEO
 
         // EQUIPO
+
+        // GRUPO
 
         // POSICION
 
@@ -660,107 +666,13 @@ class PronosticadorDelete extends Pronosticador
 
         // usuario_dato
 
-        // ID_EQUIPOTORNEO
+        // ID_PARTICIPANTE
 
         // View row
         if ($this->RowType == ROWTYPE_VIEW) {
             // ID_ENCUESTA
             $this->ID_ENCUESTA->ViewValue = $this->ID_ENCUESTA->CurrentValue;
             $this->ID_ENCUESTA->ViewCustomAttributes = "";
-
-            // ID_PARTICIPANTE
-            $curVal = strval($this->ID_PARTICIPANTE->CurrentValue);
-            if ($curVal != "") {
-                $this->ID_PARTICIPANTE->ViewValue = $this->ID_PARTICIPANTE->lookupCacheOption($curVal);
-                if ($this->ID_PARTICIPANTE->ViewValue === null) { // Lookup from database
-                    $filterWrk = "`ID_PARTICIPANTE`" . SearchString("=", $curVal, DATATYPE_NUMBER, "");
-                    $sqlWrk = $this->ID_PARTICIPANTE->Lookup->getSql(false, $filterWrk, '', $this, true, true);
-                    $conn = Conn();
-                    $config = $conn->getConfiguration();
-                    $config->setResultCacheImpl($this->Cache);
-                    $rswrk = $conn->executeCacheQuery($sqlWrk, [], [], $this->CacheProfile)->fetchAll();
-                    $ari = count($rswrk);
-                    if ($ari > 0) { // Lookup values found
-                        $arwrk = $this->ID_PARTICIPANTE->Lookup->renderViewRow($rswrk[0]);
-                        $this->ID_PARTICIPANTE->ViewValue = $this->ID_PARTICIPANTE->displayValue($arwrk);
-                    } else {
-                        $this->ID_PARTICIPANTE->ViewValue = FormatNumber($this->ID_PARTICIPANTE->CurrentValue, $this->ID_PARTICIPANTE->formatPattern());
-                    }
-                }
-            } else {
-                $this->ID_PARTICIPANTE->ViewValue = null;
-            }
-            $this->ID_PARTICIPANTE->ViewCustomAttributes = "";
-
-            // GRUPO
-            $curVal = strval($this->GRUPO->CurrentValue);
-            if ($curVal != "") {
-                $this->GRUPO->ViewValue = $this->GRUPO->lookupCacheOption($curVal);
-                if ($this->GRUPO->ViewValue === null) { // Lookup from database
-                    $filterWrk = "`GRUPO`" . SearchString("=", $curVal, DATATYPE_MEMO, "");
-                    $sqlWrk = $this->GRUPO->Lookup->getSql(false, $filterWrk, '', $this, true, true);
-                    $conn = Conn();
-                    $config = $conn->getConfiguration();
-                    $config->setResultCacheImpl($this->Cache);
-                    $rswrk = $conn->executeCacheQuery($sqlWrk, [], [], $this->CacheProfile)->fetchAll();
-                    $ari = count($rswrk);
-                    if ($ari > 0) { // Lookup values found
-                        $arwrk = $this->GRUPO->Lookup->renderViewRow($rswrk[0]);
-                        $this->GRUPO->ViewValue = $this->GRUPO->displayValue($arwrk);
-                    } else {
-                        $this->GRUPO->ViewValue = $this->GRUPO->CurrentValue;
-                    }
-                }
-            } else {
-                $this->GRUPO->ViewValue = null;
-            }
-            $this->GRUPO->ViewCustomAttributes = "";
-
-            // EQUIPO
-            $curVal = strval($this->EQUIPO->CurrentValue);
-            if ($curVal != "") {
-                $this->EQUIPO->ViewValue = $this->EQUIPO->lookupCacheOption($curVal);
-                if ($this->EQUIPO->ViewValue === null) { // Lookup from database
-                    $filterWrk = "`NOM_EQUIPO_LARGO`" . SearchString("=", $curVal, DATATYPE_MEMO, "");
-                    $sqlWrk = $this->EQUIPO->Lookup->getSql(false, $filterWrk, '', $this, true, true);
-                    $conn = Conn();
-                    $config = $conn->getConfiguration();
-                    $config->setResultCacheImpl($this->Cache);
-                    $rswrk = $conn->executeCacheQuery($sqlWrk, [], [], $this->CacheProfile)->fetchAll();
-                    $ari = count($rswrk);
-                    if ($ari > 0) { // Lookup values found
-                        $arwrk = $this->EQUIPO->Lookup->renderViewRow($rswrk[0]);
-                        $this->EQUIPO->ViewValue = $this->EQUIPO->displayValue($arwrk);
-                    } else {
-                        $this->EQUIPO->ViewValue = $this->EQUIPO->CurrentValue;
-                    }
-                }
-            } else {
-                $this->EQUIPO->ViewValue = null;
-            }
-            $this->EQUIPO->ViewCustomAttributes = "";
-
-            // POSICION
-            if (strval($this->POSICION->CurrentValue) != "") {
-                $this->POSICION->ViewValue = $this->POSICION->optionCaption($this->POSICION->CurrentValue);
-            } else {
-                $this->POSICION->ViewValue = null;
-            }
-            $this->POSICION->ViewCustomAttributes = "";
-
-            // NUMERACION
-            $this->NUMERACION->ViewValue = $this->NUMERACION->CurrentValue;
-            $this->NUMERACION->ViewCustomAttributes = "";
-
-            // crea_dato
-            $this->crea_dato->ViewValue = $this->crea_dato->CurrentValue;
-            $this->crea_dato->ViewValue = FormatDateTime($this->crea_dato->ViewValue, $this->crea_dato->formatPattern());
-            $this->crea_dato->ViewCustomAttributes = "";
-
-            // modifica_dato
-            $this->modifica_dato->ViewValue = $this->modifica_dato->CurrentValue;
-            $this->modifica_dato->ViewValue = FormatDateTime($this->modifica_dato->ViewValue, $this->modifica_dato->formatPattern());
-            $this->modifica_dato->ViewCustomAttributes = "";
 
             // ID_EQUIPOTORNEO
             $curVal = strval($this->ID_EQUIPOTORNEO->CurrentValue);
@@ -786,25 +698,127 @@ class PronosticadorDelete extends Pronosticador
             }
             $this->ID_EQUIPOTORNEO->ViewCustomAttributes = "";
 
+            // EQUIPO
+            if ($this->EQUIPO->VirtualValue != "") {
+                $this->EQUIPO->ViewValue = $this->EQUIPO->VirtualValue;
+            } else {
+                $curVal = strval($this->EQUIPO->CurrentValue);
+                if ($curVal != "") {
+                    $this->EQUIPO->ViewValue = $this->EQUIPO->lookupCacheOption($curVal);
+                    if ($this->EQUIPO->ViewValue === null) { // Lookup from database
+                        $filterWrk = "`NOM_EQUIPO_CORTO`" . SearchString("=", $curVal, DATATYPE_MEMO, "");
+                        $sqlWrk = $this->EQUIPO->Lookup->getSql(false, $filterWrk, '', $this, true, true);
+                        $conn = Conn();
+                        $config = $conn->getConfiguration();
+                        $config->setResultCacheImpl($this->Cache);
+                        $rswrk = $conn->executeCacheQuery($sqlWrk, [], [], $this->CacheProfile)->fetchAll();
+                        $ari = count($rswrk);
+                        if ($ari > 0) { // Lookup values found
+                            $arwrk = $this->EQUIPO->Lookup->renderViewRow($rswrk[0]);
+                            $this->EQUIPO->ViewValue = $this->EQUIPO->displayValue($arwrk);
+                        } else {
+                            $this->EQUIPO->ViewValue = $this->EQUIPO->CurrentValue;
+                        }
+                    }
+                } else {
+                    $this->EQUIPO->ViewValue = null;
+                }
+            }
+            $this->EQUIPO->ViewCustomAttributes = "";
+
+            // GRUPO
+            $curVal = strval($this->GRUPO->CurrentValue);
+            if ($curVal != "") {
+                $this->GRUPO->ViewValue = $this->GRUPO->lookupCacheOption($curVal);
+                if ($this->GRUPO->ViewValue === null) { // Lookup from database
+                    $filterWrk = "`GRUPO`" . SearchString("=", $curVal, DATATYPE_MEMO, "");
+                    $sqlWrk = $this->GRUPO->Lookup->getSql(false, $filterWrk, '', $this, true, true);
+                    $conn = Conn();
+                    $config = $conn->getConfiguration();
+                    $config->setResultCacheImpl($this->Cache);
+                    $rswrk = $conn->executeCacheQuery($sqlWrk, [], [], $this->CacheProfile)->fetchAll();
+                    $ari = count($rswrk);
+                    if ($ari > 0) { // Lookup values found
+                        $arwrk = $this->GRUPO->Lookup->renderViewRow($rswrk[0]);
+                        $this->GRUPO->ViewValue = $this->GRUPO->displayValue($arwrk);
+                    } else {
+                        $this->GRUPO->ViewValue = $this->GRUPO->CurrentValue;
+                    }
+                }
+            } else {
+                $this->GRUPO->ViewValue = null;
+            }
+            $this->GRUPO->ViewCustomAttributes = "";
+
+            // POSICION
+            if (strval($this->POSICION->CurrentValue) != "") {
+                $this->POSICION->ViewValue = $this->POSICION->optionCaption($this->POSICION->CurrentValue);
+            } else {
+                $this->POSICION->ViewValue = null;
+            }
+            $this->POSICION->ViewCustomAttributes = "";
+
+            // NUMERACION
+            if (strval($this->NUMERACION->CurrentValue) != "") {
+                $this->NUMERACION->ViewValue = $this->NUMERACION->optionCaption($this->NUMERACION->CurrentValue);
+            } else {
+                $this->NUMERACION->ViewValue = null;
+            }
+            $this->NUMERACION->ViewCustomAttributes = "";
+
+            // crea_dato
+            $this->crea_dato->ViewValue = $this->crea_dato->CurrentValue;
+            $this->crea_dato->ViewValue = FormatDateTime($this->crea_dato->ViewValue, $this->crea_dato->formatPattern());
+            $this->crea_dato->ViewCustomAttributes = "";
+
+            // modifica_dato
+            $this->modifica_dato->ViewValue = $this->modifica_dato->CurrentValue;
+            $this->modifica_dato->ViewValue = FormatDateTime($this->modifica_dato->ViewValue, $this->modifica_dato->formatPattern());
+            $this->modifica_dato->ViewCustomAttributes = "";
+
+            // ID_PARTICIPANTE
+            $curVal = strval($this->ID_PARTICIPANTE->CurrentValue);
+            if ($curVal != "") {
+                $this->ID_PARTICIPANTE->ViewValue = $this->ID_PARTICIPANTE->lookupCacheOption($curVal);
+                if ($this->ID_PARTICIPANTE->ViewValue === null) { // Lookup from database
+                    $filterWrk = "`ID_PARTICIPANTE`" . SearchString("=", $curVal, DATATYPE_NUMBER, "");
+                    $sqlWrk = $this->ID_PARTICIPANTE->Lookup->getSql(false, $filterWrk, '', $this, true, true);
+                    $conn = Conn();
+                    $config = $conn->getConfiguration();
+                    $config->setResultCacheImpl($this->Cache);
+                    $rswrk = $conn->executeCacheQuery($sqlWrk, [], [], $this->CacheProfile)->fetchAll();
+                    $ari = count($rswrk);
+                    if ($ari > 0) { // Lookup values found
+                        $arwrk = $this->ID_PARTICIPANTE->Lookup->renderViewRow($rswrk[0]);
+                        $this->ID_PARTICIPANTE->ViewValue = $this->ID_PARTICIPANTE->displayValue($arwrk);
+                    } else {
+                        $this->ID_PARTICIPANTE->ViewValue = FormatNumber($this->ID_PARTICIPANTE->CurrentValue, $this->ID_PARTICIPANTE->formatPattern());
+                    }
+                }
+            } else {
+                $this->ID_PARTICIPANTE->ViewValue = null;
+            }
+            $this->ID_PARTICIPANTE->ViewCustomAttributes = "";
+
             // ID_ENCUESTA
             $this->ID_ENCUESTA->LinkCustomAttributes = "";
             $this->ID_ENCUESTA->HrefValue = "";
             $this->ID_ENCUESTA->TooltipValue = "";
 
-            // ID_PARTICIPANTE
-            $this->ID_PARTICIPANTE->LinkCustomAttributes = "";
-            $this->ID_PARTICIPANTE->HrefValue = "";
-            $this->ID_PARTICIPANTE->TooltipValue = "";
-
-            // GRUPO
-            $this->GRUPO->LinkCustomAttributes = "";
-            $this->GRUPO->HrefValue = "";
-            $this->GRUPO->TooltipValue = "";
+            // ID_EQUIPOTORNEO
+            $this->ID_EQUIPOTORNEO->LinkCustomAttributes = "";
+            $this->ID_EQUIPOTORNEO->HrefValue = "";
+            $this->ID_EQUIPOTORNEO->TooltipValue = "";
 
             // EQUIPO
             $this->EQUIPO->LinkCustomAttributes = "";
             $this->EQUIPO->HrefValue = "";
             $this->EQUIPO->TooltipValue = "";
+
+            // GRUPO
+            $this->GRUPO->LinkCustomAttributes = "";
+            $this->GRUPO->HrefValue = "";
+            $this->GRUPO->TooltipValue = "";
 
             // POSICION
             $this->POSICION->LinkCustomAttributes = "";
@@ -826,10 +840,10 @@ class PronosticadorDelete extends Pronosticador
             $this->modifica_dato->HrefValue = "";
             $this->modifica_dato->TooltipValue = "";
 
-            // ID_EQUIPOTORNEO
-            $this->ID_EQUIPOTORNEO->LinkCustomAttributes = "";
-            $this->ID_EQUIPOTORNEO->HrefValue = "";
-            $this->ID_EQUIPOTORNEO->TooltipValue = "";
+            // ID_PARTICIPANTE
+            $this->ID_PARTICIPANTE->LinkCustomAttributes = "";
+            $this->ID_PARTICIPANTE->HrefValue = "";
+            $this->ID_PARTICIPANTE->TooltipValue = "";
         }
 
         // Call Row Rendered event
@@ -959,15 +973,17 @@ class PronosticadorDelete extends Pronosticador
 
             // Set up lookup SQL and connection
             switch ($fld->FieldVar) {
-                case "x_ID_PARTICIPANTE":
-                    break;
-                case "x_GRUPO":
+                case "x_ID_EQUIPOTORNEO":
                     break;
                 case "x_EQUIPO":
                     break;
+                case "x_GRUPO":
+                    break;
                 case "x_POSICION":
                     break;
-                case "x_ID_EQUIPOTORNEO":
+                case "x_NUMERACION":
+                    break;
+                case "x_ID_PARTICIPANTE":
                     break;
                 default:
                     $lookupFilter = "";

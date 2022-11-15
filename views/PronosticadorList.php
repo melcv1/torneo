@@ -23,14 +23,14 @@ loadjs.ready(["wrapper", "head"], function () {
     var fields = currentTable.fields;
     fpronosticadorlist.addFields([
         ["ID_ENCUESTA", [fields.ID_ENCUESTA.visible && fields.ID_ENCUESTA.required ? ew.Validators.required(fields.ID_ENCUESTA.caption) : null], fields.ID_ENCUESTA.isInvalid],
-        ["ID_PARTICIPANTE", [fields.ID_PARTICIPANTE.visible && fields.ID_PARTICIPANTE.required ? ew.Validators.required(fields.ID_PARTICIPANTE.caption) : null], fields.ID_PARTICIPANTE.isInvalid],
-        ["GRUPO", [fields.GRUPO.visible && fields.GRUPO.required ? ew.Validators.required(fields.GRUPO.caption) : null], fields.GRUPO.isInvalid],
+        ["ID_EQUIPOTORNEO", [fields.ID_EQUIPOTORNEO.visible && fields.ID_EQUIPOTORNEO.required ? ew.Validators.required(fields.ID_EQUIPOTORNEO.caption) : null], fields.ID_EQUIPOTORNEO.isInvalid],
         ["EQUIPO", [fields.EQUIPO.visible && fields.EQUIPO.required ? ew.Validators.required(fields.EQUIPO.caption) : null], fields.EQUIPO.isInvalid],
+        ["GRUPO", [fields.GRUPO.visible && fields.GRUPO.required ? ew.Validators.required(fields.GRUPO.caption) : null], fields.GRUPO.isInvalid],
         ["POSICION", [fields.POSICION.visible && fields.POSICION.required ? ew.Validators.required(fields.POSICION.caption) : null], fields.POSICION.isInvalid],
         ["NUMERACION", [fields.NUMERACION.visible && fields.NUMERACION.required ? ew.Validators.required(fields.NUMERACION.caption) : null], fields.NUMERACION.isInvalid],
         ["crea_dato", [fields.crea_dato.visible && fields.crea_dato.required ? ew.Validators.required(fields.crea_dato.caption) : null], fields.crea_dato.isInvalid],
         ["modifica_dato", [fields.modifica_dato.visible && fields.modifica_dato.required ? ew.Validators.required(fields.modifica_dato.caption) : null], fields.modifica_dato.isInvalid],
-        ["ID_EQUIPOTORNEO", [fields.ID_EQUIPOTORNEO.visible && fields.ID_EQUIPOTORNEO.required ? ew.Validators.required(fields.ID_EQUIPOTORNEO.caption) : null], fields.ID_EQUIPOTORNEO.isInvalid]
+        ["ID_PARTICIPANTE", [fields.ID_PARTICIPANTE.visible && fields.ID_PARTICIPANTE.required ? ew.Validators.required(fields.ID_PARTICIPANTE.caption) : null], fields.ID_PARTICIPANTE.isInvalid]
     ]);
 
     // Form_CustomValidate
@@ -43,11 +43,12 @@ loadjs.ready(["wrapper", "head"], function () {
     fpronosticadorlist.validateRequired = ew.CLIENT_VALIDATE;
 
     // Dynamic selection lists
-    fpronosticadorlist.lists.ID_PARTICIPANTE = <?= $Page->ID_PARTICIPANTE->toClientList($Page) ?>;
-    fpronosticadorlist.lists.GRUPO = <?= $Page->GRUPO->toClientList($Page) ?>;
-    fpronosticadorlist.lists.EQUIPO = <?= $Page->EQUIPO->toClientList($Page) ?>;
-    fpronosticadorlist.lists.POSICION = <?= $Page->POSICION->toClientList($Page) ?>;
     fpronosticadorlist.lists.ID_EQUIPOTORNEO = <?= $Page->ID_EQUIPOTORNEO->toClientList($Page) ?>;
+    fpronosticadorlist.lists.EQUIPO = <?= $Page->EQUIPO->toClientList($Page) ?>;
+    fpronosticadorlist.lists.GRUPO = <?= $Page->GRUPO->toClientList($Page) ?>;
+    fpronosticadorlist.lists.POSICION = <?= $Page->POSICION->toClientList($Page) ?>;
+    fpronosticadorlist.lists.NUMERACION = <?= $Page->NUMERACION->toClientList($Page) ?>;
+    fpronosticadorlist.lists.ID_PARTICIPANTE = <?= $Page->ID_PARTICIPANTE->toClientList($Page) ?>;
     loadjs.done("fpronosticadorlist");
 });
 var fpronosticadorsrch, currentSearchForm, currentAdvancedSearchForm;
@@ -151,14 +152,14 @@ $Page->ListOptions->render("header", "left");
 <?php if ($Page->ID_ENCUESTA->Visible) { // ID_ENCUESTA ?>
         <th data-name="ID_ENCUESTA" class="<?= $Page->ID_ENCUESTA->headerCellClass() ?>"><div id="elh_pronosticador_ID_ENCUESTA" class="pronosticador_ID_ENCUESTA"><?= $Page->renderFieldHeader($Page->ID_ENCUESTA) ?></div></th>
 <?php } ?>
-<?php if ($Page->ID_PARTICIPANTE->Visible) { // ID_PARTICIPANTE ?>
-        <th data-name="ID_PARTICIPANTE" class="<?= $Page->ID_PARTICIPANTE->headerCellClass() ?>"><div id="elh_pronosticador_ID_PARTICIPANTE" class="pronosticador_ID_PARTICIPANTE"><?= $Page->renderFieldHeader($Page->ID_PARTICIPANTE) ?></div></th>
-<?php } ?>
-<?php if ($Page->GRUPO->Visible) { // GRUPO ?>
-        <th data-name="GRUPO" class="<?= $Page->GRUPO->headerCellClass() ?>"><div id="elh_pronosticador_GRUPO" class="pronosticador_GRUPO"><?= $Page->renderFieldHeader($Page->GRUPO) ?></div></th>
+<?php if ($Page->ID_EQUIPOTORNEO->Visible) { // ID_EQUIPOTORNEO ?>
+        <th data-name="ID_EQUIPOTORNEO" class="<?= $Page->ID_EQUIPOTORNEO->headerCellClass() ?>"><div id="elh_pronosticador_ID_EQUIPOTORNEO" class="pronosticador_ID_EQUIPOTORNEO"><?= $Page->renderFieldHeader($Page->ID_EQUIPOTORNEO) ?></div></th>
 <?php } ?>
 <?php if ($Page->EQUIPO->Visible) { // EQUIPO ?>
         <th data-name="EQUIPO" class="<?= $Page->EQUIPO->headerCellClass() ?>"><div id="elh_pronosticador_EQUIPO" class="pronosticador_EQUIPO"><?= $Page->renderFieldHeader($Page->EQUIPO) ?></div></th>
+<?php } ?>
+<?php if ($Page->GRUPO->Visible) { // GRUPO ?>
+        <th data-name="GRUPO" class="<?= $Page->GRUPO->headerCellClass() ?>"><div id="elh_pronosticador_GRUPO" class="pronosticador_GRUPO"><?= $Page->renderFieldHeader($Page->GRUPO) ?></div></th>
 <?php } ?>
 <?php if ($Page->POSICION->Visible) { // POSICION ?>
         <th data-name="POSICION" class="<?= $Page->POSICION->headerCellClass() ?>"><div id="elh_pronosticador_POSICION" class="pronosticador_POSICION"><?= $Page->renderFieldHeader($Page->POSICION) ?></div></th>
@@ -172,8 +173,8 @@ $Page->ListOptions->render("header", "left");
 <?php if ($Page->modifica_dato->Visible) { // modifica_dato ?>
         <th data-name="modifica_dato" class="<?= $Page->modifica_dato->headerCellClass() ?>"><div id="elh_pronosticador_modifica_dato" class="pronosticador_modifica_dato"><?= $Page->renderFieldHeader($Page->modifica_dato) ?></div></th>
 <?php } ?>
-<?php if ($Page->ID_EQUIPOTORNEO->Visible) { // ID_EQUIPOTORNEO ?>
-        <th data-name="ID_EQUIPOTORNEO" class="<?= $Page->ID_EQUIPOTORNEO->headerCellClass() ?>"><div id="elh_pronosticador_ID_EQUIPOTORNEO" class="pronosticador_ID_EQUIPOTORNEO"><?= $Page->renderFieldHeader($Page->ID_EQUIPOTORNEO) ?></div></th>
+<?php if ($Page->ID_PARTICIPANTE->Visible) { // ID_PARTICIPANTE ?>
+        <th data-name="ID_PARTICIPANTE" class="<?= $Page->ID_PARTICIPANTE->headerCellClass() ?>"><div id="elh_pronosticador_ID_PARTICIPANTE" class="pronosticador_ID_PARTICIPANTE"><?= $Page->renderFieldHeader($Page->ID_PARTICIPANTE) ?></div></th>
 <?php } ?>
 <?php
 // Render list options (header, right)
@@ -294,45 +295,89 @@ $Page->ListOptions->render("body", "left", $Page->RowCount);
     <?php } else { ?>
             <input type="hidden" data-table="pronosticador" data-field="x_ID_ENCUESTA" data-hidden="1" name="x<?= $Page->RowIndex ?>_ID_ENCUESTA" id="x<?= $Page->RowIndex ?>_ID_ENCUESTA" value="<?= HtmlEncode($Page->ID_ENCUESTA->CurrentValue) ?>">
     <?php } ?>
-    <?php if ($Page->ID_PARTICIPANTE->Visible) { // ID_PARTICIPANTE ?>
-        <td data-name="ID_PARTICIPANTE"<?= $Page->ID_PARTICIPANTE->cellAttributes() ?>>
+    <?php if ($Page->ID_EQUIPOTORNEO->Visible) { // ID_EQUIPOTORNEO ?>
+        <td data-name="ID_EQUIPOTORNEO"<?= $Page->ID_EQUIPOTORNEO->cellAttributes() ?>>
 <?php if ($Page->RowType == ROWTYPE_EDIT) { // Edit record ?>
-<span id="el<?= $Page->RowCount ?>_pronosticador_ID_PARTICIPANTE" class="el_pronosticador_ID_PARTICIPANTE">
+<span id="el<?= $Page->RowCount ?>_pronosticador_ID_EQUIPOTORNEO" class="el_pronosticador_ID_EQUIPOTORNEO">
+<?php $Page->ID_EQUIPOTORNEO->EditAttrs->prepend("onchange", "ew.updateOptions.call(this);"); ?>
     <select
-        id="x<?= $Page->RowIndex ?>_ID_PARTICIPANTE"
-        name="x<?= $Page->RowIndex ?>_ID_PARTICIPANTE"
-        class="form-select ew-select<?= $Page->ID_PARTICIPANTE->isInvalidClass() ?>"
-        data-select2-id="fpronosticadorlist_x<?= $Page->RowIndex ?>_ID_PARTICIPANTE"
+        id="x<?= $Page->RowIndex ?>_ID_EQUIPOTORNEO"
+        name="x<?= $Page->RowIndex ?>_ID_EQUIPOTORNEO"
+        class="form-select ew-select<?= $Page->ID_EQUIPOTORNEO->isInvalidClass() ?>"
+        data-select2-id="fpronosticadorlist_x<?= $Page->RowIndex ?>_ID_EQUIPOTORNEO"
         data-table="pronosticador"
-        data-field="x_ID_PARTICIPANTE"
-        data-value-separator="<?= $Page->ID_PARTICIPANTE->displayValueSeparatorAttribute() ?>"
-        data-placeholder="<?= HtmlEncode($Page->ID_PARTICIPANTE->getPlaceHolder()) ?>"
-        <?= $Page->ID_PARTICIPANTE->editAttributes() ?>>
-        <?= $Page->ID_PARTICIPANTE->selectOptionListHtml("x{$Page->RowIndex}_ID_PARTICIPANTE") ?>
+        data-field="x_ID_EQUIPOTORNEO"
+        data-value-separator="<?= $Page->ID_EQUIPOTORNEO->displayValueSeparatorAttribute() ?>"
+        data-placeholder="<?= HtmlEncode($Page->ID_EQUIPOTORNEO->getPlaceHolder()) ?>"
+        <?= $Page->ID_EQUIPOTORNEO->editAttributes() ?>>
+        <?= $Page->ID_EQUIPOTORNEO->selectOptionListHtml("x{$Page->RowIndex}_ID_EQUIPOTORNEO") ?>
     </select>
-    <div class="invalid-feedback"><?= $Page->ID_PARTICIPANTE->getErrorMessage() ?></div>
-<?= $Page->ID_PARTICIPANTE->Lookup->getParamTag($Page, "p_x" . $Page->RowIndex . "_ID_PARTICIPANTE") ?>
+    <div class="invalid-feedback"><?= $Page->ID_EQUIPOTORNEO->getErrorMessage() ?></div>
+<?= $Page->ID_EQUIPOTORNEO->Lookup->getParamTag($Page, "p_x" . $Page->RowIndex . "_ID_EQUIPOTORNEO") ?>
 <script>
 loadjs.ready("fpronosticadorlist", function() {
-    var options = { name: "x<?= $Page->RowIndex ?>_ID_PARTICIPANTE", selectId: "fpronosticadorlist_x<?= $Page->RowIndex ?>_ID_PARTICIPANTE" },
+    var options = { name: "x<?= $Page->RowIndex ?>_ID_EQUIPOTORNEO", selectId: "fpronosticadorlist_x<?= $Page->RowIndex ?>_ID_EQUIPOTORNEO" },
         el = document.querySelector("select[data-select2-id='" + options.selectId + "']");
     options.dropdownParent = el.closest("#ew-modal-dialog, #ew-add-opt-dialog");
-    if (fpronosticadorlist.lists.ID_PARTICIPANTE.lookupOptions.length) {
-        options.data = { id: "x<?= $Page->RowIndex ?>_ID_PARTICIPANTE", form: "fpronosticadorlist" };
+    if (fpronosticadorlist.lists.ID_EQUIPOTORNEO.lookupOptions.length) {
+        options.data = { id: "x<?= $Page->RowIndex ?>_ID_EQUIPOTORNEO", form: "fpronosticadorlist" };
     } else {
-        options.ajax = { id: "x<?= $Page->RowIndex ?>_ID_PARTICIPANTE", form: "fpronosticadorlist", limit: ew.LOOKUP_PAGE_SIZE };
+        options.ajax = { id: "x<?= $Page->RowIndex ?>_ID_EQUIPOTORNEO", form: "fpronosticadorlist", limit: ew.LOOKUP_PAGE_SIZE };
     }
     options.minimumResultsForSearch = Infinity;
-    options = Object.assign({}, ew.selectOptions, options, ew.vars.tables.pronosticador.fields.ID_PARTICIPANTE.selectOptions);
+    options = Object.assign({}, ew.selectOptions, options, ew.vars.tables.pronosticador.fields.ID_EQUIPOTORNEO.selectOptions);
     ew.createSelect(options);
 });
 </script>
 </span>
 <?php } ?>
 <?php if ($Page->RowType == ROWTYPE_VIEW) { // View record ?>
-<span id="el<?= $Page->RowCount ?>_pronosticador_ID_PARTICIPANTE" class="el_pronosticador_ID_PARTICIPANTE">
-<span<?= $Page->ID_PARTICIPANTE->viewAttributes() ?>>
-<?= $Page->ID_PARTICIPANTE->getViewValue() ?></span>
+<span id="el<?= $Page->RowCount ?>_pronosticador_ID_EQUIPOTORNEO" class="el_pronosticador_ID_EQUIPOTORNEO">
+<span<?= $Page->ID_EQUIPOTORNEO->viewAttributes() ?>>
+<?= $Page->ID_EQUIPOTORNEO->getViewValue() ?></span>
+</span>
+<?php } ?>
+</td>
+    <?php } ?>
+    <?php if ($Page->EQUIPO->Visible) { // EQUIPO ?>
+        <td data-name="EQUIPO"<?= $Page->EQUIPO->cellAttributes() ?>>
+<?php if ($Page->RowType == ROWTYPE_EDIT) { // Edit record ?>
+<span id="el<?= $Page->RowCount ?>_pronosticador_EQUIPO" class="el_pronosticador_EQUIPO">
+    <select
+        id="x<?= $Page->RowIndex ?>_EQUIPO"
+        name="x<?= $Page->RowIndex ?>_EQUIPO"
+        class="form-select ew-select<?= $Page->EQUIPO->isInvalidClass() ?>"
+        data-select2-id="fpronosticadorlist_x<?= $Page->RowIndex ?>_EQUIPO"
+        data-table="pronosticador"
+        data-field="x_EQUIPO"
+        data-value-separator="<?= $Page->EQUIPO->displayValueSeparatorAttribute() ?>"
+        data-placeholder="<?= HtmlEncode($Page->EQUIPO->getPlaceHolder()) ?>"
+        <?= $Page->EQUIPO->editAttributes() ?>>
+        <?= $Page->EQUIPO->selectOptionListHtml("x{$Page->RowIndex}_EQUIPO") ?>
+    </select>
+    <div class="invalid-feedback"><?= $Page->EQUIPO->getErrorMessage() ?></div>
+<?= $Page->EQUIPO->Lookup->getParamTag($Page, "p_x" . $Page->RowIndex . "_EQUIPO") ?>
+<script>
+loadjs.ready("fpronosticadorlist", function() {
+    var options = { name: "x<?= $Page->RowIndex ?>_EQUIPO", selectId: "fpronosticadorlist_x<?= $Page->RowIndex ?>_EQUIPO" },
+        el = document.querySelector("select[data-select2-id='" + options.selectId + "']");
+    options.dropdownParent = el.closest("#ew-modal-dialog, #ew-add-opt-dialog");
+    if (fpronosticadorlist.lists.EQUIPO.lookupOptions.length) {
+        options.data = { id: "x<?= $Page->RowIndex ?>_EQUIPO", form: "fpronosticadorlist" };
+    } else {
+        options.ajax = { id: "x<?= $Page->RowIndex ?>_EQUIPO", form: "fpronosticadorlist", limit: ew.LOOKUP_PAGE_SIZE };
+    }
+    options.minimumInputLength = ew.selectMinimumInputLength;
+    options = Object.assign({}, ew.selectOptions, options, ew.vars.tables.pronosticador.fields.EQUIPO.selectOptions);
+    ew.createSelect(options);
+});
+</script>
+</span>
+<?php } ?>
+<?php if ($Page->RowType == ROWTYPE_VIEW) { // View record ?>
+<span id="el<?= $Page->RowCount ?>_pronosticador_EQUIPO" class="el_pronosticador_EQUIPO">
+<span<?= $Page->EQUIPO->viewAttributes() ?>>
+<?= $Page->EQUIPO->getViewValue() ?></span>
 </span>
 <?php } ?>
 </td>
@@ -376,49 +421,6 @@ loadjs.ready("fpronosticadorlist", function() {
 <span id="el<?= $Page->RowCount ?>_pronosticador_GRUPO" class="el_pronosticador_GRUPO">
 <span<?= $Page->GRUPO->viewAttributes() ?>>
 <?= $Page->GRUPO->getViewValue() ?></span>
-</span>
-<?php } ?>
-</td>
-    <?php } ?>
-    <?php if ($Page->EQUIPO->Visible) { // EQUIPO ?>
-        <td data-name="EQUIPO"<?= $Page->EQUIPO->cellAttributes() ?>>
-<?php if ($Page->RowType == ROWTYPE_EDIT) { // Edit record ?>
-<span id="el<?= $Page->RowCount ?>_pronosticador_EQUIPO" class="el_pronosticador_EQUIPO">
-    <select
-        id="x<?= $Page->RowIndex ?>_EQUIPO"
-        name="x<?= $Page->RowIndex ?>_EQUIPO"
-        class="form-select ew-select<?= $Page->EQUIPO->isInvalidClass() ?>"
-        data-select2-id="fpronosticadorlist_x<?= $Page->RowIndex ?>_EQUIPO"
-        data-table="pronosticador"
-        data-field="x_EQUIPO"
-        data-value-separator="<?= $Page->EQUIPO->displayValueSeparatorAttribute() ?>"
-        data-placeholder="<?= HtmlEncode($Page->EQUIPO->getPlaceHolder()) ?>"
-        <?= $Page->EQUIPO->editAttributes() ?>>
-        <?= $Page->EQUIPO->selectOptionListHtml("x{$Page->RowIndex}_EQUIPO") ?>
-    </select>
-    <div class="invalid-feedback"><?= $Page->EQUIPO->getErrorMessage() ?></div>
-<?= $Page->EQUIPO->Lookup->getParamTag($Page, "p_x" . $Page->RowIndex . "_EQUIPO") ?>
-<script>
-loadjs.ready("fpronosticadorlist", function() {
-    var options = { name: "x<?= $Page->RowIndex ?>_EQUIPO", selectId: "fpronosticadorlist_x<?= $Page->RowIndex ?>_EQUIPO" },
-        el = document.querySelector("select[data-select2-id='" + options.selectId + "']");
-    options.dropdownParent = el.closest("#ew-modal-dialog, #ew-add-opt-dialog");
-    if (fpronosticadorlist.lists.EQUIPO.lookupOptions.length) {
-        options.data = { id: "x<?= $Page->RowIndex ?>_EQUIPO", form: "fpronosticadorlist" };
-    } else {
-        options.ajax = { id: "x<?= $Page->RowIndex ?>_EQUIPO", form: "fpronosticadorlist", limit: ew.LOOKUP_PAGE_SIZE };
-    }
-    options.minimumResultsForSearch = Infinity;
-    options = Object.assign({}, ew.selectOptions, options, ew.vars.tables.pronosticador.fields.EQUIPO.selectOptions);
-    ew.createSelect(options);
-});
-</script>
-</span>
-<?php } ?>
-<?php if ($Page->RowType == ROWTYPE_VIEW) { // View record ?>
-<span id="el<?= $Page->RowCount ?>_pronosticador_EQUIPO" class="el_pronosticador_EQUIPO">
-<span<?= $Page->EQUIPO->viewAttributes() ?>>
-<?= $Page->EQUIPO->getViewValue() ?></span>
 </span>
 <?php } ?>
 </td>
@@ -469,8 +471,34 @@ loadjs.ready("fpronosticadorlist", function() {
         <td data-name="NUMERACION"<?= $Page->NUMERACION->cellAttributes() ?>>
 <?php if ($Page->RowType == ROWTYPE_EDIT) { // Edit record ?>
 <span id="el<?= $Page->RowCount ?>_pronosticador_NUMERACION" class="el_pronosticador_NUMERACION">
-<input type="<?= $Page->NUMERACION->getInputTextType() ?>" name="x<?= $Page->RowIndex ?>_NUMERACION" id="x<?= $Page->RowIndex ?>_NUMERACION" data-table="pronosticador" data-field="x_NUMERACION" value="<?= $Page->NUMERACION->EditValue ?>" size="30" maxlength="4" placeholder="<?= HtmlEncode($Page->NUMERACION->getPlaceHolder()) ?>"<?= $Page->NUMERACION->editAttributes() ?>>
-<div class="invalid-feedback"><?= $Page->NUMERACION->getErrorMessage() ?></div>
+    <select
+        id="x<?= $Page->RowIndex ?>_NUMERACION"
+        name="x<?= $Page->RowIndex ?>_NUMERACION"
+        class="form-select ew-select<?= $Page->NUMERACION->isInvalidClass() ?>"
+        data-select2-id="fpronosticadorlist_x<?= $Page->RowIndex ?>_NUMERACION"
+        data-table="pronosticador"
+        data-field="x_NUMERACION"
+        data-value-separator="<?= $Page->NUMERACION->displayValueSeparatorAttribute() ?>"
+        data-placeholder="<?= HtmlEncode($Page->NUMERACION->getPlaceHolder()) ?>"
+        <?= $Page->NUMERACION->editAttributes() ?>>
+        <?= $Page->NUMERACION->selectOptionListHtml("x{$Page->RowIndex}_NUMERACION") ?>
+    </select>
+    <div class="invalid-feedback"><?= $Page->NUMERACION->getErrorMessage() ?></div>
+<script>
+loadjs.ready("fpronosticadorlist", function() {
+    var options = { name: "x<?= $Page->RowIndex ?>_NUMERACION", selectId: "fpronosticadorlist_x<?= $Page->RowIndex ?>_NUMERACION" },
+        el = document.querySelector("select[data-select2-id='" + options.selectId + "']");
+    options.dropdownParent = el.closest("#ew-modal-dialog, #ew-add-opt-dialog");
+    if (fpronosticadorlist.lists.NUMERACION.lookupOptions.length) {
+        options.data = { id: "x<?= $Page->RowIndex ?>_NUMERACION", form: "fpronosticadorlist" };
+    } else {
+        options.ajax = { id: "x<?= $Page->RowIndex ?>_NUMERACION", form: "fpronosticadorlist", limit: ew.LOOKUP_PAGE_SIZE };
+    }
+    options.minimumInputLength = ew.selectMinimumInputLength;
+    options = Object.assign({}, ew.selectOptions, options, ew.vars.tables.pronosticador.fields.NUMERACION.selectOptions);
+    ew.createSelect(options);
+});
+</script>
 </span>
 <?php } ?>
 <?php if ($Page->RowType == ROWTYPE_VIEW) { // View record ?>
@@ -515,46 +543,45 @@ loadjs.ready("fpronosticadorlist", function() {
 <?php } ?>
 </td>
     <?php } ?>
-    <?php if ($Page->ID_EQUIPOTORNEO->Visible) { // ID_EQUIPOTORNEO ?>
-        <td data-name="ID_EQUIPOTORNEO"<?= $Page->ID_EQUIPOTORNEO->cellAttributes() ?>>
+    <?php if ($Page->ID_PARTICIPANTE->Visible) { // ID_PARTICIPANTE ?>
+        <td data-name="ID_PARTICIPANTE"<?= $Page->ID_PARTICIPANTE->cellAttributes() ?>>
 <?php if ($Page->RowType == ROWTYPE_EDIT) { // Edit record ?>
-<span id="el<?= $Page->RowCount ?>_pronosticador_ID_EQUIPOTORNEO" class="el_pronosticador_ID_EQUIPOTORNEO">
-<?php $Page->ID_EQUIPOTORNEO->EditAttrs->prepend("onchange", "ew.updateOptions.call(this);"); ?>
+<span id="el<?= $Page->RowCount ?>_pronosticador_ID_PARTICIPANTE" class="el_pronosticador_ID_PARTICIPANTE">
     <select
-        id="x<?= $Page->RowIndex ?>_ID_EQUIPOTORNEO"
-        name="x<?= $Page->RowIndex ?>_ID_EQUIPOTORNEO"
-        class="form-select ew-select<?= $Page->ID_EQUIPOTORNEO->isInvalidClass() ?>"
-        data-select2-id="fpronosticadorlist_x<?= $Page->RowIndex ?>_ID_EQUIPOTORNEO"
+        id="x<?= $Page->RowIndex ?>_ID_PARTICIPANTE"
+        name="x<?= $Page->RowIndex ?>_ID_PARTICIPANTE"
+        class="form-select ew-select<?= $Page->ID_PARTICIPANTE->isInvalidClass() ?>"
+        data-select2-id="fpronosticadorlist_x<?= $Page->RowIndex ?>_ID_PARTICIPANTE"
         data-table="pronosticador"
-        data-field="x_ID_EQUIPOTORNEO"
-        data-value-separator="<?= $Page->ID_EQUIPOTORNEO->displayValueSeparatorAttribute() ?>"
-        data-placeholder="<?= HtmlEncode($Page->ID_EQUIPOTORNEO->getPlaceHolder()) ?>"
-        <?= $Page->ID_EQUIPOTORNEO->editAttributes() ?>>
-        <?= $Page->ID_EQUIPOTORNEO->selectOptionListHtml("x{$Page->RowIndex}_ID_EQUIPOTORNEO") ?>
+        data-field="x_ID_PARTICIPANTE"
+        data-value-separator="<?= $Page->ID_PARTICIPANTE->displayValueSeparatorAttribute() ?>"
+        data-placeholder="<?= HtmlEncode($Page->ID_PARTICIPANTE->getPlaceHolder()) ?>"
+        <?= $Page->ID_PARTICIPANTE->editAttributes() ?>>
+        <?= $Page->ID_PARTICIPANTE->selectOptionListHtml("x{$Page->RowIndex}_ID_PARTICIPANTE") ?>
     </select>
-    <div class="invalid-feedback"><?= $Page->ID_EQUIPOTORNEO->getErrorMessage() ?></div>
-<?= $Page->ID_EQUIPOTORNEO->Lookup->getParamTag($Page, "p_x" . $Page->RowIndex . "_ID_EQUIPOTORNEO") ?>
+    <div class="invalid-feedback"><?= $Page->ID_PARTICIPANTE->getErrorMessage() ?></div>
+<?= $Page->ID_PARTICIPANTE->Lookup->getParamTag($Page, "p_x" . $Page->RowIndex . "_ID_PARTICIPANTE") ?>
 <script>
 loadjs.ready("fpronosticadorlist", function() {
-    var options = { name: "x<?= $Page->RowIndex ?>_ID_EQUIPOTORNEO", selectId: "fpronosticadorlist_x<?= $Page->RowIndex ?>_ID_EQUIPOTORNEO" },
+    var options = { name: "x<?= $Page->RowIndex ?>_ID_PARTICIPANTE", selectId: "fpronosticadorlist_x<?= $Page->RowIndex ?>_ID_PARTICIPANTE" },
         el = document.querySelector("select[data-select2-id='" + options.selectId + "']");
     options.dropdownParent = el.closest("#ew-modal-dialog, #ew-add-opt-dialog");
-    if (fpronosticadorlist.lists.ID_EQUIPOTORNEO.lookupOptions.length) {
-        options.data = { id: "x<?= $Page->RowIndex ?>_ID_EQUIPOTORNEO", form: "fpronosticadorlist" };
+    if (fpronosticadorlist.lists.ID_PARTICIPANTE.lookupOptions.length) {
+        options.data = { id: "x<?= $Page->RowIndex ?>_ID_PARTICIPANTE", form: "fpronosticadorlist" };
     } else {
-        options.ajax = { id: "x<?= $Page->RowIndex ?>_ID_EQUIPOTORNEO", form: "fpronosticadorlist", limit: ew.LOOKUP_PAGE_SIZE };
+        options.ajax = { id: "x<?= $Page->RowIndex ?>_ID_PARTICIPANTE", form: "fpronosticadorlist", limit: ew.LOOKUP_PAGE_SIZE };
     }
     options.minimumResultsForSearch = Infinity;
-    options = Object.assign({}, ew.selectOptions, options, ew.vars.tables.pronosticador.fields.ID_EQUIPOTORNEO.selectOptions);
+    options = Object.assign({}, ew.selectOptions, options, ew.vars.tables.pronosticador.fields.ID_PARTICIPANTE.selectOptions);
     ew.createSelect(options);
 });
 </script>
 </span>
 <?php } ?>
 <?php if ($Page->RowType == ROWTYPE_VIEW) { // View record ?>
-<span id="el<?= $Page->RowCount ?>_pronosticador_ID_EQUIPOTORNEO" class="el_pronosticador_ID_EQUIPOTORNEO">
-<span<?= $Page->ID_EQUIPOTORNEO->viewAttributes() ?>>
-<?= $Page->ID_EQUIPOTORNEO->getViewValue() ?></span>
+<span id="el<?= $Page->RowCount ?>_pronosticador_ID_PARTICIPANTE" class="el_pronosticador_ID_PARTICIPANTE">
+<span<?= $Page->ID_PARTICIPANTE->viewAttributes() ?>>
+<?= $Page->ID_PARTICIPANTE->getViewValue() ?></span>
 </span>
 <?php } ?>
 </td>

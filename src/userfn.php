@@ -182,6 +182,15 @@ function Api_Action($app) {
         }    
         return $response;
     });
+    $app->get('/v1/partidos/{ID_TORNEO}/{GRUPO}', function ($request, $response, $args) {
+        $ID_TORNEO = $args["ID_TORNEO"] ?? null; // Get the input value
+        $GRUPO = $args["GRUPO"] ?? null; 
+        if ($ID_TORNEO !== null) {
+            $response = $response->withJson(ExecuteRows("SELECT * FROM partidos as a INNER JOIN equipotorneo as b ON a.equipo_local = b.ID_EQUIPO WHERE a.ID_TORNEO='" . AdjustSql($ID_TORNEO) . "' AND b.ID_TORNEO='" . AdjustSql($ID_TORNEO) . "' AND b.GRUPO='" . AdjustSql($GRUPO) . "'  "));
+        }    
+        return $response;
+    });
+
     $app->get('/v1/equipos/{ID_EQUIPO}', function ($request, $response, $args) {
         $ID_EQUIPO = $args["ID_EQUIPO"] ?? null; // Get the input value
         if ($ID_EQUIPO !== null) {

@@ -212,10 +212,10 @@ function Api_Action($app) {
     $app->get('/v1/goleadores', function ($request, $response, $args) {
         $myArray="todo ok";
       
-        $response = $response->withJson(ExecuteRows("SELECT * FROM jugador;"));
+        $response = $response->withJson(ExecuteRows("SELECT a.nombre_jugador, b.nom_equipo_largo, E.GOLES FROM jugador as a, equipo as b, jugadorequipo as e WHERE a.id_jugador = e.id_jugador AND b.ID_EQUIPO = e.id_equipo;"));
         return $response;
     });
-    
+
      $app->get('/v1/pronostica', function ($request, $response, $args) {
         $myArray="todo ok";
           $response = $response->withJson(ExecuteRows("SELECT a.NOM_EQUIPO_CORTO, a.NOM_EQUIPO_LARGO, a.ESCUDO_EQUIPO, b.GRUPO, c.posicion, c.numeracion FROM equipotorneo as b INNER JOIN equipo as a ON a.id_equipo=b.ID_EQUIPO INNER JOIN pronosticador as c ON b.ID_EQUIPO_TORNEO = c.ID_EQUIPOTORNEO;"));

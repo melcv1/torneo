@@ -209,7 +209,7 @@ function Api_Action($app) {
         return $response;
     });
 
-    $app->get('/v1/jugadoresequipo', function ($request, $response, $args) {
+    $app->get('/v1/jugadores/equipo', function ($request, $response, $args) {
         $myArray="todo ok";
       
           $response = $response->withJson(ExecuteRows("SELECT a.nombre_jugador b.nom_equipo_largo FROM jugadorequipo as e   INNER JOIN jugador as a ON a.id_jugador= e.id_jugador  INNER JOIN equipo as b ON b.ID_EQUIPO=e.id_equipo;"));

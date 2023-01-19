@@ -212,7 +212,7 @@ function Api_Action($app) {
     $app->get('/v1/goleadores', function ($request, $response, $args) {
         $myArray="todo ok";
       
-        $response = $response->withJson(ExecuteRows("SELECT a.NOMBRE_JUGADOR, c.NOMBRE_EQUIPO_LARGO, e.GOLES         FROM jugador as a         JOIN jugadorequipo as e ON a.id_jugador = e.id_jugador         JOIN equipotorneo as b ON e.id_equipo = b.id_equipo_torneo         JOIN equipo as c ON b.id_equipo = c.id_equipo;;"));
+        $response = $response->withJson(ExecuteRows("SELECT a.NOMBRE_JUGADOR, c.NOMBRE_EQUIPO_LARGO, e.GOLES         FROM jugador as a         JOIN jugadorequipo as e ON a.id_jugador = e.id_jugador         JOIN equipotorneo as b ON e.id_equipo = b.id_equipo_torneo         JOIN equipo as c ON b.id_equipo = c.id_equipo;"));
         return $response;
     });
 

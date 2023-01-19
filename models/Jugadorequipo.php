@@ -31,11 +31,13 @@ class Jugadorequipo extends DbTable
     public $ExportDoc;
 
     // Fields
+    public $ID_TORNEO;
     public $id_jugadorequipo;
     public $id_equipo;
     public $id_jugador;
     public $crea_dato;
     public $modifica_dato;
+    public $GOLES;
 
     // Page ID
     public $PageID = ""; // To be overridden by subclass
@@ -73,6 +75,39 @@ class Jugadorequipo extends DbTable
         $this->AllowAddDeleteRow = true; // Allow add/delete row
         $this->UserIDAllowSecurity = Config("DEFAULT_USER_ID_ALLOW_SECURITY"); // Default User ID allowed permissions
         $this->BasicSearch = new BasicSearch($this->TableVar);
+
+        // ID_TORNEO
+        $this->ID_TORNEO = new DbField(
+            'jugadorequipo',
+            'jugadorequipo',
+            'x_ID_TORNEO',
+            'ID_TORNEO',
+            '`ID_TORNEO`',
+            '`ID_TORNEO`',
+            3,
+            11,
+            -1,
+            false,
+            '`ID_TORNEO`',
+            false,
+            false,
+            false,
+            'FORMATTED TEXT',
+            'SELECT'
+        );
+        $this->ID_TORNEO->InputTextType = "text";
+        $this->ID_TORNEO->UsePleaseSelect = true; // Use PleaseSelect by default
+        $this->ID_TORNEO->PleaseSelectText = $Language->phrase("PleaseSelect"); // "PleaseSelect" text
+        switch ($CurrentLanguage) {
+            case "en-US":
+                $this->ID_TORNEO->Lookup = new Lookup('ID_TORNEO', 'torneo', false, 'ID_TORNEO', ["NOM_TORNEO_LARGO","","",""], [], ["x_id_equipo"], [], [], [], [], '', '', "`NOM_TORNEO_LARGO`");
+                break;
+            default:
+                $this->ID_TORNEO->Lookup = new Lookup('ID_TORNEO', 'torneo', false, 'ID_TORNEO', ["NOM_TORNEO_LARGO","","",""], [], ["x_id_equipo"], [], [], [], [], '', '', "`NOM_TORNEO_LARGO`");
+                break;
+        }
+        $this->ID_TORNEO->DefaultErrorMessage = $Language->phrase("IncorrectInteger");
+        $this->Fields['ID_TORNEO'] = &$this->ID_TORNEO;
 
         // id_jugadorequipo
         $this->id_jugadorequipo = new DbField(
@@ -125,10 +160,10 @@ class Jugadorequipo extends DbTable
         $this->id_equipo->PleaseSelectText = $Language->phrase("PleaseSelect"); // "PleaseSelect" text
         switch ($CurrentLanguage) {
             case "en-US":
-                $this->id_equipo->Lookup = new Lookup('id_equipo', 'equipo', false, 'ID_EQUIPO', ["NOM_EQUIPO_LARGO","","",""], [], [], [], [], [], [], '', '', "`NOM_EQUIPO_LARGO`");
+                $this->id_equipo->Lookup = new Lookup('id_equipo', 'equipotorneo', false, 'ID_EQUIPO_TORNEO', ["ID_EQUIPO","","",""], ["x_ID_TORNEO"], [], ["ID_TORNEO"], ["x_ID_TORNEO"], [], [], '', '', "`ID_EQUIPO`");
                 break;
             default:
-                $this->id_equipo->Lookup = new Lookup('id_equipo', 'equipo', false, 'ID_EQUIPO', ["NOM_EQUIPO_LARGO","","",""], [], [], [], [], [], [], '', '', "`NOM_EQUIPO_LARGO`");
+                $this->id_equipo->Lookup = new Lookup('id_equipo', 'equipotorneo', false, 'ID_EQUIPO_TORNEO', ["ID_EQUIPO","","",""], ["x_ID_TORNEO"], [], ["ID_TORNEO"], ["x_ID_TORNEO"], [], [], '', '', "`ID_EQUIPO`");
                 break;
         }
         $this->id_equipo->DefaultErrorMessage = $Language->phrase("IncorrectInteger");
@@ -218,6 +253,30 @@ class Jugadorequipo extends DbTable
         $this->modifica_dato->Required = true; // Required field
         $this->modifica_dato->DefaultErrorMessage = str_replace("%s", $GLOBALS["DATE_FORMAT"], $Language->phrase("IncorrectDate"));
         $this->Fields['modifica_dato'] = &$this->modifica_dato;
+
+        // GOLES
+        $this->GOLES = new DbField(
+            'jugadorequipo',
+            'jugadorequipo',
+            'x_GOLES',
+            'GOLES',
+            '`GOLES`',
+            '`GOLES`',
+            200,
+            64,
+            -1,
+            false,
+            '`GOLES`',
+            false,
+            false,
+            false,
+            'FORMATTED TEXT',
+            'TEXT'
+        );
+        $this->GOLES->InputTextType = "text";
+        $this->GOLES->Nullable = false; // NOT NULL field
+        $this->GOLES->Required = true; // Required field
+        $this->Fields['GOLES'] = &$this->GOLES;
 
         // Add Doctrine Cache
         $this->Cache = new ArrayCache();
@@ -649,11 +708,13 @@ class Jugadorequipo extends DbTable
         if (!is_array($row)) {
             return;
         }
+        $this->ID_TORNEO->DbValue = $row['ID_TORNEO'];
         $this->id_jugadorequipo->DbValue = $row['id_jugadorequipo'];
         $this->id_equipo->DbValue = $row['id_equipo'];
         $this->id_jugador->DbValue = $row['id_jugador'];
         $this->crea_dato->DbValue = $row['crea_dato'];
         $this->modifica_dato->DbValue = $row['modifica_dato'];
+        $this->GOLES->DbValue = $row['GOLES'];
     }
 
     // Delete uploaded files
@@ -972,11 +1033,13 @@ class Jugadorequipo extends DbTable
         } else {
             return;
         }
+        $this->ID_TORNEO->setDbValue($row['ID_TORNEO']);
         $this->id_jugadorequipo->setDbValue($row['id_jugadorequipo']);
         $this->id_equipo->setDbValue($row['id_equipo']);
         $this->id_jugador->setDbValue($row['id_jugador']);
         $this->crea_dato->setDbValue($row['crea_dato']);
         $this->modifica_dato->setDbValue($row['modifica_dato']);
+        $this->GOLES->setDbValue($row['GOLES']);
     }
 
     // Render list row values
@@ -989,6 +1052,8 @@ class Jugadorequipo extends DbTable
 
         // Common render codes
 
+        // ID_TORNEO
+
         // id_jugadorequipo
 
         // id_equipo
@@ -999,6 +1064,32 @@ class Jugadorequipo extends DbTable
 
         // modifica_dato
 
+        // GOLES
+
+        // ID_TORNEO
+        $curVal = strval($this->ID_TORNEO->CurrentValue);
+        if ($curVal != "") {
+            $this->ID_TORNEO->ViewValue = $this->ID_TORNEO->lookupCacheOption($curVal);
+            if ($this->ID_TORNEO->ViewValue === null) { // Lookup from database
+                $filterWrk = "`ID_TORNEO`" . SearchString("=", $curVal, DATATYPE_NUMBER, "");
+                $sqlWrk = $this->ID_TORNEO->Lookup->getSql(false, $filterWrk, '', $this, true, true);
+                $conn = Conn();
+                $config = $conn->getConfiguration();
+                $config->setResultCacheImpl($this->Cache);
+                $rswrk = $conn->executeCacheQuery($sqlWrk, [], [], $this->CacheProfile)->fetchAll();
+                $ari = count($rswrk);
+                if ($ari > 0) { // Lookup values found
+                    $arwrk = $this->ID_TORNEO->Lookup->renderViewRow($rswrk[0]);
+                    $this->ID_TORNEO->ViewValue = $this->ID_TORNEO->displayValue($arwrk);
+                } else {
+                    $this->ID_TORNEO->ViewValue = FormatNumber($this->ID_TORNEO->CurrentValue, $this->ID_TORNEO->formatPattern());
+                }
+            }
+        } else {
+            $this->ID_TORNEO->ViewValue = null;
+        }
+        $this->ID_TORNEO->ViewCustomAttributes = "";
+
         // id_jugadorequipo
         $this->id_jugadorequipo->ViewValue = $this->id_jugadorequipo->CurrentValue;
         $this->id_jugadorequipo->ViewCustomAttributes = "";
@@ -1008,7 +1099,7 @@ class Jugadorequipo extends DbTable
         if ($curVal != "") {
             $this->id_equipo->ViewValue = $this->id_equipo->lookupCacheOption($curVal);
             if ($this->id_equipo->ViewValue === null) { // Lookup from database
-                $filterWrk = "`ID_EQUIPO`" . SearchString("=", $curVal, DATATYPE_NUMBER, "");
+                $filterWrk = "`ID_EQUIPO_TORNEO`" . SearchString("=", $curVal, DATATYPE_NUMBER, "");
                 $sqlWrk = $this->id_equipo->Lookup->getSql(false, $filterWrk, '', $this, true, true);
                 $conn = Conn();
                 $config = $conn->getConfiguration();
@@ -1061,6 +1152,15 @@ class Jugadorequipo extends DbTable
         $this->modifica_dato->ViewValue = FormatDateTime($this->modifica_dato->ViewValue, $this->modifica_dato->formatPattern());
         $this->modifica_dato->ViewCustomAttributes = "";
 
+        // GOLES
+        $this->GOLES->ViewValue = $this->GOLES->CurrentValue;
+        $this->GOLES->ViewCustomAttributes = "";
+
+        // ID_TORNEO
+        $this->ID_TORNEO->LinkCustomAttributes = "";
+        $this->ID_TORNEO->HrefValue = "";
+        $this->ID_TORNEO->TooltipValue = "";
+
         // id_jugadorequipo
         $this->id_jugadorequipo->LinkCustomAttributes = "";
         $this->id_jugadorequipo->HrefValue = "";
@@ -1086,6 +1186,11 @@ class Jugadorequipo extends DbTable
         $this->modifica_dato->HrefValue = "";
         $this->modifica_dato->TooltipValue = "";
 
+        // GOLES
+        $this->GOLES->LinkCustomAttributes = "";
+        $this->GOLES->HrefValue = "";
+        $this->GOLES->TooltipValue = "";
+
         // Call Row Rendered event
         $this->rowRendered();
 
@@ -1100,6 +1205,11 @@ class Jugadorequipo extends DbTable
 
         // Call Row Rendering event
         $this->rowRendering();
+
+        // ID_TORNEO
+        $this->ID_TORNEO->setupEditAttributes();
+        $this->ID_TORNEO->EditCustomAttributes = "";
+        $this->ID_TORNEO->PlaceHolder = RemoveHtml($this->ID_TORNEO->caption());
 
         // id_jugadorequipo
         $this->id_jugadorequipo->setupEditAttributes();
@@ -1129,6 +1239,15 @@ class Jugadorequipo extends DbTable
         $this->modifica_dato->EditValue = FormatDateTime($this->modifica_dato->CurrentValue, $this->modifica_dato->formatPattern());
         $this->modifica_dato->PlaceHolder = RemoveHtml($this->modifica_dato->caption());
 
+        // GOLES
+        $this->GOLES->setupEditAttributes();
+        $this->GOLES->EditCustomAttributes = "";
+        if (!$this->GOLES->Raw) {
+            $this->GOLES->CurrentValue = HtmlDecode($this->GOLES->CurrentValue);
+        }
+        $this->GOLES->EditValue = $this->GOLES->CurrentValue;
+        $this->GOLES->PlaceHolder = RemoveHtml($this->GOLES->caption());
+
         // Call Row Rendered event
         $this->rowRendered();
     }
@@ -1157,17 +1276,21 @@ class Jugadorequipo extends DbTable
             if ($doc->Horizontal) { // Horizontal format, write header
                 $doc->beginExportRow();
                 if ($exportPageType == "view") {
+                    $doc->exportCaption($this->ID_TORNEO);
                     $doc->exportCaption($this->id_jugadorequipo);
                     $doc->exportCaption($this->id_equipo);
                     $doc->exportCaption($this->id_jugador);
                     $doc->exportCaption($this->crea_dato);
                     $doc->exportCaption($this->modifica_dato);
+                    $doc->exportCaption($this->GOLES);
                 } else {
+                    $doc->exportCaption($this->ID_TORNEO);
                     $doc->exportCaption($this->id_jugadorequipo);
                     $doc->exportCaption($this->id_equipo);
                     $doc->exportCaption($this->id_jugador);
                     $doc->exportCaption($this->crea_dato);
                     $doc->exportCaption($this->modifica_dato);
+                    $doc->exportCaption($this->GOLES);
                 }
                 $doc->endExportRow();
             }
@@ -1197,17 +1320,21 @@ class Jugadorequipo extends DbTable
                 if (!$doc->ExportCustom) {
                     $doc->beginExportRow($rowCnt); // Allow CSS styles if enabled
                     if ($exportPageType == "view") {
+                        $doc->exportField($this->ID_TORNEO);
                         $doc->exportField($this->id_jugadorequipo);
                         $doc->exportField($this->id_equipo);
                         $doc->exportField($this->id_jugador);
                         $doc->exportField($this->crea_dato);
                         $doc->exportField($this->modifica_dato);
+                        $doc->exportField($this->GOLES);
                     } else {
+                        $doc->exportField($this->ID_TORNEO);
                         $doc->exportField($this->id_jugadorequipo);
                         $doc->exportField($this->id_equipo);
                         $doc->exportField($this->id_jugador);
                         $doc->exportField($this->crea_dato);
                         $doc->exportField($this->modifica_dato);
+                        $doc->exportField($this->GOLES);
                     }
                     $doc->endExportRow($rowCnt);
                 }

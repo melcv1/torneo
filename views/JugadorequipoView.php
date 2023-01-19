@@ -44,6 +44,17 @@ $Page->showMessage();
 <input type="hidden" name="t" value="jugadorequipo">
 <input type="hidden" name="modal" value="<?= (int)$Page->IsModal ?>">
 <table class="table table-striped table-bordered table-hover table-sm ew-view-table">
+<?php if ($Page->ID_TORNEO->Visible) { // ID_TORNEO ?>
+    <tr id="r_ID_TORNEO"<?= $Page->ID_TORNEO->rowAttributes() ?>>
+        <td class="<?= $Page->TableLeftColumnClass ?>"><span id="elh_jugadorequipo_ID_TORNEO"><?= $Page->ID_TORNEO->caption() ?></span></td>
+        <td data-name="ID_TORNEO"<?= $Page->ID_TORNEO->cellAttributes() ?>>
+<span id="el_jugadorequipo_ID_TORNEO">
+<span<?= $Page->ID_TORNEO->viewAttributes() ?>>
+<?= $Page->ID_TORNEO->getViewValue() ?></span>
+</span>
+</td>
+    </tr>
+<?php } ?>
 <?php if ($Page->id_jugadorequipo->Visible) { // id_jugadorequipo ?>
     <tr id="r_id_jugadorequipo"<?= $Page->id_jugadorequipo->rowAttributes() ?>>
         <td class="<?= $Page->TableLeftColumnClass ?>"><span id="elh_jugadorequipo_id_jugadorequipo"><?= $Page->id_jugadorequipo->caption() ?></span></td>
@@ -95,6 +106,17 @@ $Page->showMessage();
 <span id="el_jugadorequipo_modifica_dato">
 <span<?= $Page->modifica_dato->viewAttributes() ?>>
 <?= $Page->modifica_dato->getViewValue() ?></span>
+</span>
+</td>
+    </tr>
+<?php } ?>
+<?php if ($Page->GOLES->Visible) { // GOLES ?>
+    <tr id="r_GOLES"<?= $Page->GOLES->rowAttributes() ?>>
+        <td class="<?= $Page->TableLeftColumnClass ?>"><span id="elh_jugadorequipo_GOLES"><?= $Page->GOLES->caption() ?></span></td>
+        <td data-name="GOLES"<?= $Page->GOLES->cellAttributes() ?>>
+<span id="el_jugadorequipo_GOLES">
+<span<?= $Page->GOLES->viewAttributes() ?>>
+<?= $Page->GOLES->getViewValue() ?></span>
 </span>
 </td>
     </tr>

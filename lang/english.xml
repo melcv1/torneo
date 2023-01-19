@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<ew-language version="18.12.0" id="en-US" name="English (US)" desc="English (US)" author="e.World Technology Limited" date="2022/11/15">
+<ew-language version="18.12.0" id="en-US" name="English (US)" desc="English (US)" author="e.World Technology Limited" date="2023/1/19">
   <!--
     IMPORTANT NOTES:
     1. Language ID must be RFC 4646 language tags (which use hyphen, not underscore), e.g. en-US, fr-CA, fr-FR,
@@ -961,7 +961,7 @@
   </global>
   <project>
     <phrase id="bodytitle" value="Torneo" />
-    <phrase id="footertext" value="&amp;copy;2022 Primicias. All rights reserved." />
+    <phrase id="footertext" value="&amp;copy;2023 Primicias. All rights reserved." />
     <menu id="10">
       <phrase id="menutext" value="Jugador" />
     </menu>
@@ -1496,6 +1496,9 @@
     </table>
     <table id="jugadorequipo">
       <phrase id="tblcaption" value="Jugador Equipo" />
+      <field id="id_torneo">
+        <phrase id="fldcaption" value="ID TORNEO" />
+      </field>
       <field id="id_jugadorequipo">
         <phrase id="fldcaption" value="id jugadorequipo" />
       </field>
@@ -1510,6 +1513,9 @@
       </field>
       <field id="modifica_dato">
         <phrase id="fldcaption" value="modifica dato" />
+      </field>
+      <field id="goles">
+        <phrase id="fldcaption" value="GOLES" />
       </field>
     </table>
   </project>

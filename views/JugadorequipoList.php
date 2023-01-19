@@ -22,11 +22,13 @@ loadjs.ready(["wrapper", "head"], function () {
     // Add fields
     var fields = currentTable.fields;
     fjugadorequipolist.addFields([
+        ["ID_TORNEO", [fields.ID_TORNEO.visible && fields.ID_TORNEO.required ? ew.Validators.required(fields.ID_TORNEO.caption) : null], fields.ID_TORNEO.isInvalid],
         ["id_jugadorequipo", [fields.id_jugadorequipo.visible && fields.id_jugadorequipo.required ? ew.Validators.required(fields.id_jugadorequipo.caption) : null], fields.id_jugadorequipo.isInvalid],
         ["id_equipo", [fields.id_equipo.visible && fields.id_equipo.required ? ew.Validators.required(fields.id_equipo.caption) : null], fields.id_equipo.isInvalid],
         ["id_jugador", [fields.id_jugador.visible && fields.id_jugador.required ? ew.Validators.required(fields.id_jugador.caption) : null], fields.id_jugador.isInvalid],
         ["crea_dato", [fields.crea_dato.visible && fields.crea_dato.required ? ew.Validators.required(fields.crea_dato.caption) : null, ew.Validators.datetime(fields.crea_dato.clientFormatPattern)], fields.crea_dato.isInvalid],
-        ["modifica_dato", [fields.modifica_dato.visible && fields.modifica_dato.required ? ew.Validators.required(fields.modifica_dato.caption) : null, ew.Validators.datetime(fields.modifica_dato.clientFormatPattern)], fields.modifica_dato.isInvalid]
+        ["modifica_dato", [fields.modifica_dato.visible && fields.modifica_dato.required ? ew.Validators.required(fields.modifica_dato.caption) : null, ew.Validators.datetime(fields.modifica_dato.clientFormatPattern)], fields.modifica_dato.isInvalid],
+        ["GOLES", [fields.GOLES.visible && fields.GOLES.required ? ew.Validators.required(fields.GOLES.caption) : null], fields.GOLES.isInvalid]
     ]);
 
     // Form_CustomValidate
@@ -39,6 +41,7 @@ loadjs.ready(["wrapper", "head"], function () {
     fjugadorequipolist.validateRequired = ew.CLIENT_VALIDATE;
 
     // Dynamic selection lists
+    fjugadorequipolist.lists.ID_TORNEO = <?= $Page->ID_TORNEO->toClientList($Page) ?>;
     fjugadorequipolist.lists.id_equipo = <?= $Page->id_equipo->toClientList($Page) ?>;
     fjugadorequipolist.lists.id_jugador = <?= $Page->id_jugador->toClientList($Page) ?>;
     loadjs.done("fjugadorequipolist");
@@ -141,6 +144,9 @@ $Page->renderListOptions();
 // Render list options (header, left)
 $Page->ListOptions->render("header", "left");
 ?>
+<?php if ($Page->ID_TORNEO->Visible) { // ID_TORNEO ?>
+        <th data-name="ID_TORNEO" class="<?= $Page->ID_TORNEO->headerCellClass() ?>"><div id="elh_jugadorequipo_ID_TORNEO" class="jugadorequipo_ID_TORNEO"><?= $Page->renderFieldHeader($Page->ID_TORNEO) ?></div></th>
+<?php } ?>
 <?php if ($Page->id_jugadorequipo->Visible) { // id_jugadorequipo ?>
         <th data-name="id_jugadorequipo" class="<?= $Page->id_jugadorequipo->headerCellClass() ?>"><div id="elh_jugadorequipo_id_jugadorequipo" class="jugadorequipo_id_jugadorequipo"><?= $Page->renderFieldHeader($Page->id_jugadorequipo) ?></div></th>
 <?php } ?>
@@ -155,6 +161,9 @@ $Page->ListOptions->render("header", "left");
 <?php } ?>
 <?php if ($Page->modifica_dato->Visible) { // modifica_dato ?>
         <th data-name="modifica_dato" class="<?= $Page->modifica_dato->headerCellClass() ?>"><div id="elh_jugadorequipo_modifica_dato" class="jugadorequipo_modifica_dato"><?= $Page->renderFieldHeader($Page->modifica_dato) ?></div></th>
+<?php } ?>
+<?php if ($Page->GOLES->Visible) { // GOLES ?>
+        <th data-name="GOLES" class="<?= $Page->GOLES->headerCellClass() ?>"><div id="elh_jugadorequipo_GOLES" class="jugadorequipo_GOLES"><?= $Page->renderFieldHeader($Page->GOLES) ?></div></th>
 <?php } ?>
 <?php
 // Render list options (header, right)
@@ -256,6 +265,50 @@ while ($Page->RecordCount < $Page->StopRecord) {
 // Render list options (body, left)
 $Page->ListOptions->render("body", "left", $Page->RowCount);
 ?>
+    <?php if ($Page->ID_TORNEO->Visible) { // ID_TORNEO ?>
+        <td data-name="ID_TORNEO"<?= $Page->ID_TORNEO->cellAttributes() ?>>
+<?php if ($Page->RowType == ROWTYPE_EDIT) { // Edit record ?>
+<span id="el<?= $Page->RowCount ?>_jugadorequipo_ID_TORNEO" class="el_jugadorequipo_ID_TORNEO">
+<?php $Page->ID_TORNEO->EditAttrs->prepend("onchange", "ew.updateOptions.call(this);"); ?>
+    <select
+        id="x<?= $Page->RowIndex ?>_ID_TORNEO"
+        name="x<?= $Page->RowIndex ?>_ID_TORNEO"
+        class="form-select ew-select<?= $Page->ID_TORNEO->isInvalidClass() ?>"
+        data-select2-id="fjugadorequipolist_x<?= $Page->RowIndex ?>_ID_TORNEO"
+        data-table="jugadorequipo"
+        data-field="x_ID_TORNEO"
+        data-value-separator="<?= $Page->ID_TORNEO->displayValueSeparatorAttribute() ?>"
+        data-placeholder="<?= HtmlEncode($Page->ID_TORNEO->getPlaceHolder()) ?>"
+        <?= $Page->ID_TORNEO->editAttributes() ?>>
+        <?= $Page->ID_TORNEO->selectOptionListHtml("x{$Page->RowIndex}_ID_TORNEO") ?>
+    </select>
+    <div class="invalid-feedback"><?= $Page->ID_TORNEO->getErrorMessage() ?></div>
+<?= $Page->ID_TORNEO->Lookup->getParamTag($Page, "p_x" . $Page->RowIndex . "_ID_TORNEO") ?>
+<script>
+loadjs.ready("fjugadorequipolist", function() {
+    var options = { name: "x<?= $Page->RowIndex ?>_ID_TORNEO", selectId: "fjugadorequipolist_x<?= $Page->RowIndex ?>_ID_TORNEO" },
+        el = document.querySelector("select[data-select2-id='" + options.selectId + "']");
+    options.dropdownParent = el.closest("#ew-modal-dialog, #ew-add-opt-dialog");
+    if (fjugadorequipolist.lists.ID_TORNEO.lookupOptions.length) {
+        options.data = { id: "x<?= $Page->RowIndex ?>_ID_TORNEO", form: "fjugadorequipolist" };
+    } else {
+        options.ajax = { id: "x<?= $Page->RowIndex ?>_ID_TORNEO", form: "fjugadorequipolist", limit: ew.LOOKUP_PAGE_SIZE };
+    }
+    options.minimumResultsForSearch = Infinity;
+    options = Object.assign({}, ew.selectOptions, options, ew.vars.tables.jugadorequipo.fields.ID_TORNEO.selectOptions);
+    ew.createSelect(options);
+});
+</script>
+</span>
+<?php } ?>
+<?php if ($Page->RowType == ROWTYPE_VIEW) { // View record ?>
+<span id="el<?= $Page->RowCount ?>_jugadorequipo_ID_TORNEO" class="el_jugadorequipo_ID_TORNEO">
+<span<?= $Page->ID_TORNEO->viewAttributes() ?>>
+<?= $Page->ID_TORNEO->getViewValue() ?></span>
+</span>
+<?php } ?>
+</td>
+    <?php } ?>
     <?php if ($Page->id_jugadorequipo->Visible) { // id_jugadorequipo ?>
         <td data-name="id_jugadorequipo"<?= $Page->id_jugadorequipo->cellAttributes() ?>>
 <?php if ($Page->RowType == ROWTYPE_EDIT) { // Edit record ?>
@@ -292,7 +345,7 @@ $Page->ListOptions->render("body", "left", $Page->RowCount);
         <?= $Page->id_equipo->editAttributes() ?>>
         <?= $Page->id_equipo->selectOptionListHtml("x{$Page->RowIndex}_id_equipo") ?>
     </select>
-    <button type="button" class="btn btn-default ew-add-opt-btn" id="aol_x<?= $Page->RowIndex ?>_id_equipo" title="<?= HtmlTitle($Language->phrase("AddLink")) . "&nbsp;" . $Page->id_equipo->caption() ?>" data-title="<?= $Page->id_equipo->caption() ?>" data-ew-action="add-option" data-el="x<?= $Page->RowIndex ?>_id_equipo" data-url="<?= GetUrl("equipoaddopt") ?>"><i class="fas fa-plus ew-icon"></i></button>
+    <button type="button" class="btn btn-default ew-add-opt-btn" id="aol_x<?= $Page->RowIndex ?>_id_equipo" title="<?= HtmlTitle($Language->phrase("AddLink")) . "&nbsp;" . $Page->id_equipo->caption() ?>" data-title="<?= $Page->id_equipo->caption() ?>" data-ew-action="add-option" data-el="x<?= $Page->RowIndex ?>_id_equipo" data-url="<?= GetUrl("equipotorneoaddopt") ?>"><i class="fas fa-plus ew-icon"></i></button>
 </div>
 <div class="invalid-feedback"><?= $Page->id_equipo->getErrorMessage() ?></div>
 <?= $Page->id_equipo->Lookup->getParamTag($Page, "p_x" . $Page->RowIndex . "_id_equipo") ?>
@@ -451,6 +504,22 @@ loadjs.ready(["fjugadorequipolist", "datetimepicker"], function () {
 <span id="el<?= $Page->RowCount ?>_jugadorequipo_modifica_dato" class="el_jugadorequipo_modifica_dato">
 <span<?= $Page->modifica_dato->viewAttributes() ?>>
 <?= $Page->modifica_dato->getViewValue() ?></span>
+</span>
+<?php } ?>
+</td>
+    <?php } ?>
+    <?php if ($Page->GOLES->Visible) { // GOLES ?>
+        <td data-name="GOLES"<?= $Page->GOLES->cellAttributes() ?>>
+<?php if ($Page->RowType == ROWTYPE_EDIT) { // Edit record ?>
+<span id="el<?= $Page->RowCount ?>_jugadorequipo_GOLES" class="el_jugadorequipo_GOLES">
+<input type="<?= $Page->GOLES->getInputTextType() ?>" name="x<?= $Page->RowIndex ?>_GOLES" id="x<?= $Page->RowIndex ?>_GOLES" data-table="jugadorequipo" data-field="x_GOLES" value="<?= $Page->GOLES->EditValue ?>" size="30" maxlength="64" placeholder="<?= HtmlEncode($Page->GOLES->getPlaceHolder()) ?>"<?= $Page->GOLES->editAttributes() ?>>
+<div class="invalid-feedback"><?= $Page->GOLES->getErrorMessage() ?></div>
+</span>
+<?php } ?>
+<?php if ($Page->RowType == ROWTYPE_VIEW) { // View record ?>
+<span id="el<?= $Page->RowCount ?>_jugadorequipo_GOLES" class="el_jugadorequipo_GOLES">
+<span<?= $Page->GOLES->viewAttributes() ?>>
+<?= $Page->GOLES->getViewValue() ?></span>
 </span>
 <?php } ?>
 </td>

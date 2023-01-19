@@ -121,7 +121,7 @@ function Route_Action($app)
 }
 
 function Api_Action($app) {
-  $GLOBALS["Conn"] = $GLOBALS["Conn"] ?? getConnection();
+   $GLOBALS["Conn"] = $GLOBALS["Conn"] ?? getConnection();
  $app->get('/v1/equipos', function ($request, $response, $args) {
         $myArray="todo ok";
          $response = $response->withJson(ExecuteRows("SELECT a.NOM_EQUIPO_CORTO, a.NOM_EQUIPO_LARGO, a.ESCUDO_EQUIPO, b.GRUPO FROM equipotorneo as b INNER JOIN equipo as a ON a.id_equipo=b.ID_EQUIPO"));
@@ -190,7 +190,6 @@ function Api_Action($app) {
         }    
         return $response;
     });
-
     $app->get('/v1/equipos/{ID_EQUIPO}', function ($request, $response, $args) {
         $ID_EQUIPO = $args["ID_EQUIPO"] ?? null; // Get the input value
         if ($ID_EQUIPO !== null) {
@@ -207,6 +206,13 @@ function Api_Action($app) {
          JOIN equipo as a 
          ON a.id_equipo=c.id_equipo;"));*/
           $response = $response->withJson(ExecuteRows("SELECT * from jugador;"));
+        return $response;
+    });
+
+    $app->get('/v1/jugadoresequipo', function ($request, $response, $args) {
+        $myArray="todo ok";
+      
+          $response = $response->withJson(ExecuteRows("SELECT a.nombre_jugador b.nom_equipo_largo FROM jugadorequipo as e   INNER JOIN jugador as a ON a.id_jugador= e.id_jugador  INNER JOIN equipo as b ON b.ID_EQUIPO=e.id_equipo;"));
         return $response;
     });
      $app->get('/v1/pronostica', function ($request, $response, $args) {

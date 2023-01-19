@@ -20,8 +20,10 @@ loadjs.ready(["wrapper", "head"], function () {
     // Add fields
     var fields = currentTable.fields;
     fjugadorequipoadd.addFields([
+        ["ID_TORNEO", [fields.ID_TORNEO.visible && fields.ID_TORNEO.required ? ew.Validators.required(fields.ID_TORNEO.caption) : null], fields.ID_TORNEO.isInvalid],
         ["id_equipo", [fields.id_equipo.visible && fields.id_equipo.required ? ew.Validators.required(fields.id_equipo.caption) : null], fields.id_equipo.isInvalid],
-        ["id_jugador", [fields.id_jugador.visible && fields.id_jugador.required ? ew.Validators.required(fields.id_jugador.caption) : null], fields.id_jugador.isInvalid]
+        ["id_jugador", [fields.id_jugador.visible && fields.id_jugador.required ? ew.Validators.required(fields.id_jugador.caption) : null], fields.id_jugador.isInvalid],
+        ["GOLES", [fields.GOLES.visible && fields.GOLES.required ? ew.Validators.required(fields.GOLES.caption) : null], fields.GOLES.isInvalid]
     ]);
 
     // Form_CustomValidate
@@ -34,6 +36,7 @@ loadjs.ready(["wrapper", "head"], function () {
     fjugadorequipoadd.validateRequired = ew.CLIENT_VALIDATE;
 
     // Dynamic selection lists
+    fjugadorequipoadd.lists.ID_TORNEO = <?= $Page->ID_TORNEO->toClientList($Page) ?>;
     fjugadorequipoadd.lists.id_equipo = <?= $Page->id_equipo->toClientList($Page) ?>;
     fjugadorequipoadd.lists.id_jugador = <?= $Page->id_jugador->toClientList($Page) ?>;
     loadjs.done("fjugadorequipoadd");
@@ -58,6 +61,46 @@ $Page->showMessage();
 <input type="hidden" name="modal" value="<?= (int)$Page->IsModal ?>">
 <input type="hidden" name="<?= $Page->OldKeyName ?>" value="<?= $Page->OldKey ?>">
 <div class="ew-add-div"><!-- page* -->
+<?php if ($Page->ID_TORNEO->Visible) { // ID_TORNEO ?>
+    <div id="r_ID_TORNEO"<?= $Page->ID_TORNEO->rowAttributes() ?>>
+        <label id="elh_jugadorequipo_ID_TORNEO" for="x_ID_TORNEO" class="<?= $Page->LeftColumnClass ?>"><?= $Page->ID_TORNEO->caption() ?><?= $Page->ID_TORNEO->Required ? $Language->phrase("FieldRequiredIndicator") : "" ?></label>
+        <div class="<?= $Page->RightColumnClass ?>"><div<?= $Page->ID_TORNEO->cellAttributes() ?>>
+<span id="el_jugadorequipo_ID_TORNEO">
+<?php $Page->ID_TORNEO->EditAttrs->prepend("onchange", "ew.updateOptions.call(this);"); ?>
+    <select
+        id="x_ID_TORNEO"
+        name="x_ID_TORNEO"
+        class="form-select ew-select<?= $Page->ID_TORNEO->isInvalidClass() ?>"
+        data-select2-id="fjugadorequipoadd_x_ID_TORNEO"
+        data-table="jugadorequipo"
+        data-field="x_ID_TORNEO"
+        data-value-separator="<?= $Page->ID_TORNEO->displayValueSeparatorAttribute() ?>"
+        data-placeholder="<?= HtmlEncode($Page->ID_TORNEO->getPlaceHolder()) ?>"
+        <?= $Page->ID_TORNEO->editAttributes() ?>>
+        <?= $Page->ID_TORNEO->selectOptionListHtml("x_ID_TORNEO") ?>
+    </select>
+    <?= $Page->ID_TORNEO->getCustomMessage() ?>
+    <div class="invalid-feedback"><?= $Page->ID_TORNEO->getErrorMessage() ?></div>
+<?= $Page->ID_TORNEO->Lookup->getParamTag($Page, "p_x_ID_TORNEO") ?>
+<script>
+loadjs.ready("fjugadorequipoadd", function() {
+    var options = { name: "x_ID_TORNEO", selectId: "fjugadorequipoadd_x_ID_TORNEO" },
+        el = document.querySelector("select[data-select2-id='" + options.selectId + "']");
+    options.dropdownParent = el.closest("#ew-modal-dialog, #ew-add-opt-dialog");
+    if (fjugadorequipoadd.lists.ID_TORNEO.lookupOptions.length) {
+        options.data = { id: "x_ID_TORNEO", form: "fjugadorequipoadd" };
+    } else {
+        options.ajax = { id: "x_ID_TORNEO", form: "fjugadorequipoadd", limit: ew.LOOKUP_PAGE_SIZE };
+    }
+    options.minimumResultsForSearch = Infinity;
+    options = Object.assign({}, ew.selectOptions, options, ew.vars.tables.jugadorequipo.fields.ID_TORNEO.selectOptions);
+    ew.createSelect(options);
+});
+</script>
+</span>
+</div></div>
+    </div>
+<?php } ?>
 <?php if ($Page->id_equipo->Visible) { // id_equipo ?>
     <div id="r_id_equipo"<?= $Page->id_equipo->rowAttributes() ?>>
         <label id="elh_jugadorequipo_id_equipo" for="x_id_equipo" class="<?= $Page->LeftColumnClass ?>"><?= $Page->id_equipo->caption() ?><?= $Page->id_equipo->Required ? $Language->phrase("FieldRequiredIndicator") : "" ?></label>
@@ -76,7 +119,7 @@ $Page->showMessage();
         <?= $Page->id_equipo->editAttributes() ?>>
         <?= $Page->id_equipo->selectOptionListHtml("x_id_equipo") ?>
     </select>
-    <button type="button" class="btn btn-default ew-add-opt-btn" id="aol_x_id_equipo" title="<?= HtmlTitle($Language->phrase("AddLink")) . "&nbsp;" . $Page->id_equipo->caption() ?>" data-title="<?= $Page->id_equipo->caption() ?>" data-ew-action="add-option" data-el="x_id_equipo" data-url="<?= GetUrl("equipoaddopt") ?>"><i class="fas fa-plus ew-icon"></i></button>
+    <button type="button" class="btn btn-default ew-add-opt-btn" id="aol_x_id_equipo" title="<?= HtmlTitle($Language->phrase("AddLink")) . "&nbsp;" . $Page->id_equipo->caption() ?>" data-title="<?= $Page->id_equipo->caption() ?>" data-ew-action="add-option" data-el="x_id_equipo" data-url="<?= GetUrl("equipotorneoaddopt") ?>"><i class="fas fa-plus ew-icon"></i></button>
 </div>
 <?= $Page->id_equipo->getCustomMessage() ?>
 <div class="invalid-feedback"><?= $Page->id_equipo->getErrorMessage() ?></div>
@@ -138,6 +181,18 @@ loadjs.ready("fjugadorequipoadd", function() {
     ew.createSelect(options);
 });
 </script>
+</span>
+</div></div>
+    </div>
+<?php } ?>
+<?php if ($Page->GOLES->Visible) { // GOLES ?>
+    <div id="r_GOLES"<?= $Page->GOLES->rowAttributes() ?>>
+        <label id="elh_jugadorequipo_GOLES" for="x_GOLES" class="<?= $Page->LeftColumnClass ?>"><?= $Page->GOLES->caption() ?><?= $Page->GOLES->Required ? $Language->phrase("FieldRequiredIndicator") : "" ?></label>
+        <div class="<?= $Page->RightColumnClass ?>"><div<?= $Page->GOLES->cellAttributes() ?>>
+<span id="el_jugadorequipo_GOLES">
+<input type="<?= $Page->GOLES->getInputTextType() ?>" name="x_GOLES" id="x_GOLES" data-table="jugadorequipo" data-field="x_GOLES" value="<?= $Page->GOLES->EditValue ?>" size="30" maxlength="64" placeholder="<?= HtmlEncode($Page->GOLES->getPlaceHolder()) ?>"<?= $Page->GOLES->editAttributes() ?> aria-describedby="x_GOLES_help">
+<?= $Page->GOLES->getCustomMessage() ?>
+<div class="invalid-feedback"><?= $Page->GOLES->getErrorMessage() ?></div>
 </span>
 </div></div>
     </div>

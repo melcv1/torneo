@@ -44,6 +44,9 @@ $Page->showMessage();
 <table class="table table-bordered table-hover table-sm ew-table">
     <thead>
     <tr class="ew-table-header">
+<?php if ($Page->ID_TORNEO->Visible) { // ID_TORNEO ?>
+        <th class="<?= $Page->ID_TORNEO->headerCellClass() ?>"><span id="elh_jugadorequipo_ID_TORNEO" class="jugadorequipo_ID_TORNEO"><?= $Page->ID_TORNEO->caption() ?></span></th>
+<?php } ?>
 <?php if ($Page->id_jugadorequipo->Visible) { // id_jugadorequipo ?>
         <th class="<?= $Page->id_jugadorequipo->headerCellClass() ?>"><span id="elh_jugadorequipo_id_jugadorequipo" class="jugadorequipo_id_jugadorequipo"><?= $Page->id_jugadorequipo->caption() ?></span></th>
 <?php } ?>
@@ -58,6 +61,9 @@ $Page->showMessage();
 <?php } ?>
 <?php if ($Page->modifica_dato->Visible) { // modifica_dato ?>
         <th class="<?= $Page->modifica_dato->headerCellClass() ?>"><span id="elh_jugadorequipo_modifica_dato" class="jugadorequipo_modifica_dato"><?= $Page->modifica_dato->caption() ?></span></th>
+<?php } ?>
+<?php if ($Page->GOLES->Visible) { // GOLES ?>
+        <th class="<?= $Page->GOLES->headerCellClass() ?>"><span id="elh_jugadorequipo_GOLES" class="jugadorequipo_GOLES"><?= $Page->GOLES->caption() ?></span></th>
 <?php } ?>
     </tr>
     </thead>
@@ -80,6 +86,14 @@ while (!$Page->Recordset->EOF) {
     $Page->renderRow();
 ?>
     <tr <?= $Page->rowAttributes() ?>>
+<?php if ($Page->ID_TORNEO->Visible) { // ID_TORNEO ?>
+        <td<?= $Page->ID_TORNEO->cellAttributes() ?>>
+<span id="el<?= $Page->RowCount ?>_jugadorequipo_ID_TORNEO" class="el_jugadorequipo_ID_TORNEO">
+<span<?= $Page->ID_TORNEO->viewAttributes() ?>>
+<?= $Page->ID_TORNEO->getViewValue() ?></span>
+</span>
+</td>
+<?php } ?>
 <?php if ($Page->id_jugadorequipo->Visible) { // id_jugadorequipo ?>
         <td<?= $Page->id_jugadorequipo->cellAttributes() ?>>
 <span id="el<?= $Page->RowCount ?>_jugadorequipo_id_jugadorequipo" class="el_jugadorequipo_id_jugadorequipo">
@@ -117,6 +131,14 @@ while (!$Page->Recordset->EOF) {
 <span id="el<?= $Page->RowCount ?>_jugadorequipo_modifica_dato" class="el_jugadorequipo_modifica_dato">
 <span<?= $Page->modifica_dato->viewAttributes() ?>>
 <?= $Page->modifica_dato->getViewValue() ?></span>
+</span>
+</td>
+<?php } ?>
+<?php if ($Page->GOLES->Visible) { // GOLES ?>
+        <td<?= $Page->GOLES->cellAttributes() ?>>
+<span id="el<?= $Page->RowCount ?>_jugadorequipo_GOLES" class="el_jugadorequipo_GOLES">
+<span<?= $Page->GOLES->viewAttributes() ?>>
+<?= $Page->GOLES->getViewValue() ?></span>
 </span>
 </td>
 <?php } ?>

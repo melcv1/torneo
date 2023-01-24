@@ -367,7 +367,7 @@ class Equipotorneo extends DbTable
                 $this->GRUPO->Lookup = new Lookup('GRUPO', 'equipotorneo', false, '', ["","","",""], [], [], [], [], [], [], '', '', "");
                 break;
         }
-        $this->GRUPO->OptionCount = 8;
+        $this->GRUPO->OptionCount = 9;
         $this->Fields['GRUPO'] = &$this->GRUPO;
 
         // POSICION_EQUIPO_TORENO
